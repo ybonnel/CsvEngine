@@ -1,0 +1,7 @@
+h1. MoteurCsv
+
+Il s'agit d'une petitE librairie sans prétentions à base d'annotations utilisée pour parser et écrire des fichiers GTFS (norme basée sur du csv) dans le cadre d'une application Android (Transports Rennes).
+
+h1. License
+
+L'ensemble du code source est sous "GPL v3":http://www.gnu.org/licenses/gpl-3.0.html.
