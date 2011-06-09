@@ -49,6 +49,10 @@ public class MoteurCsv {
 		}
 	}
 
+	public Class<?> getClassByFileName(String fileName) {
+		return mapFileClasses.containsKey(fileName) ? mapFileClasses.get(fileName).getClazz() : null;
+	}
+
 	public Object creerObjet(String ligne) {
 		if (classCourante == null) {
 			throw new MoteurCsvException(
