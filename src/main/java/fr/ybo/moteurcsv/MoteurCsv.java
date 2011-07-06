@@ -55,6 +55,60 @@ public class MoteurCsv {
 		return mapFileClasses.containsKey(fileName) ? mapFileClasses.get(fileName).getClazz() : null;
 	}
 
+	private List<String> splitLigne(String ligne, String separateur) {
+		List<String> champs = new ArrayList<String>();
+		int indiceDebutChaine = -1;
+		boolean enCours = false;
+		boolean guillemetEnCours = false;
+		boolean guillemetTermine = false;
+		for (int indice = 0; indice < ligne.length(); indice++) {
+			if (!enCours) {
+				if (ligne.charAt(indice) == separateur.charAt(0)) {
+					champs.add("");
+					guillemetEnCours = false;
+					guillemetTermine = false;
+					indiceDebutChaine = -1;
+				} else if (ligne.charAt(indice) == '"') {
+					guillemetEnCours = true;
+				} else {
+					enCours = true;
+					indiceDebutChaine = indice;
+				}
+			} else {
+				if (guillemetEnCours && '"' == ligne.charAt(indice)) {
+					guillemetEnCours = false;
+					guillemetTermine = true;
+				} else if (ligne.charAt(indice) == separateur.charAt(0)) {
+					if (indiceDebutChaine == -1) {
+						champs.add("");
+					} else {
+						int indiceFin = indice;
+						if (guillemetTermine) {
+							indiceFin = indice - 1;
+						}
+						champs.add(ligne.substring(indiceDebutChaine, indiceFin));
+						guillemetEnCours = false;
+						guillemetTermine = false;
+						enCours = false;
+						indiceDebutChaine = -1;
+					}
+				}
+			}
+		}
+		if (enCours) {
+			if (indiceDebutChaine == -1) {
+				champs.add("");
+			} else {
+				int indiceFin = ligne.length();
+				if (guillemetTermine) {
+					indiceFin = ligne.length() - 1;
+				}
+				champs.add(ligne.substring(indiceDebutChaine, indiceFin));
+			}
+		}
+		return champs;
+	}
+
 	public Object creerObjet(String ligne) {
 		if (classCourante == null) {
 			throw new MoteurCsvException(
@@ -62,15 +116,15 @@ public class MoteurCsv {
 		}
 		try {
 			Object objetCsv = classCourante.getContructeur().newInstance((Object[]) null);
-			String[] champs = ligne.split(classCourante.getSeparateur());
-			int champsLength = champs.length;
-			for (int numChamp = 0; numChamp < champsLength; numChamp++) {
-				if (champs[numChamp] != null && !"".equals(champs[numChamp])) {
+			List<String> champs = splitLigne(ligne, classCourante.getSeparateurWithoutEscape());
+			for (int numChamp = 0; numChamp < champs.size(); numChamp++) {
+				String champ = champs.get(numChamp);
+				if (champ != null && !"".equals(champ)) {
 					String nomChamp = enteteCourante[numChamp];
 					ChampCsv champCsv = classCourante.getChampCsv(nomChamp);
 					if (champCsv != null) {
 						champCsv.getField().setAccessible(true);
-						champCsv.getField().set(objetCsv, champCsv.getNewAdapterCsv().parse(champs[numChamp]));
+						champCsv.getField().set(objetCsv, champCsv.getNewAdapterCsv().parse(champ));
 						champCsv.getField().setAccessible(false);
 					}
 				}
@@ -176,7 +230,11 @@ public class MoteurCsv {
 			Object valeur = champCsv.getField().get(objet);
 			champCsv.getField().setAccessible(false);
 			if (valeur != null) {
-				bufWriter.write(champCsv.getNewAdapterCsv().toString(valeur));
+				String champ = champCsv.getNewAdapterCsv().toString(valeur);
+				if (champ.contains("\"")) {
+					champ = "\"" + champ + "\"";
+				}
+				bufWriter.write(champ);
 			}
 			first = false;
 		}
