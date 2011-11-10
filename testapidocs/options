@@ -15,7 +15,7 @@
 -docencoding
 'UTF-8'
 -doctitle
-'MoteurCsv 1.0.3-SNAPSHOT Test API'
+'MoteurCsv 1.0.4-SNAPSHOT Test API'
 -link
 'http://java.sun.com/j2se/1.6.0/docs/api'
 -link
@@ -25,4 +25,4 @@
 -use
 -version
 -windowtitle
-'MoteurCsv 1.0.3-SNAPSHOT Test API'
+'MoteurCsv 1.0.4-SNAPSHOT Test API'
