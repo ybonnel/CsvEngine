@@ -175,8 +175,8 @@
     </developers>
 
     <scm>
-        <connection>scm:git://github.com/ybonnel/OpenDataRennesApi.git</connection>
-        <developerConnection>scm:git@github.com:ybonnel/OpenDataRennesApi.git</developerConnection>
+        <connection>scm:git://github.com/ybonnel/MoteurCsv.git</connection>
+        <developerConnection>scm:git@github.com:ybonnel/MoteurCsv.git</developerConnection>
     </scm>
 
     <repositories>
