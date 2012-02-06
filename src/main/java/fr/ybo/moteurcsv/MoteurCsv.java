@@ -75,9 +75,11 @@ public class MoteurCsv {
 					indiceDebutChaine = indice;
 				}
 			} else {
-				if (guillemetEnCours && '"' == ligne.charAt(indice)) {
-					guillemetEnCours = false;
-					guillemetTermine = true;
+				if (guillemetEnCours) {
+					if ('"' == ligne.charAt(indice)) {
+						guillemetEnCours = false;
+						guillemetTermine = true;
+					}
 				} else if (ligne.charAt(indice) == separateur.charAt(0)) {
 					if (indiceDebutChaine == -1) {
 						champs.add("");
