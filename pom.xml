@@ -19,7 +19,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>fr.ybo</groupId>
 	<artifactId>moteurcsv</artifactId>
-	<version>1.0.4-SNAPSHOT</version>
+	<version>1.0.5-SNAPSHOT</version>
 	<name>MoteurCsv</name>
 	<packaging>jar</packaging>
     <url>https://github.com/ybonnel/MoteurCsv</url>
