@@ -78,6 +78,7 @@
     </profiles>
 
     <build>
+    
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -161,9 +162,12 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.8.2</version>
             <scope>test</scope>
         </dependency>
+    	<dependency>
+    		<groupId>net.sf.opencsv</groupId>
+    		<artifactId>opencsv</artifactId>
+    	</dependency>
     </dependencies>
 
     <developers>
@@ -197,4 +201,18 @@
         </snapshotRepository>
     </distributionManagement>
 
+    <dependencyManagement>
+    	<dependencies>
+    		<dependency>
+    			<groupId>net.sf.opencsv</groupId>
+    			<artifactId>opencsv</artifactId>
+    			<version>2.3</version>
+    		</dependency>
+    		<dependency>
+    			<groupId>junit</groupId>
+    			<artifactId>junit</artifactId>
+    			<version>4.8.2</version>
+    		</dependency>
+    	</dependencies>
+    </dependencyManagement>
 </project>
