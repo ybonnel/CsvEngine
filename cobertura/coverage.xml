@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
 
-<coverage line-rate="0.8767123287671232" branch-rate="0.7444444444444445" lines-covered="192" lines-valid="219" branches-covered="67" branches-valid="90" complexity="2.409090909090909" version="1.9.4.1" timestamp="1329119459345">
+<coverage line-rate="0.8767123287671232" branch-rate="0.7444444444444445" lines-covered="192" lines-valid="219" branches-covered="67" branches-valid="90" complexity="2.409090909090909" version="1.9.4.1" timestamp="1329131749073">
 	<sources>
-		<source>/scratch/hudson/workspace/MoteurCsv/src/main/java</source>
 		<source>--source</source>
+		<source>/scratch/hudson/workspace/MoteurCsv-deploySnapshot/src/main/java</source>
 	</sources>
 	<packages>
 		<package name="fr.ybo.moteurcsv" line-rate="0.8802816901408451" branch-rate="0.75" complexity="4.133333333333334">
