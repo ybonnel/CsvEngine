@@ -63,11 +63,14 @@ public class ClassCsv {
 	
 	private String separateurWithoutEscape = null;
 
-	public String getSeparateurWithoutEscape() {
+	public char getSeparateurWithoutEscape() {
 		if (separateurWithoutEscape == null) {
 			separateurWithoutEscape = separateur.replaceAll("\\\\", "");
 		}
-		return separateurWithoutEscape;
+		if (separateurWithoutEscape.length() != 1) {
+			throw new MoteurCsvException("Le séparateur " + separateurWithoutEscape + " contient plus d'1 caractère.");
+		}
+		return separateurWithoutEscape.charAt(0);
 		
 	}
 
