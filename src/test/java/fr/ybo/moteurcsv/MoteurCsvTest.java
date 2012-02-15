@@ -16,12 +16,11 @@
  */
 package fr.ybo.moteurcsv;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -200,7 +199,7 @@ public class MoteurCsvTest {
 		
 		File file = File.createTempFile("objet_csv", "txt");
 		
-		moteur.writeFile(file, objets, ObjetCsv.class);
+		moteur.writeFile(new FileWriter(file), objets, ObjetCsv.class);
 		
 		List<ObjetCsv> newObjets = moteur.parseInputStream(new FileInputStream(file), ObjetCsv.class);
 		assertEquals(objets, newObjets);

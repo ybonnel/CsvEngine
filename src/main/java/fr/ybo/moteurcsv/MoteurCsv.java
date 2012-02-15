@@ -17,13 +17,11 @@
 package fr.ybo.moteurcsv;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.Writer;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -108,10 +106,14 @@ public class MoteurCsv {
 		}
 	}
 	
-	protected AbstractLectureCsv creerLecteurCsv(Reader reader) {
+	protected AbstractLectureCsv creerReaderCsv(Reader reader) {
 		return new LectureOpenCsv(reader, classCourante.getSeparateurWithoutEscape());
 	}
 	
+	protected AbstractEcritureCsv creerWriterCsv(Writer writer) {
+		return new EcritureOpenCsv(writer, classCourante.getSeparateurWithoutEscape());
+	}
+
 	/**
 	 * Ancienne signature pour la compatibilité.
 	 * @param nomFichier nom du fichier.
@@ -139,7 +141,7 @@ public class MoteurCsv {
 		if (classCourante == null) {
 			throw new MoteurCsvException("Le fichier " + nomFichier + " n'as pas de classe associée");
 		}
-		lecteurCsv = creerLecteurCsv(reader); 
+		lecteurCsv = creerReaderCsv(reader); 
 		try {
 			enteteCourante = lecteurCsv.readLine();
 		} catch (IOException e) {
@@ -216,45 +218,27 @@ public class MoteurCsv {
 		mapFileClasses.put(fichierCsv.value(), classCsv);
 	}
 
-	private void writeEntete(BufferedWriter bufWriter, Iterable<String> nomChamps, ClassCsv classCsv)
-			throws IOException {
-		boolean first = true;
+	private <Objet> void writeLigne(AbstractEcritureCsv writerCsv, List<String> nomChamps, ClassCsv classCsv,
+			Objet objet)
+ throws IllegalAccessException {
+		List<String> champs = new ArrayList<String>();
 		for (String nomChamp : nomChamps) {
-			if (!first) {
-				bufWriter.write(classCsv.getSeparateurWithoutEscape());
-			}
-			bufWriter.write(nomChamp);
-			first = false;
-		}
-		bufWriter.write('\n');
-	}
-
-	private <Objet> void writeLigne(BufferedWriter bufWriter, Iterable<String> nomChamps, ClassCsv classCsv, Objet objet)
-			throws IOException, IllegalAccessException {
-		boolean first = true;
-		for (String nomChamp : nomChamps) {
-			if (!first) {
-				bufWriter.write(classCsv.getSeparateurWithoutEscape());
-			}
 			ChampCsv champCsv = classCsv.getChampCsv(nomChamp);
 			champCsv.getField().setAccessible(true);
 			Object valeur = champCsv.getField().get(objet);
 			champCsv.getField().setAccessible(false);
 			if (valeur != null) {
-				String champ = champCsv.getNewAdapterCsv().toString(valeur);
-				if (champ.contains("\"")) {
-					champ = "\"" + champ + "\"";
-				}
-				bufWriter.write(champ);
+				champs.add(champCsv.getNewAdapterCsv().toString(valeur));
+			} else {
+				champs.add(null);
 			}
-			first = false;
 		}
-		bufWriter.write('\n');
+		writerCsv.writeLine(champs);
 	}
 
-	public <Objet> void writeFile(File file, Iterable<Objet> objets, Class<Objet> clazz) {
+	public <Objet> void writeFile(Writer writer, Iterable<Objet> objets, Class<Objet> clazz) {
 		try {
-			BufferedWriter bufWriter = new BufferedWriter(new FileWriter(file));
+			AbstractEcritureCsv writerCsv = creerWriterCsv(writer);
 			try {
 				final ClassCsv classCsv = mapFileClasses.get(clazz.getAnnotation(FichierCsv.class).value());
 				List<String> nomChamps = new ArrayList<String>(10);
@@ -268,12 +252,12 @@ public class MoteurCsv {
 						return (thisVal < anotherVal ? -1 : (thisVal == anotherVal ? 0 : 1));
 					}
 				});
-				writeEntete(bufWriter, nomChamps, classCsv);
+				writerCsv.writeLine(nomChamps);
 				for (Objet objet : objets) {
-					writeLigne(bufWriter, nomChamps, classCsv, objet);
+					writeLigne(writerCsv, nomChamps, classCsv, objet);
 				}
 			} finally {
-				bufWriter.close();
+				writerCsv.close();
 			}
 		} catch (Exception exception) {
 			throw new MoteurCsvException(exception);
