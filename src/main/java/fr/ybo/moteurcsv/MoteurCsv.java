@@ -77,7 +77,7 @@ public class MoteurCsv {
 	 * 
 	 * @return l'ojet créer.
 	 */
-	public Object creerObjet() {
+	private Object creerObjet() {
 		if (classCourante == null) {
 			throw new MoteurCsvException(
 					"La méthode creerObjet a étée appelée sans que la méthode nouveauFichier n'est été appelée.");
@@ -124,7 +124,7 @@ public class MoteurCsv {
 		}
 	}
 
-	public void closeFichierCourant() {
+	private void closeLecteurCourant() {
 		if (lecteurCsv != null) {
 			try {
 				lecteurCsv.close();
@@ -149,6 +149,7 @@ public class MoteurCsv {
 			insert.insertObject(objet);
 			objet = (Objet) creerObjet();
 		}
+		closeLecteurCourant();
 	}
 
 	private void scannerClass(Class<?> clazz) {
