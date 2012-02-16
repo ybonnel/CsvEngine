@@ -1,4 +1,4 @@
-package fr.ybo.moteurcsv;
+package fr.ybo.moteurcsv.factory;
 
 import java.io.Closeable;
 import java.util.List;

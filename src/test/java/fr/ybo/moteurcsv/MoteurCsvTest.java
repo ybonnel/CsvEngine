@@ -37,11 +37,10 @@ import fr.ybo.moteurcsv.adapter.AdapterString;
 import fr.ybo.moteurcsv.adapter.AdapterTime;
 import fr.ybo.moteurcsv.annotation.BaliseCsv;
 import fr.ybo.moteurcsv.annotation.FichierCsv;
-import fr.ybo.moteurcsv.exception.MoteurCsvException;
 
 public class MoteurCsvTest {
 
-	@FichierCsv(value = "objet_csv.txt", separateur = "\\|")
+	@FichierCsv(separateur = "\\|")
 	public static class ObjetCsv {
 
 		@BaliseCsv(value = "att_1", ordre = 0)
@@ -141,33 +140,6 @@ public class MoteurCsvTest {
 	@Before
 	public void setup() {
 		moteur = new MoteurCsv(new ArrayList<Class<?>>(Collections.singletonList(ObjetCsv.class)));
-	}
-
-	@Test(expected = MoteurCsvException.class)
-	public void testNouveauFichier_erreur() {
-		moteur.nouveauFichier("tutu.txt", ENTETE_654321);
-	}
-
-	@Test(expected = MoteurCsvException.class)
-	public void testCreerObjet_erreurNouveauFicheir() {
-		moteur.creerObjet("tutu");
-	}
-
-	@Test(expected = MoteurCsvException.class)
-	public void testCreerObjet_erreurInstanciation() {
-		moteur.nouveauFichier("objet_csv.txt", ENTETE_654321);
-		moteur.creerObjet("0|1|2|3|4|5|6|7");
-	}
-
-	@Test
-	public void testCreerObjetNominal() {
-		moteur.nouveauFichier("objet_csv.txt", ENTETE_654321);
-		ObjetCsv objetCsv = (ObjetCsv) moteur.creerObjet("01:30|String1|5|8.0|1|String2");
-		assertNotNull(objetCsv);
-		assertTrue(objetCsv.equals("String2", true, 8.0, 5, "String1", 90));
-		objetCsv = (ObjetCsv) moteur.creerObjet("|||||");
-		assertNotNull(objetCsv);
-		assertTrue(objetCsv.equals(null, null, null, null, null, null));
 	}
 
 	@Test
