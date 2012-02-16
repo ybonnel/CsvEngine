@@ -42,7 +42,7 @@
   
     
             <div class="xleft">
-        Last Published: 2012-02-13
+        Last Published: 2012-02-16
                       </div>
             <div class="xright">            <a href="">MoteurCsv</a>
             
@@ -94,6 +94,8 @@
       
             
       
+            
+      
               
             <li class="expanded">
                     <a href="project-info.html">Project Information</a>
@@ -110,6 +112,10 @@
     <li class="none">
               <strong>Dependencies</strong>
         </li>
+                  
+    <li class="none">
+                    <a href="dependency-management.html">Dependency Management</a>
+          </li>
                   
     <li class="none">
                     <a href="issue-tracking.html">Issue Tracking</a>
@@ -173,6 +179,20 @@
     <div id="bodyColumn">
       <div id="contentBox">
         <div class="section"><h2>Project Dependencies</h2>
+<div class="section"><h3>compile</h3>
+<p>The following is a list of compile dependencies for this project. These dependencies are required to compile and run the application:</p>
+<table class="bodyTable"><tr class="a"><th>GroupId</th>
+<th>ArtifactId</th>
+<th>Version</th>
+<th>Type</th>
+</tr>
+<tr class="b"><td>net.sf.opencsv</td>
+<td><a class="externalLink" href="http://opencsv.sf.net">opencsv</a></td>
+<td>2.3</td>
+<td>jar</td>
+</tr>
+</table>
+</div>
 <div class="section"><h3>test</h3>
 <p>The following is a list of test dependencies for this project. These dependencies are only required to compile and run unit tests for the application:</p>
 <table class="bodyTable"><tr class="a"><th>GroupId</th>
@@ -210,7 +230,7 @@
       }
 </script>
 <div class="section"><h3>Dependency Tree</h3>
-<ul><li>fr.ybo:moteurcsv:jar:1.0.5-SNAPSHOT <img id="_1214181594" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_2071252166', '_1214181594' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_2071252166" style="display:none"><table class="bodyTable"><tr class="a"><th>MoteurCsv</th>
+<ul><li>fr.ybo:moteurcsv:jar:1.0.5-SNAPSHOT <img id="_1549021312" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_1870445922', '_1549021312' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_1870445922" style="display:none"><table class="bodyTable"><tr class="a"><th>MoteurCsv</th>
 </tr>
 <tr class="b"><td><p><b>Description: </b>Une librairie permettant de lire et écrire des csv à base d'annotations.</p>
 <p><b>URL: </b><a class="externalLink" href="https://github.com/ybonnel/MoteurCsv">https://github.com/ybonnel/MoteurCsv</a></p>
@@ -218,11 +238,20 @@
 </td>
 </tr>
 </table>
-</div><ul><li>junit:junit:jar:4.8.2 (test) <img id="_2029540438" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_1016182035', '_2029540438' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_1016182035" style="display:none"><table class="bodyTable"><tr class="a"><th>JUnit</th>
+</div><ul><li>junit:junit:jar:4.8.2 (test) <img id="_207540243" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_149836820', '_207540243' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_149836820" style="display:none"><table class="bodyTable"><tr class="a"><th>JUnit</th>
 </tr>
 <tr class="b"><td><p><b>Description: </b>JUnit is a regression testing framework. It is used by the developer who implements unit tests in Java.</p>
 <p><b>URL: </b><a class="externalLink" href="http://junit.org">http://junit.org</a></p>
 <p><b>Project License: </b><a class="externalLink" href="http://www.opensource.org/licenses/cpl1.0.txt">Common Public License Version 1.0</a></p>
+</td>
+</tr>
+</table>
+</div></li>
+<li>net.sf.opencsv:opencsv:jar:2.3 (compile) <img id="_2061246665" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_590443230', '_2061246665' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_590443230" style="display:none"><table class="bodyTable"><tr class="a"><th>opencsv</th>
+</tr>
+<tr class="b"><td><p><b>Description: </b>A simple library for reading and writing CSV in Java</p>
+<p><b>URL: </b><a class="externalLink" href="http://opencsv.sf.net">http://opencsv.sf.net</a></p>
+<p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2</a></p>
 </td>
 </tr>
 </table>
@@ -233,6 +262,7 @@
 </div>
 </div>
 <div class="section"><h2>Licenses</h2>
+<p><b>Apache 2: </b>opencsv</p>
 <p><b>Unknown: </b>MoteurCsv</p>
 <p><b>Common Public License Version 1.0: </b>JUnit</p>
 </div>
@@ -253,7 +283,15 @@
 <td align="center">1.5</td>
 <td align="center">debug</td>
 </tr>
-<tr class="a"><th align="left">Total</th>
+<tr class="a"><td align="left">opencsv-2.3.jar</td>
+<td align="right">19.36 kB</td>
+<td align="right">22</td>
+<td align="right">10</td>
+<td align="right">2</td>
+<td align="center">1.5</td>
+<td align="center">debug</td>
+</tr>
+<tr class="b"><th align="left">Total</th>
 <th align="right">Size</th>
 <th align="right">Entries</th>
 <th align="right">Classes</th>
@@ -261,13 +299,21 @@
 <th align="center">JDK Rev</th>
 <th align="center">Debug</th>
 </tr>
-<tr class="b"><td align="right">1</td>
-<td align="right">231.78 kB</td>
-<td align="right">267</td>
-<td align="right">230</td>
-<td align="right">30</td>
+<tr class="a"><td align="right">2</td>
+<td align="right">251.14 kB</td>
+<td align="right">289</td>
+<td align="right">240</td>
+<td align="right">32</td>
 <td align="center">1.5</td>
-<td align="right">1</td>
+<td align="right">2</td>
+</tr>
+<tr class="b"><td align="right">compile: 1</td>
+<td align="right">compile: 19.36 kB</td>
+<td align="right">compile: 22</td>
+<td align="right">compile: 10</td>
+<td align="right">compile: 2</td>
+<td align="center">-</td>
+<td align="right">compile: 1</td>
 </tr>
 <tr class="a"><td align="right">test: 1</td>
 <td align="right">test: 231.78 kB</td>
@@ -291,22 +337,27 @@
 <td align="center">Yes</td>
 <td align="center">-</td>
 </tr>
-<tr class="b"><td align="left">ybonnel-release</td>
+<tr class="b"><td align="left">sonatype-nexus-snapshots</td>
+<td align="left"><a class="externalLink" href="https://oss.sonatype.org/content/repositories/snapshots">https://oss.sonatype.org/content/repositories/snapshots</a></td>
+<td align="center">-</td>
+<td align="center">Yes</td>
+</tr>
+<tr class="a"><td align="left">ybonnel-release</td>
 <td align="left"><a class="externalLink" href="https://repository-ybonnel.forge.cloudbees.com/release/">https://repository-ybonnel.forge.cloudbees.com/release/</a></td>
 <td align="center">Yes</td>
 <td align="center">Yes</td>
 </tr>
-<tr class="a"><td align="left">cloudbees-nexus-repository</td>
+<tr class="b"><td align="left">cloudbees-nexus-repository</td>
 <td align="left"><a class="externalLink" href="http://repo.cloudbees.com/content/groups/public">http://repo.cloudbees.com/content/groups/public</a></td>
 <td align="center">Yes</td>
 <td align="center">Yes</td>
 </tr>
-<tr class="b"><td align="left">central</td>
+<tr class="a"><td align="left">central</td>
 <td align="left"><a class="externalLink" href="http://repo1.maven.org/maven2">http://repo1.maven.org/maven2</a></td>
 <td align="center">Yes</td>
 <td align="center">-</td>
 </tr>
-<tr class="a"><td align="left">cloudbees-private-snapshot-repository</td>
+<tr class="b"><td align="left">cloudbees-private-snapshot-repository</td>
 <td align="left"><a class="externalLink" href="https://repository-ybonnel.forge.cloudbees.com/snapshot">https://repository-ybonnel.forge.cloudbees.com/snapshot</a></td>
 <td align="center">-</td>
 <td align="center">Yes</td>
@@ -314,32 +365,44 @@
 </tbody>
 </table>
 <p>Repository locations for each of the Dependencies.</p>
-<table class="bodyTable"><tbody><tr class="b"><th align="left">Artifact</th>
+<table class="bodyTable"><tbody><tr class="a"><th align="left">Artifact</th>
 <th align="center">cloudbees-private-release-repository</th>
+<th align="center">sonatype-nexus-snapshots</th>
 <th align="center">ybonnel-release</th>
 <th align="center">cloudbees-nexus-repository</th>
 <th align="center">central</th>
 <th align="center">cloudbees-private-snapshot-repository</th>
 </tr>
-<tr class="a"><td align="left">junit:junit:jar:4.8.2</td>
+<tr class="b"><td align="left">junit:junit:jar:4.8.2</td>
+<td align="center">-</td>
 <td align="center">-</td>
 <td align="center">-</td>
 <td align="center"><a class="externalLink" href="http://repo.cloudbees.com/content/groups/public/junit/junit/4.8.2/junit-4.8.2.jar"><img alt="Found at http://repo.cloudbees.com/content/groups/public" src="images/icon_success_sml.gif" /></a></td>
 <td align="center"><a class="externalLink" href="http://repo1.maven.org/maven2/junit/junit/4.8.2/junit-4.8.2.jar"><img alt="Found at http://repo1.maven.org/maven2" src="images/icon_success_sml.gif" /></a></td>
 <td align="center">-</td>
 </tr>
+<tr class="a"><td align="left">net.sf.opencsv:opencsv:jar:2.3</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center"><a class="externalLink" href="http://repo.cloudbees.com/content/groups/public/net/sf/opencsv/opencsv/2.3/opencsv-2.3.jar"><img alt="Found at http://repo.cloudbees.com/content/groups/public" src="images/icon_success_sml.gif" /></a></td>
+<td align="center"><a class="externalLink" href="http://repo1.maven.org/maven2/net/sf/opencsv/opencsv/2.3/opencsv-2.3.jar"><img alt="Found at http://repo1.maven.org/maven2" src="images/icon_success_sml.gif" /></a></td>
+<td align="center">-</td>
+</tr>
 <tr class="b"><th align="left">Total</th>
 <th align="center">cloudbees-private-release-repository</th>
+<th align="center">sonatype-nexus-snapshots</th>
 <th align="center">ybonnel-release</th>
 <th align="center">cloudbees-nexus-repository</th>
 <th align="center">central</th>
 <th align="center">cloudbees-private-snapshot-repository</th>
 </tr>
-<tr class="a"><td align="left">1 (test: 1)</td>
+<tr class="a"><td align="left">2 (compile: 1, test: 1)</td>
 <td align="center">0</td>
 <td align="center">0</td>
-<td align="center">1</td>
-<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">2</td>
+<td align="center">2</td>
 <td align="center">0</td>
 </tr>
 </tbody>
