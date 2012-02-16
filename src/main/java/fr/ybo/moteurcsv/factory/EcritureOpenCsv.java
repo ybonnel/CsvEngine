@@ -19,7 +19,6 @@ public class EcritureOpenCsv extends AbstractEcritureCsv {
 		csvWriter.writeNext(champs.toArray(new String[champs.size()]));
 	}
 
-	@Override
 	public void close() throws IOException {
 		csvWriter.close();
 	}

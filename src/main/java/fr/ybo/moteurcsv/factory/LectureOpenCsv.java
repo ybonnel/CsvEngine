@@ -19,7 +19,6 @@ public class LectureOpenCsv extends AbstractLectureCsv {
 		return reader.readNext();
 	}
 
-	@Override
 	public void close() throws IOException {
 		reader.close();
 	}

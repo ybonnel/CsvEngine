@@ -10,7 +10,6 @@ public class InsertInList<Objet> implements InsertObject<Objet> {
 		this.objets = objets;
 	}
 
-	@Override
 	public void insertObject(Objet objet) {
 		objets.add(objet);
 	}
