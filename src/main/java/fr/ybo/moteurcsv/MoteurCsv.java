@@ -77,7 +77,7 @@ public class MoteurCsv {
 	 * 
 	 * @return l'ojet créer.
 	 */
-	private Object creerObjet() {
+	protected Object creerObjet() {
 		if (classCourante == null) {
 			throw new MoteurCsvException(
 					"La méthode creerObjet a étée appelée sans que la méthode nouveauFichier n'est été appelée.");
@@ -108,7 +108,7 @@ public class MoteurCsv {
 		}
 	}
 
-	private void nouveauFichier(Reader reader, Class<?> clazz) {
+	protected void nouveauFichier(Reader reader, Class<?> clazz) {
 		classCourante = mapFileClasses.get(clazz);
 		if (classCourante == null) {
 			throw new MoteurCsvException("La class " + clazz.getSimpleName() + " n'est pas gérée");
@@ -152,7 +152,7 @@ public class MoteurCsv {
 		closeLecteurCourant();
 	}
 
-	private void scannerClass(Class<?> clazz) {
+	protected void scannerClass(Class<?> clazz) {
 		FichierCsv fichierCsv = clazz.getAnnotation(FichierCsv.class);
 		if (fichierCsv == null) {
 			throw new MoteurCsvException("Annotation FichierCsv non présente sur la classe " + clazz.getSimpleName());

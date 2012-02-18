@@ -23,8 +23,11 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
@@ -37,6 +40,10 @@ import fr.ybo.moteurcsv.adapter.AdapterString;
 import fr.ybo.moteurcsv.adapter.AdapterTime;
 import fr.ybo.moteurcsv.annotation.BaliseCsv;
 import fr.ybo.moteurcsv.annotation.FichierCsv;
+import fr.ybo.moteurcsv.exception.MoteurCsvException;
+import fr.ybo.moteurcsv.factory.AbstractEcritureCsv;
+import fr.ybo.moteurcsv.factory.AbstractLectureCsv;
+import fr.ybo.moteurcsv.factory.GestionnaireCsvFactory;
 
 public class MoteurCsvTest {
 
@@ -52,10 +59,10 @@ public class MoteurCsvTest {
 		@BaliseCsv(value = "att_3", ordre = 2, adapter = AdapterDouble.class)
 		private Double attribut3;
 
-		@BaliseCsv(value = "att_4", ordre = 3, adapter = AdapterInteger.class)
+		@BaliseCsv(value = "att_4", ordre = 5, adapter = AdapterInteger.class)
 		private Integer attribut4;
 
-		@BaliseCsv(value = "att_5", ordre = 5, adapter = AdapterString.class)
+		@BaliseCsv(value = "att_5", ordre = 3, adapter = AdapterString.class)
 		private String attribut5;
 
 		@BaliseCsv(value = "att_6", ordre = 6, adapter = AdapterTime.class)
@@ -128,24 +135,20 @@ public class MoteurCsvTest {
 				return false;
 			return true;
 		}
-		
-		
 
 	}
 
 	private MoteurCsv moteur = null;
 
+	private InputStream stream = null;
+
 	private final static String ENTETE_654321 = "att_6|att_5|att_4|att_3|att_2|att_1";
 
+	@SuppressWarnings("unchecked")
 	@Before
 	public void setup() {
-		moteur = new MoteurCsv(new ArrayList<Class<?>>(Collections.singletonList(ObjetCsv.class)));
-	}
-
-	@Test
-	public void testParseInputStream() throws IOException {
-
-		InputStream stream = new InputStream() {
+		moteur = new MoteurCsv(new ArrayList<Class<?>>(Arrays.asList(ObjetCsv.class, ObjetCsv.class)));
+		stream = new InputStream() {
 			String chaine = ENTETE_654321 + "\n01:30|String1|5|8.0|1|String2\n" + "|String1|5|8.0|1|String2\n"
 					+ "01:30||5|8.0|1|String2\n" + "01:30|String1||8.0|1|String2\n" + "01:30|String1|5||1|String2\n"
 					+ "01:30|String1|5|8.0||String2\n" + "01:30|String1|5|8.0|1|\n";
@@ -159,6 +162,11 @@ public class MoteurCsvTest {
 				return chaine.charAt(count++);
 			}
 		};
+	}
+
+	@Test
+	public void testParseInputStream() throws IOException {
+
 		List<ObjetCsv> objets = moteur.parseInputStream(stream, ObjetCsv.class);
 		assertEquals(7, objets.size());
 		assertTrue(objets.get(0).equals("String2", true, 8.0, 5, "String1", 90));
@@ -168,14 +176,199 @@ public class MoteurCsvTest {
 		assertTrue(objets.get(4).equals("String2", true, null, 5, "String1", 90));
 		assertTrue(objets.get(5).equals("String2", null, 8.0, 5, "String1", 90));
 		assertTrue(objets.get(6).equals(null, true, 8.0, 5, "String1", 90));
-		
+
 		File file = File.createTempFile("objet_csv", "txt");
-		
+
 		moteur.writeFile(new FileWriter(file), objets, ObjetCsv.class);
-		
+
 		List<ObjetCsv> newObjets = moteur.parseInputStream(new FileInputStream(file), ObjetCsv.class);
 		assertEquals(objets, newObjets);
-		
-		
+
 	}
+
+	@Test
+	public void testOtherFactory() {
+
+		moteur.setFactory(new GestionnaireCsvFactory() {
+
+			@Override
+			public AbstractEcritureCsv createWriterCsv(final Writer writer, char separator) {
+				return new AbstractEcritureCsv() {
+
+					@Override
+					public void close() throws IOException {
+						writer.close();
+					}
+
+					@Override
+					public void writeLine(List<String> champs) {
+						try {
+							writer.append("coucou\n");
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+
+					}
+				};
+			}
+
+			@Override
+			public AbstractLectureCsv createReaderCsv(final Reader reader, char separator) {
+				return new AbstractLectureCsv() {
+
+					boolean first = true;
+
+					@Override
+					public void close() throws IOException {
+						reader.close();
+					}
+
+					@Override
+					public String[] readLine() throws IOException {
+						if (first) {
+							first = false;
+							return ENTETE_654321.split("\\|");
+						}
+						return null;
+					}
+				};
+			}
+		});
+
+		assertTrue(moteur.parseInputStream(stream, ObjetCsv.class).isEmpty());
+
+	}
+
+	/**
+	 * Tests techniques
+	 */
+
+	@Test
+	public void testCreerObjet() {
+		try {
+			moteur.creerObjet();
+			fail("Une exception aurait du être levée");
+		} catch (MoteurCsvException exception) {
+			assertTrue(exception.getMessage().contains("nouveauFichier"));
+		}
+
+		moteur.setFactory(new GestionnaireCsvFactory() {
+			@Override
+			public AbstractEcritureCsv createWriterCsv(Writer writer, char separator) {
+				return null;
+			}
+
+			@Override
+			public AbstractLectureCsv createReaderCsv(Reader reader, char separator) {
+				return new AbstractLectureCsv() {
+					@Override
+					public void close() throws IOException {
+					}
+
+					private boolean first = true;
+
+					@Override
+					public String[] readLine() throws IOException {
+						if (first) {
+							first = false;
+							return ENTETE_654321.split("\\|");
+						}
+						throw new IOException();
+					}
+				};
+			}
+		});
+
+		moteur.nouveauFichier(new InputStreamReader(stream), ObjetCsv.class);
+
+		try {
+			moteur.creerObjet();
+			fail("Une exception aurait du être levée");
+		} catch (MoteurCsvException exception) {
+			assertEquals(IOException.class, exception.getCause().getClass());
+			assertTrue(exception.getMessage().contains("ObjetCsv"));
+		}
+	}
+
+	@Test
+	public void testNouveauFichier() {
+		try {
+			moteur.nouveauFichier(null, String.class);
+			fail("Une exception aurait du être levée");
+		} catch (MoteurCsvException exception) {
+			assertTrue(exception.getMessage().contains("String"));
+		}
+
+		moteur.setFactory(new GestionnaireCsvFactory() {
+
+			@Override
+			public AbstractEcritureCsv createWriterCsv(Writer writer, char separator) {
+				return null;
+			}
+
+			@Override
+			public AbstractLectureCsv createReaderCsv(Reader reader, char separator) {
+				return new AbstractLectureCsv() {
+					@Override
+					public void close() throws IOException {
+					}
+
+					@Override
+					public String[] readLine() throws IOException {
+						throw new IOException();
+					}
+				};
+			}
+		});
+
+		try {
+			moteur.nouveauFichier(null, ObjetCsv.class);
+			fail("Une exception aurait du être levée");
+		} catch (MoteurCsvException exception) {
+			assertEquals(IOException.class, exception.getCause().getClass());
+		}
+	}
+
+	@Test
+	public void testScannerClass() {
+		try {
+			moteur.scannerClass(String.class);
+			fail("Une exception aurait du être levée");
+		} catch (MoteurCsvException exception) {
+			assertTrue(exception.getMessage().contains("String"));
+		}
+	}
+
+	@Test
+	public void testWriteFile() {
+		moteur.setFactory(new GestionnaireCsvFactory() {
+
+			@Override
+			public AbstractEcritureCsv createWriterCsv(Writer writer, char separator) {
+				return new AbstractEcritureCsv() {
+					@Override
+					public void close() throws IOException {
+					}
+
+					@Override
+					public void writeLine(List<String> champs) {
+						throw new NullPointerException();
+					}
+				};
+			}
+
+			@Override
+			public AbstractLectureCsv createReaderCsv(Reader reader, char separator) {
+				return null;
+			}
+		});
+
+		try {
+			moteur.writeFile(null, new ArrayList<ObjetCsv>(), ObjetCsv.class);
+			fail("Une exception aurait du être levée");
+		} catch (MoteurCsvException exception) {
+			assertEquals(NullPointerException.class, exception.getCause().getClass());
+		}
+	}
+
 }

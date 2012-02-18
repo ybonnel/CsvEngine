@@ -16,11 +16,11 @@
  */
 package fr.ybo.moteurcsv.modele;
 
-import fr.ybo.moteurcsv.exception.MoteurCsvException;
-
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
+
+import fr.ybo.moteurcsv.exception.MoteurCsvException;
 
 public class ClassCsv {
 	private final String separateur;
@@ -55,10 +55,6 @@ public class ClassCsv {
 
 	public Constructor<?> getContructeur() {
 		return contructeur;
-	}
-
-	public String getSeparateur() {
-		return separateur;
 	}
 	
 	private String separateurWithoutEscape = null;

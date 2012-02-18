@@ -16,13 +16,13 @@
  */
 package fr.ybo.moteurcsv.modele;
 
-import fr.ybo.moteurcsv.adapter.AdapterCsv;
-import fr.ybo.moteurcsv.exception.MoteurCsvException;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
+
+import fr.ybo.moteurcsv.adapter.AdapterCsv;
+import fr.ybo.moteurcsv.exception.MoteurCsvException;
 
 public class ChampCsv {
 
@@ -34,10 +34,6 @@ public class ChampCsv {
 	public ChampCsv(Class<? extends AdapterCsv<?>> adapter, Field field) {
 		this.adapter = adapter;
 		this.field = field;
-	}
-
-	public Class<? extends AdapterCsv<?>> getAdapter() {
-		return adapter;
 	}
 
 	public Field getField() {
