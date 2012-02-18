@@ -27,6 +27,4 @@ public @interface FichierCsv {
 
 	String separateur() default ",";
 
-	String value();
-
 }

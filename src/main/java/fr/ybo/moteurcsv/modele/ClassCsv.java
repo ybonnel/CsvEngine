@@ -16,11 +16,11 @@
  */
 package fr.ybo.moteurcsv.modele;
 
-import fr.ybo.moteurcsv.exception.MoteurCsvException;
-
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
+
+import fr.ybo.moteurcsv.exception.MoteurCsvException;
 
 public class ClassCsv {
 	private final String separateur;
@@ -56,18 +56,17 @@ public class ClassCsv {
 	public Constructor<?> getContructeur() {
 		return contructeur;
 	}
-
-	public String getSeparateur() {
-		return separateur;
-	}
 	
 	private String separateurWithoutEscape = null;
 
-	public String getSeparateurWithoutEscape() {
+	public char getSeparateurWithoutEscape() {
 		if (separateurWithoutEscape == null) {
 			separateurWithoutEscape = separateur.replaceAll("\\\\", "");
 		}
-		return separateurWithoutEscape;
+		if (separateurWithoutEscape.length() != 1) {
+			throw new MoteurCsvException("Le séparateur " + separateurWithoutEscape + " contient plus d'1 caractère.");
+		}
+		return separateurWithoutEscape.charAt(0);
 		
 	}
 

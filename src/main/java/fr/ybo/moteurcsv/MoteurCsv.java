@@ -17,12 +17,11 @@
 package fr.ybo.moteurcsv;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.Writer;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,93 +33,64 @@ import java.util.Map;
 import fr.ybo.moteurcsv.annotation.BaliseCsv;
 import fr.ybo.moteurcsv.annotation.FichierCsv;
 import fr.ybo.moteurcsv.exception.MoteurCsvException;
+import fr.ybo.moteurcsv.factory.AbstractEcritureCsv;
+import fr.ybo.moteurcsv.factory.AbstractLectureCsv;
+import fr.ybo.moteurcsv.factory.DefaultGestionnaireCsvFactory;
+import fr.ybo.moteurcsv.factory.GestionnaireCsvFactory;
 import fr.ybo.moteurcsv.modele.ChampCsv;
 import fr.ybo.moteurcsv.modele.ClassCsv;
+import fr.ybo.moteurcsv.modele.InsertInList;
+import fr.ybo.moteurcsv.modele.InsertObject;
 
+/**
+ * Moteur de lecture et écriture de fichier CSV.<br/>
+ * 
+ * @author ybonnel
+ * 
+ */
 public class MoteurCsv {
 
-	private final Map<String, ClassCsv> mapFileClasses = new HashMap<String, ClassCsv>(5);
+	private final Map<Class<?>, ClassCsv> mapFileClasses = new HashMap<Class<?>, ClassCsv>();
 
 	private String[] enteteCourante;
 
 	private ClassCsv classCourante;
 
+	private GestionnaireCsvFactory factory;
+
+	public void setFactory(GestionnaireCsvFactory factory) {
+		this.factory = factory;
+	}
+
 	public MoteurCsv(Iterable<Class<?>> classes) {
+		factory = new DefaultGestionnaireCsvFactory();
 		for (Class<?> clazz : classes) {
 			scannerClass(clazz);
 		}
 	}
 
-	public Class<?> getClassByFileName(String fileName) {
-		return mapFileClasses.containsKey(fileName) ? mapFileClasses.get(fileName).getClazz() : null;
-	}
+	private AbstractLectureCsv lecteurCsv;
 
-	private List<String> splitLigne(String ligne, String separateur) {
-		List<String> champs = new ArrayList<String>();
-		int indiceDebutChaine = -1;
-		boolean enCours = false;
-		boolean guillemetEnCours = false;
-		boolean guillemetTermine = false;
-		for (int indice = 0; indice < ligne.length(); indice++) {
-			if (!enCours) {
-				if (ligne.charAt(indice) == separateur.charAt(0)) {
-					champs.add("");
-					guillemetEnCours = false;
-					guillemetTermine = false;
-					indiceDebutChaine = -1;
-				} else if (ligne.charAt(indice) == '"') {
-					guillemetEnCours = true;
-				} else {
-					enCours = true;
-					indiceDebutChaine = indice;
-				}
-			} else {
-				if (guillemetEnCours) {
-					if ('"' == ligne.charAt(indice)) {
-						guillemetEnCours = false;
-						guillemetTermine = true;
-					}
-				} else if (ligne.charAt(indice) == separateur.charAt(0)) {
-					if (indiceDebutChaine == -1) {
-						champs.add("");
-					} else {
-						int indiceFin = indice;
-						if (guillemetTermine) {
-							indiceFin = indice - 1;
-						}
-						champs.add(ligne.substring(indiceDebutChaine, indiceFin));
-						guillemetEnCours = false;
-						guillemetTermine = false;
-						enCours = false;
-						indiceDebutChaine = -1;
-					}
-				}
-			}
-		}
-		if (enCours) {
-			if (indiceDebutChaine == -1) {
-				champs.add("");
-			} else {
-				int indiceFin = ligne.length();
-				if (guillemetTermine) {
-					indiceFin = ligne.length() - 1;
-				}
-				champs.add(ligne.substring(indiceDebutChaine, indiceFin));
-			}
-		}
-		return champs;
-	}
-
-	public Object creerObjet(String ligne) {
+	/**
+	 * Crée un objet à partir de la ligne courante du csv.
+	 * {@link MoteurCsv#nouveauFichier(Reader, Class)} doit être appelé avant.
+	 * 
+	 * @return l'ojet créer.
+	 */
+	protected Object creerObjet() {
 		if (classCourante == null) {
 			throw new MoteurCsvException(
 					"La méthode creerObjet a étée appelée sans que la méthode nouveauFichier n'est été appelée.");
 		}
+		String[] champs = null;
 		try {
+			champs = lecteurCsv.readLine();
+			if (champs == null) {
+				return null;
+			}
 			Object objetCsv = classCourante.getContructeur().newInstance((Object[]) null);
-			List<String> champs = splitLigne(ligne, classCourante.getSeparateurWithoutEscape());
-			for (int numChamp = 0; numChamp < champs.size(); numChamp++) {
-				String champ = champs.get(numChamp);
+			for (int numChamp = 0; numChamp < champs.length; numChamp++) {
+				String champ = champs[numChamp];
 				if (champ != null && !"".equals(champ)) {
 					String nomChamp = enteteCourante[numChamp];
 					ChampCsv champCsv = classCourante.getChampCsv(nomChamp);
@@ -134,36 +104,33 @@ public class MoteurCsv {
 			return objetCsv;
 		} catch (Exception e) {
 			throw new MoteurCsvException("Erreur à l'instanciation de la class "
-					+ classCourante.getClazz().getSimpleName() + " pour la ligne " + ligne, e);
+					+ classCourante.getClazz().getSimpleName() + " pour la ligne " + champs, e);
 		}
 	}
 
-	public void nouveauFichier(String nomFichier, String entete) {
-		classCourante = mapFileClasses.get(nomFichier);
+	protected void nouveauFichier(Reader reader, Class<?> clazz) {
+		classCourante = mapFileClasses.get(clazz);
 		if (classCourante == null) {
-			throw new MoteurCsvException("Le fichier " + nomFichier + " n'as pas de classe associée");
+			throw new MoteurCsvException("La class " + clazz.getSimpleName() + " n'est pas gérée");
 		}
-		enteteCourante = entete.split(classCourante.getSeparateur());
+		lecteurCsv = factory.createReaderCsv(reader, classCourante.getSeparateurWithoutEscape());
+		try {
+			enteteCourante = lecteurCsv.readLine();
+		} catch (IOException e) {
+			throw new MoteurCsvException(e);
+		}
 		if (Character.isIdentifierIgnorable(enteteCourante[0].charAt(0))) {
 			enteteCourante[0] = enteteCourante[0].substring(1);
 		}
 	}
 
-	public static interface InsertObject<Objet> {
-		public void insertObject(Objet objet);
-	}
-
-	private static class InsertInList<Objet> implements InsertObject<Objet> {
-
-		private List<Objet> objets;
-
-		public InsertInList(List<Objet> objets) {
-			this.objets = objets;
-		}
-
-		@Override
-		public void insertObject(Objet objet) {
-			objets.add(objet);
+	private void closeLecteurCourant() {
+		if (lecteurCsv != null) {
+			try {
+				lecteurCsv.close();
+			} catch (IOException ignore) {
+			}
+			lecteurCsv = null;
 		}
 	}
 
@@ -175,25 +142,22 @@ public class MoteurCsv {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <Objet> void parseFileAndInsert(BufferedReader bufReader, Class<Objet> clazz, InsertObject<Objet> insert) {
-		try {
-			nouveauFichier(clazz.getAnnotation(FichierCsv.class).value(), bufReader.readLine());
-			String ligne = bufReader.readLine();
-			while (ligne != null) {
-				insert.insertObject((Objet) creerObjet(ligne));
-				ligne = bufReader.readLine();
-			}
-		} catch (IOException ioException) {
-			throw new MoteurCsvException(ioException);
+	public <Objet> void parseFileAndInsert(Reader reader, Class<Objet> clazz, InsertObject<Objet> insert) {
+		nouveauFichier(reader, clazz);
+		Objet objet = (Objet) creerObjet();
+		while (objet != null) {
+			insert.insertObject(objet);
+			objet = (Objet) creerObjet();
 		}
+		closeLecteurCourant();
 	}
 
-	private void scannerClass(Class<?> clazz) {
+	protected void scannerClass(Class<?> clazz) {
 		FichierCsv fichierCsv = clazz.getAnnotation(FichierCsv.class);
 		if (fichierCsv == null) {
 			throw new MoteurCsvException("Annotation FichierCsv non présente sur la classe " + clazz.getSimpleName());
 		}
-		if (mapFileClasses.get(fichierCsv.value()) != null) {
+		if (mapFileClasses.get(clazz) != null) {
 			return;
 		}
 		ClassCsv classCsv = new ClassCsv(fichierCsv.separateur(), clazz);
@@ -204,50 +168,31 @@ public class MoteurCsv {
 				classCsv.putOrdre(baliseCsv.value(), baliseCsv.ordre());
 			}
 		}
-		mapFileClasses.put(fichierCsv.value(), classCsv);
+		mapFileClasses.put(clazz, classCsv);
 	}
 
-	private void writeEntete(BufferedWriter bufWriter, Iterable<String> nomChamps, ClassCsv classCsv)
-			throws IOException {
-		boolean first = true;
+	private <Objet> void writeLigne(AbstractEcritureCsv writerCsv, List<String> nomChamps, ClassCsv classCsv,
+			Objet objet) throws IllegalAccessException {
+		List<String> champs = new ArrayList<String>();
 		for (String nomChamp : nomChamps) {
-			if (!first) {
-				bufWriter.write(classCsv.getSeparateurWithoutEscape());
-			}
-			bufWriter.write(nomChamp);
-			first = false;
-		}
-		bufWriter.write('\n');
-	}
-
-	private <Objet> void writeLigne(BufferedWriter bufWriter, Iterable<String> nomChamps, ClassCsv classCsv, Objet objet)
-			throws IOException, IllegalAccessException {
-		boolean first = true;
-		for (String nomChamp : nomChamps) {
-			if (!first) {
-				bufWriter.write(classCsv.getSeparateurWithoutEscape());
-			}
 			ChampCsv champCsv = classCsv.getChampCsv(nomChamp);
 			champCsv.getField().setAccessible(true);
 			Object valeur = champCsv.getField().get(objet);
 			champCsv.getField().setAccessible(false);
 			if (valeur != null) {
-				String champ = champCsv.getNewAdapterCsv().toString(valeur);
-				if (champ.contains("\"")) {
-					champ = "\"" + champ + "\"";
-				}
-				bufWriter.write(champ);
+				champs.add(champCsv.getNewAdapterCsv().toString(valeur));
+			} else {
+				champs.add(null);
 			}
-			first = false;
 		}
-		bufWriter.write('\n');
+		writerCsv.writeLine(champs);
 	}
 
-	public <Objet> void writeFile(File file, Iterable<Objet> objets, Class<Objet> clazz) {
+	public <Objet> void writeFile(Writer writer, Iterable<Objet> objets, Class<Objet> clazz) {
 		try {
-			BufferedWriter bufWriter = new BufferedWriter(new FileWriter(file));
+			final ClassCsv classCsv = mapFileClasses.get(clazz);
+			AbstractEcritureCsv writerCsv = factory.createWriterCsv(writer, classCsv.getSeparateurWithoutEscape());
 			try {
-				final ClassCsv classCsv = mapFileClasses.get(clazz.getAnnotation(FichierCsv.class).value());
 				List<String> nomChamps = new ArrayList<String>(10);
 				for (String champ : classCsv.getNomChamps()) {
 					nomChamps.add(champ);
@@ -259,12 +204,12 @@ public class MoteurCsv {
 						return (thisVal < anotherVal ? -1 : (thisVal == anotherVal ? 0 : 1));
 					}
 				});
-				writeEntete(bufWriter, nomChamps, classCsv);
+				writerCsv.writeLine(nomChamps);
 				for (Objet objet : objets) {
-					writeLigne(bufWriter, nomChamps, classCsv, objet);
+					writeLigne(writerCsv, nomChamps, classCsv, objet);
 				}
 			} finally {
-				bufWriter.close();
+				writerCsv.close();
 			}
 		} catch (Exception exception) {
 			throw new MoteurCsvException(exception);
