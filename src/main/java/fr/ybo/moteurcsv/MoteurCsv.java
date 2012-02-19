@@ -29,12 +29,14 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import fr.ybo.moteurcsv.annotation.BaliseCsv;
 import fr.ybo.moteurcsv.annotation.FichierCsv;
 import fr.ybo.moteurcsv.exception.MoteurCsvException;
-import fr.ybo.moteurcsv.factory.AbstractEcritureCsv;
-import fr.ybo.moteurcsv.factory.AbstractLectureCsv;
+import fr.ybo.moteurcsv.factory.AbstractWriterCsv;
+import fr.ybo.moteurcsv.factory.AbstractReaderCsv;
 import fr.ybo.moteurcsv.factory.DefaultGestionnaireCsvFactory;
 import fr.ybo.moteurcsv.factory.GestionnaireCsvFactory;
 import fr.ybo.moteurcsv.modele.ChampCsv;
@@ -44,24 +46,54 @@ import fr.ybo.moteurcsv.modele.InsertObject;
 
 /**
  * Moteur de lecture et écriture de fichier CSV.<br/>
+ * TODO : mettre des exemples d'utilisation.
  * 
  * @author ybonnel
  * 
  */
 public class MoteurCsv {
 
-	private final Map<Class<?>, ClassCsv> mapFileClasses = new HashMap<Class<?>, ClassCsv>();
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = Logger.getLogger("MoteurCsv");
 
+	/**
+	 * Map des classes gérées.
+	 */
+	private final Map<Class<?>, ClassCsv> mapClasses = new HashMap<Class<?>, ClassCsv>();
+
+	/**
+	 * Entete courante.
+	 */
 	private String[] enteteCourante;
 
+	/**
+	 * Class courante.
+	 */
 	private ClassCsv classCourante;
 
+	/**
+	 * Factory fournissant les reader et writer csv.
+	 */
 	private GestionnaireCsvFactory factory;
 
+	/**
+	 * Permet d'utiliser autre chose que open-csv pour la lecture et écriture.
+	 * 
+	 * @param factory
+	 *            factory autre que la factory par défaut.
+	 */
 	public void setFactory(GestionnaireCsvFactory factory) {
 		this.factory = factory;
 	}
 
+	/**
+	 * Constructeur du moteur.
+	 * 
+	 * @param classes
+	 *            liste des classes à gérer.
+	 */
 	public MoteurCsv(Class<?>... classes) {
 		factory = new DefaultGestionnaireCsvFactory();
 		for (Class<?> clazz : classes) {
@@ -69,7 +101,10 @@ public class MoteurCsv {
 		}
 	}
 
-	private AbstractLectureCsv lecteurCsv;
+	/**
+	 * Lecteur CSV.
+	 */
+	private AbstractReaderCsv lecteurCsv;
 
 	/**
 	 * Crée un objet à partir de la ligne courante du csv.
@@ -108,8 +143,16 @@ public class MoteurCsv {
 		}
 	}
 
+	/**
+	 * Démarre la lecture d'une nouveau fichier.
+	 * 
+	 * @param reader
+	 *            le fichier.
+	 * @param clazz
+	 *            la class associée.
+	 */
 	protected void nouveauFichier(Reader reader, Class<?> clazz) {
-		classCourante = mapFileClasses.get(clazz);
+		classCourante = mapClasses.get(clazz);
 		if (classCourante == null) {
 			throw new MoteurCsvException("La class " + clazz.getSimpleName() + " n'est pas gérée");
 		}
@@ -124,16 +167,33 @@ public class MoteurCsv {
 		}
 	}
 
+	/**
+	 * Ferme le lecteur courant.
+	 */
 	private void closeLecteurCourant() {
 		if (lecteurCsv != null) {
 			try {
 				lecteurCsv.close();
-			} catch (IOException ignore) {
+			} catch (IOException exception) {
+				LOGGER.log(Level.WARNING, "Erreur lors de la fermeture du LecteurCsv", exception);
 			}
 			lecteurCsv = null;
 		}
 	}
 
+	/**
+	 * Parse un inputStream représentant un fichier CSV pour le transformer en
+	 * liste de <Objet>.
+	 * 
+	 * @param <Objet>
+	 *            Objet associé au CSV.
+	 * @param intputStream
+	 *            inputStream représentant le fichier CSV.
+	 * @param clazz
+	 *            classe de l'objet associé au CSV.
+	 * @return la liste d'<Objet> représentant les enregistrements du fichier
+	 *         CSV.
+	 */
 	public <Objet> List<Objet> parseInputStream(InputStream intputStream, Class<Objet> clazz) {
 		List<Objet> objets = new ArrayList<Objet>();
 		parseFileAndInsert(new BufferedReader(new InputStreamReader(intputStream)), clazz, new InsertInList<Objet>(
@@ -141,6 +201,19 @@ public class MoteurCsv {
 		return objets;
 	}
 
+	/**
+	 * Permet de parser un fichier CSV tout en effectuant un traitement à chaque
+	 * enregistrement.
+	 * 
+	 * @param <Objet>
+	 *            Objet associé au CSV.
+	 * @param reader
+	 *            le Reader représentant le fichier CSV.
+	 * @param clazz
+	 *            classe de l'objet associé au CSV.
+	 * @param insert
+	 *            traitement à éffectuer pour chaque enregistrement.
+	 */
 	@SuppressWarnings("unchecked")
 	public <Objet> void parseFileAndInsert(Reader reader, Class<Objet> clazz, InsertObject<Objet> insert) {
 		nouveauFichier(reader, clazz);
@@ -152,12 +225,18 @@ public class MoteurCsv {
 		closeLecteurCourant();
 	}
 
+	/**
+	 * Scanne une class pour la gérer dans le moteur.
+	 * 
+	 * @param clazz
+	 *            classe à scanner.
+	 */
 	protected void scannerClass(Class<?> clazz) {
 		FichierCsv fichierCsv = clazz.getAnnotation(FichierCsv.class);
 		if (fichierCsv == null) {
 			throw new MoteurCsvException("Annotation FichierCsv non présente sur la classe " + clazz.getSimpleName());
 		}
-		if (mapFileClasses.get(clazz) != null) {
+		if (mapClasses.get(clazz) != null) {
 			return;
 		}
 		ClassCsv classCsv = new ClassCsv(fichierCsv.separateur(), clazz);
@@ -168,10 +247,26 @@ public class MoteurCsv {
 				classCsv.putOrdre(baliseCsv.value(), baliseCsv.ordre());
 			}
 		}
-		mapFileClasses.put(clazz, classCsv);
+		mapClasses.put(clazz, classCsv);
 	}
 
-	private <Objet> void writeLigne(AbstractEcritureCsv writerCsv, List<String> nomChamps, ClassCsv classCsv,
+	/**
+	 * Ecrit une ligne dans le ficheir CSV.
+	 * 
+	 * @param <Objet>
+	 *            Objet associé au CSV.
+	 * @param writerCsv
+	 *            writer à utiliser.
+	 * @param nomChamps
+	 *            liste des champs représentant l'entête du CSV.
+	 * @param classCsv
+	 *            classe associée au fichier CSV.
+	 * @param objet
+	 *            objet à écrire dans le CSV.
+	 * @throws IllegalAccessException
+	 *             ne doit pas arriver.
+	 */
+	private <Objet> void writeLigne(AbstractWriterCsv writerCsv, List<String> nomChamps, ClassCsv classCsv,
 			Objet objet) throws IllegalAccessException {
 		List<String> champs = new ArrayList<String>();
 		for (String nomChamp : nomChamps) {
@@ -188,12 +283,24 @@ public class MoteurCsv {
 		writerCsv.writeLine(champs);
 	}
 
+	/**
+	 * Ecrit un fichier CSV à partir d'une liste d'objet.
+	 * 
+	 * @param <Objet>
+	 *            Objet associé au CSV.
+	 * @param writer
+	 *            writer représentant le fichier CSV.
+	 * @param objets
+	 *            liste des objets à écrire dans le fichier CSV.
+	 * @param clazz
+	 *            Classe associée au fichier CSV.
+	 */
 	public <Objet> void writeFile(Writer writer, Iterable<Objet> objets, Class<Objet> clazz) {
 		try {
-			final ClassCsv classCsv = mapFileClasses.get(clazz);
-			AbstractEcritureCsv writerCsv = factory.createWriterCsv(writer, classCsv.getSeparateurWithoutEscape());
+			final ClassCsv classCsv = mapClasses.get(clazz);
+			AbstractWriterCsv writerCsv = factory.createWriterCsv(writer, classCsv.getSeparateurWithoutEscape());
 			try {
-				List<String> nomChamps = new ArrayList<String>(10);
+				List<String> nomChamps = new ArrayList<String>();
 				for (String champ : classCsv.getNomChamps()) {
 					nomChamps.add(champ);
 				}

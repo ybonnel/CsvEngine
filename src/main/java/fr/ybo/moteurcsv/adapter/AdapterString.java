@@ -16,11 +16,32 @@
  */
 package fr.ybo.moteurcsv.adapter;
 
+/**
+ * Adapter de String, adapter par défaut qui ne fait rien.
+ * 
+ * @author ybonnel
+ * 
+ */
 public class AdapterString implements AdapterCsv<String> {
+
+	/**
+	 * Ne fait rien.
+	 * 
+	 * @param chaine
+	 *            chaine à retourner.
+	 * @return chaine passée en paramètre.
+	 */
 	public String parse(String chaine) {
 		return chaine;
 	}
 
+	/**
+	 * Ne fait rien.
+	 * 
+	 * @param objet
+	 *            objet à retourner.
+	 * @return objet passé en paramètre.
+	 */
 	public String toString(String objet) {
 		return objet;
 	}

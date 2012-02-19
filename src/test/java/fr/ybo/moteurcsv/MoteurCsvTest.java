@@ -16,7 +16,9 @@
  */
 package fr.ybo.moteurcsv;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,33 +42,80 @@ import fr.ybo.moteurcsv.adapter.AdapterTime;
 import fr.ybo.moteurcsv.annotation.BaliseCsv;
 import fr.ybo.moteurcsv.annotation.FichierCsv;
 import fr.ybo.moteurcsv.exception.MoteurCsvException;
-import fr.ybo.moteurcsv.factory.AbstractEcritureCsv;
-import fr.ybo.moteurcsv.factory.AbstractLectureCsv;
+import fr.ybo.moteurcsv.factory.AbstractWriterCsv;
+import fr.ybo.moteurcsv.factory.AbstractReaderCsv;
 import fr.ybo.moteurcsv.factory.GestionnaireCsvFactory;
 
+/**
+ * Classe de test pour le MoteurCsv.
+ * 
+ * @author ybonnel
+ * 
+ */
 public class MoteurCsvTest {
 
+	/**
+	 * Objet permettant de tester le moteur.
+	 * 
+	 * @author ybonnel
+	 * 
+	 */
 	@FichierCsv(separateur = "\\|")
 	public static class ObjetCsv {
 
+		/**
+		 * Attribut simple.
+		 */
 		@BaliseCsv(value = "att_1", ordre = 0)
 		private String attribut1;
 
+		/**
+		 * Attribut de type Boolean.
+		 */
 		@BaliseCsv(value = "att_2", ordre = 1, adapter = AdapterBoolean.class)
 		private Boolean attribut2;
 
+		/**
+		 * Attribut de type Double.
+		 */
 		@BaliseCsv(value = "att_3", ordre = 2, adapter = AdapterDouble.class)
 		private Double attribut3;
 
+		/**
+		 * Attribut de type Integer.
+		 */
 		@BaliseCsv(value = "att_4", ordre = 5, adapter = AdapterInteger.class)
 		private Integer attribut4;
 
+		/**
+		 * Attribut simple avec un adapter.
+		 */
 		@BaliseCsv(value = "att_5", ordre = 3, adapter = AdapterString.class)
 		private String attribut5;
 
+		/**
+		 * Attribut de type Time.
+		 */
 		@BaliseCsv(value = "att_6", ordre = 6, adapter = AdapterTime.class)
 		private Integer attribut6;
 
+		/**
+		 * Equals.
+		 * 
+		 * @param att1
+		 *            att1.
+		 * @param att2
+		 *            att2.
+		 * @param att3
+		 *            att3.
+		 * @param att4
+		 *            att4.
+		 * @param att5
+		 *            att5.
+		 * @param att6
+		 *            att6.
+		 * @return true si equals.
+		 */
 		protected boolean equals(String att1, Boolean att2, Double att3, Integer att4, String att5, Integer att6) {
 			return ((att1 == null && attribut1 == null || att1 != null && attribut1 != null && att1.equals(attribut1))
 					&& (att2 == null && attribut2 == null || att2 != null && attribut2 != null
@@ -137,12 +186,24 @@ public class MoteurCsvTest {
 
 	}
 
+	/**
+	 * Moteur.
+	 */
 	private MoteurCsv moteur = null;
 
+	/**
+	 * Inputstream.
+	 */
 	private InputStream stream = null;
 
+	/**
+	 * Entete.
+	 */
 	private final static String ENTETE_654321 = "att_6|att_5|att_4|att_3|att_2|att_1";
 
+	/**
+	 * Setup.
+	 */
 	@Before
 	public void setup() {
 		moteur = new MoteurCsv(ObjetCsv.class, ObjetCsv.class);
@@ -189,11 +250,9 @@ public class MoteurCsvTest {
 
 		moteur.setFactory(new GestionnaireCsvFactory() {
 
-			@Override
-			public AbstractEcritureCsv createWriterCsv(final Writer writer, char separator) {
-				return new AbstractEcritureCsv() {
+			public AbstractWriterCsv createWriterCsv(final Writer writer, char separator) {
+				return new AbstractWriterCsv() {
 
-					@Override
 					public void close() throws IOException {
 						writer.close();
 					}
@@ -210,18 +269,15 @@ public class MoteurCsvTest {
 				};
 			}
 
-			@Override
-			public AbstractLectureCsv createReaderCsv(final Reader reader, char separator) {
-				return new AbstractLectureCsv() {
+			public AbstractReaderCsv createReaderCsv(final Reader reader, char separator) {
+				return new AbstractReaderCsv() {
 
 					boolean first = true;
 
-					@Override
 					public void close() throws IOException {
 						reader.close();
 					}
 
-					@Override
 					public String[] readLine() throws IOException {
 						if (first) {
 							first = false;
@@ -251,21 +307,17 @@ public class MoteurCsvTest {
 		}
 
 		moteur.setFactory(new GestionnaireCsvFactory() {
-			@Override
-			public AbstractEcritureCsv createWriterCsv(Writer writer, char separator) {
+			public AbstractWriterCsv createWriterCsv(Writer writer, char separator) {
 				return null;
 			}
 
-			@Override
-			public AbstractLectureCsv createReaderCsv(Reader reader, char separator) {
-				return new AbstractLectureCsv() {
-					@Override
+			public AbstractReaderCsv createReaderCsv(Reader reader, char separator) {
+				return new AbstractReaderCsv() {
 					public void close() throws IOException {
 					}
 
 					private boolean first = true;
 
-					@Override
 					public String[] readLine() throws IOException {
 						if (first) {
 							first = false;
@@ -298,20 +350,15 @@ public class MoteurCsvTest {
 		}
 
 		moteur.setFactory(new GestionnaireCsvFactory() {
-
-			@Override
-			public AbstractEcritureCsv createWriterCsv(Writer writer, char separator) {
+			public AbstractWriterCsv createWriterCsv(Writer writer, char separator) {
 				return null;
 			}
 
-			@Override
-			public AbstractLectureCsv createReaderCsv(Reader reader, char separator) {
-				return new AbstractLectureCsv() {
-					@Override
+			public AbstractReaderCsv createReaderCsv(Reader reader, char separator) {
+				return new AbstractReaderCsv() {
 					public void close() throws IOException {
 					}
 
-					@Override
 					public String[] readLine() throws IOException {
 						throw new IOException();
 					}
@@ -341,22 +388,18 @@ public class MoteurCsvTest {
 	public void testWriteFile() {
 		moteur.setFactory(new GestionnaireCsvFactory() {
 
-			@Override
-			public AbstractEcritureCsv createWriterCsv(Writer writer, char separator) {
-				return new AbstractEcritureCsv() {
-					@Override
+			public AbstractWriterCsv createWriterCsv(Writer writer, char separator) {
+				return new AbstractWriterCsv() {
 					public void close() throws IOException {
 					}
 
-					@Override
 					public void writeLine(List<String> champs) {
 						throw new NullPointerException();
 					}
 				};
 			}
 
-			@Override
-			public AbstractLectureCsv createReaderCsv(Reader reader, char separator) {
+			public AbstractReaderCsv createReaderCsv(Reader reader, char separator) {
 				return null;
 			}
 		});

@@ -21,10 +21,19 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Annotation utilisée pour déclarer qu'une classe est à mapper en fichier CSV.
+ * 
+ * @author ybonnel
+ * 
+ */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface FichierCsv {
 
+	/**
+	 * Séparateur utilisé dans le fichier CSV (par défaut ",").
+	 */
 	String separateur() default ",";
 
 }

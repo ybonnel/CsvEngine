@@ -16,17 +16,37 @@
  */
 package fr.ybo.moteurcsv.exception;
 
+/**
+ * Exception utilisée par {@link fr.ybo.moteurcsv.MoteurCsv}.
+ * 
+ * @author ybonnel
+ * 
+ */
 @SuppressWarnings("serial")
 public class MoteurCsvException extends RuntimeException {
 
+	/**
+	 * @param message
+	 *            message de l'exception.
+	 */
 	public MoteurCsvException(String message) {
 		super(message);
 	}
 
+	/**
+	 * @param message
+	 *            message de l'exception.
+	 * @param throwable
+	 *            exception d'origine.
+	 */
 	public MoteurCsvException(String message, Throwable throwable) {
 		super(message, throwable);
 	}
 
+	/**
+	 * @param throwable
+	 *            exception d'origine.
+	 */
 	public MoteurCsvException(Throwable throwable) {
 		super(throwable);
 	}

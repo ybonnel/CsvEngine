@@ -24,22 +24,55 @@ import java.util.Map;
 import fr.ybo.moteurcsv.adapter.AdapterCsv;
 import fr.ybo.moteurcsv.exception.MoteurCsvException;
 
+/**
+ * Réprésente une colonne du fichier CSV.
+ * 
+ * @author ybonnel
+ * 
+ */
 public class ChampCsv {
 
+	/**
+	 * Adapter à utiliser.
+	 */
 	private final Class<? extends AdapterCsv<?>> adapter;
+
+	/**
+	 * Map des adapteurs, permet de ne créer qu'une instance par adapter.
+	 */
 	private static final Map<Class<? extends AdapterCsv<?>>, AdapterCsv<?>> MAP_ADAPTERS =
-			new HashMap<Class<? extends AdapterCsv<?>>, AdapterCsv<?>>(5);
+			new HashMap<Class<? extends AdapterCsv<?>>, AdapterCsv<?>>();
+
+	/**
+	 * Attribut de la classe à mapper.
+	 */
 	private final Field field;
 
+	/**
+	 * Constructeur.
+	 * 
+	 * @param adapter
+	 *            adapter à utiliser.
+	 * @param field
+	 *            attribut de la classe à mapper.
+	 */
 	public ChampCsv(Class<? extends AdapterCsv<?>> adapter, Field field) {
 		this.adapter = adapter;
 		this.field = field;
 	}
 
+	/**
+	 * @return attribut de la classe.
+	 */
 	public Field getField() {
 		return field;
 	}
 
+	/**
+	 * Construit un nouvel adapter seulement si on en a pas déjà créer un.
+	 * 
+	 * @return l'adapter à utiliser.
+	 */
 	@SuppressWarnings("unchecked")
 	public AdapterCsv<Object> getNewAdapterCsv() {
 		if (!MAP_ADAPTERS.containsKey(adapter)) {

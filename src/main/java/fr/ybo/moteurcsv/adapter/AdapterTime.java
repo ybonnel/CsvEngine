@@ -16,10 +16,32 @@
  */
 package fr.ybo.moteurcsv.adapter;
 
+/**
+ * Adapteur pour les heures au format HH:MI. Retourne un integrer représentant
+ * le nombre de minutes passées de minuit.
+ * 
+ * @author ybonnel
+ * 
+ */
 public class AdapterTime implements AdapterCsv<Integer> {
 
+	/**
+	 * Une dixaine.
+	 */
+	private static final int DIXAINE = 10;
+	/**
+	 * Nombre de minutes dans une heure.
+	 */
 	private static final int MINUTES_BY_HOUR = 60;
 
+	/**
+	 * Transforme une chaine au format HH:MI en integer représentant le nombre
+	 * de minutes passérs de minuit.
+	 * 
+	 * @param chaine
+	 *            la chaine à transformer.
+	 * @return l'integer représentant le nombre de minutes passées de minuit.
+	 */
 	public Integer parse(String chaine) {
 		if (chaine == null) {
 			return null;
@@ -31,6 +53,14 @@ public class AdapterTime implements AdapterCsv<Integer> {
 		return Integer.parseInt(champs[0]) * MINUTES_BY_HOUR + Integer.parseInt(champs[1]);
 	}
 
+	/**
+	 * Transforme un integer représentant le nombre de minutes passées de minuit
+	 * en chaine au format HH:MI.
+	 * 
+	 * @param objet
+	 *            représentant le nombre de minutes passées de minuit.
+	 * @return la chaine au format HH:MI.
+	 */
 	public String toString(Integer objet) {
 		if (objet == null) {
 			return null;
@@ -38,12 +68,12 @@ public class AdapterTime implements AdapterCsv<Integer> {
 		StringBuilder retour = new StringBuilder();
 		int heures = objet / MINUTES_BY_HOUR;
 		int minutes = objet - heures * MINUTES_BY_HOUR;
-		if (heures < 10) {
+		if (heures < DIXAINE) {
 			retour.append('0');
 		}
 		retour.append(heures);
 		retour.append(':');
-		if (minutes < 10) {
+		if (minutes < DIXAINE) {
 			retour.append('0');
 		}
 		retour.append(minutes);

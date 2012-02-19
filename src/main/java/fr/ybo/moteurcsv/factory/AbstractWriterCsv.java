@@ -14,33 +14,25 @@
  * Contributors:
  *     ybonnel - initial API and implementation
  */
-package fr.ybo.moteurcsv.adapter;
+package fr.ybo.moteurcsv.factory;
+
+import java.io.Closeable;
+import java.util.List;
 
 /**
- * Interface à implémenter pour tout les adapter CSV.
+ * Writer de fichier CSV.
  * 
  * @author ybonnel
  * 
- * @param <Objet>
- *            Objet à adapter en CSV (associé à une colonne).
  */
-public interface AdapterCsv<Objet> {
+public abstract class AbstractWriterCsv implements Closeable {
 
 	/**
-	 * Transforme une chaine en Objet.
+	 * Ecrit une ligne dans le fichier CSV.
 	 * 
-	 * @param chaine
-	 *            la chaine à transformer.
-	 * @return l'objet tranformé.
+	 * @param champs
+	 *            liste des champs à écrire.
 	 */
-	Objet parse(String chaine);
+	public abstract void writeLine(List<String> champs);
 
-	/**
-	 * Transforme un objet en chaine.
-	 * 
-	 * @param objet
-	 *            objet à tranformer.
-	 * @return la chaine obtenu.
-	 */
-	String toString(Objet objet);
 }

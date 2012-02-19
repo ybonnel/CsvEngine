@@ -28,9 +28,16 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <project.java.version>1.5</project.java.version>
     </properties>
 
-
+    <licenses>
+        <license>
+            <name>LGPL v3</name>
+            <url>http://www.gnu.org/licenses/lgpl-3.0.html</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
     <profiles>
         <profile>
@@ -82,15 +89,17 @@
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
                 <configuration>
-                    <encoding>UTF-8</encoding>
-                    <source>1.5</source>
-                    <target>1.5</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <source>${project.java.version}</source>
+                    <target>${project.java.version}</target>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
+                <version>2.1.2</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -114,9 +123,9 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <encoding>UTF-8</encoding>
+                    <encoding>${project.reporting.outputEncoding}</encoding>
                     <links>
-                        <link>http://java.sun.com/j2se/1.6.0/docs/api/</link>
+                        <link>http://java.sun.com/j2se/1.5.0/docs/api/</link>
                     </links>
                     <version>true</version>
                     <show>public</show>
@@ -131,10 +140,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.6.1</version>
                 <configuration>
-                    <encoding>UTF-8</encoding>
+                    <encoding>${project.reporting.outputEncoding}</encoding>
                     <links>
-                        <link>http://java.sun.com/j2se/1.6.0/docs/api/</link>
+                        <link>http://java.sun.com/j2se/1.5.0/docs/api/</link>
                     </links>
                     <version>true</version>
                     <show>public</show>
@@ -143,6 +153,20 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
+                <version>2.3.2</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>2.8</version>
+                <configuration>
+                    <configLocation>rules/YboCheckstyle.xml</configLocation>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>2.3</version>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -182,6 +206,7 @@
     <scm>
         <connection>scm:git://github.com/ybonnel/MoteurCsv.git</connection>
         <developerConnection>scm:git@github.com:ybonnel/MoteurCsv.git</developerConnection>
+        <url>https://github.com/ybonnel/MoteurCsv</url>
     </scm>
 
     <repositories>

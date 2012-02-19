@@ -16,40 +16,49 @@
  */
 package fr.ybo.moteurcsv.factory;
 
-import java.io.Reader;
+import java.io.IOException;
 import java.io.Writer;
+import java.util.List;
+
+import au.com.bytecode.opencsv.CSVWriter;
 
 /**
- * Factory fournissant les Reader et Writer de CSV.
- * 
- * A implémenter si on souhaite utiliser autre chose qu'open-csv.
+ * Writer de CSV à base d'open-csv.
  * 
  * @author ybonnel
  * 
  */
-public interface GestionnaireCsvFactory {
+public class WriterOpenCsv extends AbstractWriterCsv {
 
 	/**
-	 * Création d'un writer de CSV.
+	 * CSVWriter.
+	 */
+	private CSVWriter csvWriter;
+
+	/**
+	 * Constructeur.
 	 * 
 	 * @param writer
 	 *            fichier CSV.
-	 * 
-	 * @param separator
+	 * @param separateur
 	 *            séparateur.
-	 * @return le writer de CSV.
 	 */
-	AbstractWriterCsv createWriterCsv(Writer writer, char separator);
+	public WriterOpenCsv(Writer writer, char separateur) {
+		this.csvWriter = new CSVWriter(writer, separateur);
+	}
+
+	@Override
+	public void writeLine(List<String> champs) {
+		csvWriter.writeNext(champs.toArray(new String[champs.size()]));
+	}
 
 	/**
-	 * Création d'un reader de CSV.
+	 * Fermeture du writer.
 	 * 
-	 * @param reader
-	 *            fichier CSV.
-	 * @param separator
-	 *            séparateur.
-	 * @return le reader de CSV.
+	 * @throws IOException
+	 *             erreur d'entrée sortie.
 	 */
-	AbstractReaderCsv createReaderCsv(Reader reader, char separator);
-
+	public void close() throws IOException {
+		csvWriter.close();
+	}
 }

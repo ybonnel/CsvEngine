@@ -16,21 +16,37 @@
  */
 package fr.ybo.moteurcsv.annotation;
 
-import fr.ybo.moteurcsv.adapter.AdapterCsv;
-import fr.ybo.moteurcsv.adapter.AdapterString;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import fr.ybo.moteurcsv.adapter.AdapterCsv;
+import fr.ybo.moteurcsv.adapter.AdapterString;
+
+/**
+ * Annotation utilisée pour représenté une colonne csv.
+ * 
+ * @author ybonnel
+ * 
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface BaliseCsv {
 
+	/**
+	 * adapter à utiliser pour transformer l'objet en chaine et inversement.
+	 */
 	Class<? extends AdapterCsv<?>> adapter() default AdapterString.class;
 
+	/**
+	 * nom de la colonne CSV.
+	 */
 	String value();
 
+	/**
+	 * Ordre de la colonne (permet d'assurer que les colonnes soient toujours
+	 * écrite dans un ordre défini).
+	 */
 	int ordre() default 0;
 }
