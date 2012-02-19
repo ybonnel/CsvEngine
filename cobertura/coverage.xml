@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
 
-<coverage line-rate="0.9444444444444444" branch-rate="0.7741935483870968" lines-covered="187" lines-valid="198" branches-covered="48" branches-valid="62" complexity="1.9622641509433962" version="1.9.4.1" timestamp="1329564650242">
+<coverage line-rate="0.9444444444444444" branch-rate="0.7741935483870968" lines-covered="187" lines-valid="198" branches-covered="48" branches-valid="62" complexity="1.9622641509433962" version="1.9.4.1" timestamp="1329660569984">
 	<sources>
 		<source>--source</source>
 		<source>/scratch/hudson/workspace/MoteurCsv-deploySnapshot/src/main/java</source>
@@ -11,12 +11,12 @@
 			<classes>
 				<class name="fr.ybo.moteurcsv.MoteurCsv" filename="fr/ybo/moteurcsv/MoteurCsv.java" line-rate="0.9787234042553191" branch-rate="0.868421052631579" complexity="4.090909090909091">
 					<methods>
-						<method name="&lt;init&gt;" signature="(Ljava/lang/Iterable;)V" line-rate="1.0" branch-rate="1.0">
+						<method name="&lt;init&gt;" signature="([Ljava/lang/Class;)V" line-rate="1.0" branch-rate="1.0">
 							<lines>
 								<line number="53" hits="6" branch="false"/>
 								<line number="65" hits="6" branch="false"/>
 								<line number="66" hits="6" branch="false"/>
-								<line number="67" hits="6" branch="true" condition-coverage="100 % (2/2)">
+								<line number="67" hits="18" branch="true" condition-coverage="100 % (2/2)">
 									<conditions>
 										<condition number="0" type="jump" coverage="100 %"/>
 									</conditions>
@@ -225,7 +225,7 @@
 						<line number="63" hits="4" branch="false"/>
 						<line number="65" hits="6" branch="false"/>
 						<line number="66" hits="6" branch="false"/>
-						<line number="67" hits="6" branch="true" condition-coverage="100 % (2/2)">
+						<line number="67" hits="18" branch="true" condition-coverage="100 % (2/2)">
 							<conditions>
 								<condition number="0" type="jump" coverage="100 %"/>
 							</conditions>
