@@ -27,7 +27,6 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
@@ -144,10 +143,9 @@ public class MoteurCsvTest {
 
 	private final static String ENTETE_654321 = "att_6|att_5|att_4|att_3|att_2|att_1";
 
-	@SuppressWarnings("unchecked")
 	@Before
 	public void setup() {
-		moteur = new MoteurCsv(new ArrayList<Class<?>>(Arrays.asList(ObjetCsv.class, ObjetCsv.class)));
+		moteur = new MoteurCsv(ObjetCsv.class, ObjetCsv.class);
 		stream = new InputStream() {
 			String chaine = ENTETE_654321 + "\n01:30|String1|5|8.0|1|String2\n" + "|String1|5|8.0|1|String2\n"
 					+ "01:30||5|8.0|1|String2\n" + "01:30|String1||8.0|1|String2\n" + "01:30|String1|5||1|String2\n"

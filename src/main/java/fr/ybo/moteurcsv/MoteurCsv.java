@@ -62,7 +62,7 @@ public class MoteurCsv {
 		this.factory = factory;
 	}
 
-	public MoteurCsv(Iterable<Class<?>> classes) {
+	public MoteurCsv(Class<?>... classes) {
 		factory = new DefaultGestionnaireCsvFactory();
 		for (Class<?> clazz : classes) {
 			scannerClass(clazz);
