@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<rss version="0.91">
+  <channel>
+    <title>MoteurCsv - Checkstyle report</title>
+    <link>https://github.com/ybonnel/MoteurCsv</link>
+    <description>MoteurCsv - Checkstyle report</description>
+    <language>en-us</language>
+    <copyright>&#169;2012</copyright>
+    <item>
+      <title>File: 20,
+             Errors: 0,
+             Warnings: 0,
+             Infos: 0
+      </title>
+            <link>https://github.com/ybonnel/MoteurCsv/checkstyle.html</link>
+      <description>
+        <p>Click <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html">here</a> for the full Checkstyle report.</p>
+
+        <table summary="Files" boder="1">
+          <thead>
+            <tr>
+              <th>Files</th>
+              <th style="width:30px;"><abbr title="Info">I</abbr></th>
+              <th style="width:30px;"><abbr title="Warning">W</abbr></th>
+              <th style="width:30px;"><abbr title="Error">E</abbr></th>
+            </tr>
+          </thead>
+          <tbody>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.adapter.AdapterTime.java">fr/ybo/moteurcsv/adapter/AdapterTime.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.modele.ChampCsv.java">fr/ybo/moteurcsv/modele/ChampCsv.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.adapter.AdapterString.java">fr/ybo/moteurcsv/adapter/AdapterString.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.modele.InsertObject.java">fr/ybo/moteurcsv/modele/InsertObject.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.factory.ReaderOpenCsv.java">fr/ybo/moteurcsv/factory/ReaderOpenCsv.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.adapter.AdapterCsv.java">fr/ybo/moteurcsv/adapter/AdapterCsv.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.exception.MoteurCsvException.java">fr/ybo/moteurcsv/exception/MoteurCsvException.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.MoteurCsv.java">fr/ybo/moteurcsv/MoteurCsv.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.annotation.FichierCsv.java">fr/ybo/moteurcsv/annotation/FichierCsv.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.modele.InsertInList.java">fr/ybo/moteurcsv/modele/InsertInList.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.factory.GestionnaireCsvFactory.java">fr/ybo/moteurcsv/factory/GestionnaireCsvFactory.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.modele.ClassCsv.java">fr/ybo/moteurcsv/modele/ClassCsv.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.adapter.AdapterInteger.java">fr/ybo/moteurcsv/adapter/AdapterInteger.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.factory.DefaultGestionnaireCsvFactory.java">fr/ybo/moteurcsv/factory/DefaultGestionnaireCsvFactory.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.adapter.AdapterDouble.java">fr/ybo/moteurcsv/adapter/AdapterDouble.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.annotation.BaliseCsv.java">fr/ybo/moteurcsv/annotation/BaliseCsv.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.factory.WriterOpenCsv.java">fr/ybo/moteurcsv/factory/WriterOpenCsv.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.factory.AbstractWriterCsv.java">fr/ybo/moteurcsv/factory/AbstractWriterCsv.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.factory.AbstractReaderCsv.java">fr/ybo/moteurcsv/factory/AbstractReaderCsv.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.adapter.AdapterBoolean.java">fr/ybo/moteurcsv/adapter/AdapterBoolean.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                      </tbody>
+        </table>
+        
+      </description>
+    </item>
+  </channel>
+</rss>
+

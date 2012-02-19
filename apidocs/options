@@ -1,0 +1,26 @@
+-classpath
+'/scratch/hudson/workspace/MoteurCsv-deploySnapshot/target/classes:/scratch/hudson/workspace/MoteurCsv-deploySnapshot/.repository/net/sf/opencsv/opencsv/2.3/opencsv-2.3.jar'
+-encoding
+'UTF-8'
+-public
+-sourcepath
+'/scratch/hudson/workspace/MoteurCsv-deploySnapshot/src/main/java'
+-author
+-bottom
+'Copyright &#169; 2012. All Rights Reserved.'
+-charset
+'UTF-8'
+-d
+'/scratch/hudson/workspace/MoteurCsv-deploySnapshot/target/site/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'MoteurCsv 1.1.2-SNAPSHOT API'
+-link
+'http://java.sun.com/j2se/1.5.0/docs/api'
+-link
+'http://java.sun.com/j2se/1.5.0/docs/api'
+-use
+-version
+-windowtitle
+'MoteurCsv 1.1.2-SNAPSHOT API'
