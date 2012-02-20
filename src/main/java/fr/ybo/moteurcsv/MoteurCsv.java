@@ -35,8 +35,8 @@ import java.util.logging.Logger;
 import fr.ybo.moteurcsv.annotation.BaliseCsv;
 import fr.ybo.moteurcsv.annotation.FichierCsv;
 import fr.ybo.moteurcsv.exception.MoteurCsvException;
-import fr.ybo.moteurcsv.factory.AbstractWriterCsv;
 import fr.ybo.moteurcsv.factory.AbstractReaderCsv;
+import fr.ybo.moteurcsv.factory.AbstractWriterCsv;
 import fr.ybo.moteurcsv.factory.DefaultGestionnaireCsvFactory;
 import fr.ybo.moteurcsv.factory.GestionnaireCsvFactory;
 import fr.ybo.moteurcsv.modele.ChampCsv;
@@ -46,7 +46,16 @@ import fr.ybo.moteurcsv.modele.InsertObject;
 
 /**
  * Moteur de lecture et écriture de fichier CSV.<br/>
- * TODO : mettre des exemples d'utilisation.
+ * Voici des exemple d'utilisation :
+ * <ul>
+ * <li>Construction du moteur :<br/>
+ * {@code MoteurCsv moteur = new MoteurCsv(ObjetCsv.class);}</li>
+ * <li>Lecture d'un fichier CSV :<br/>
+ * {@code List<ObjetCsv> objets = moteur.parseInputStream(stream, ObjetCsv.class);}
+ * </li>
+ * <li>Ecriture d'un fichier CSV :<br/>
+ * {@code moteur.writeFile(new FileWriter(file), objets, ObjetCsv.class);}</li>
+ * </ul>
  * 
  * @author ybonnel
  * 
