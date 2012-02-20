@@ -25,6 +25,7 @@
     <url>https://github.com/ybonnel/MoteurCsv</url>
     <description>Une librairie permettant de lire et écrire des csv à base d'annotations.</description>
 
+<!-- Ajout d'un commentaire pour forcer le redeploiement -->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
