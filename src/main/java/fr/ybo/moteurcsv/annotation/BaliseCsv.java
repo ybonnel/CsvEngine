@@ -49,4 +49,9 @@ public @interface BaliseCsv {
 	 * écrite dans un ordre défini).
 	 */
 	int ordre() default 0;
+
+	/**
+	 * Permet de décrire si le champ est obligatoire (false par défaut).
+	 */
+	boolean obligatoire() default false;
 }
