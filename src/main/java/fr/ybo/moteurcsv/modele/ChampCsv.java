@@ -23,6 +23,7 @@ import java.util.Map;
 
 import fr.ybo.moteurcsv.adapter.AdapterCsv;
 import fr.ybo.moteurcsv.exception.MoteurCsvException;
+import fr.ybo.moteurcsv.validator.ValidatorCsv;
 
 /**
  * Réprésente une colonne du fichier CSV.
@@ -38,15 +39,31 @@ public class ChampCsv {
 	private final Class<? extends AdapterCsv<?>> adapter;
 
 	/**
+	 * Validator à utiliser.
+	 */
+	private final Class<? extends ValidatorCsv> validator;
+
+	/**
 	 * Map des adapteurs, permet de ne créer qu'une instance par adapter.
 	 */
 	private static final Map<Class<? extends AdapterCsv<?>>, AdapterCsv<?>> MAP_ADAPTERS =
 			new HashMap<Class<? extends AdapterCsv<?>>, AdapterCsv<?>>();
 
 	/**
+	 * Map des validateurs, permet de ne créer qu'une instance par validateur.
+	 */
+	private static final Map<Class<? extends ValidatorCsv>, ValidatorCsv> MAP_VALIDATOR =
+			new HashMap<Class<? extends ValidatorCsv>, ValidatorCsv>();
+
+	/**
 	 * Attribut de la classe à mapper.
 	 */
 	private final Field field;
+
+	/**
+	 * Permet de savoir si le champ est obligatoire ou non.
+	 */
+	private final boolean obligatoire;
 
 	/**
 	 * Constructeur.
@@ -55,10 +72,18 @@ public class ChampCsv {
 	 *            adapter à utiliser.
 	 * @param field
 	 *            attribut de la classe à mapper.
+	 * 
+	 * @param validator
+	 *            validator à utiliser.
+	 * @param obligatoire
+	 *            true si le champ est obligatoire.
 	 */
-	public ChampCsv(Class<? extends AdapterCsv<?>> adapter, Field field) {
+	public ChampCsv(Class<? extends AdapterCsv<?>> adapter, Class<? extends ValidatorCsv> validator, Field field,
+			boolean obligatoire) {
 		this.adapter = adapter;
 		this.field = field;
+		this.obligatoire = obligatoire;
+		this.validator = validator;
 	}
 
 	/**
@@ -66,6 +91,13 @@ public class ChampCsv {
 	 */
 	public Field getField() {
 		return field;
+	}
+
+	/**
+	 * @return champ obligatoire?
+	 */
+	public boolean isObligatoire() {
+		return obligatoire;
 	}
 
 	/**
@@ -84,5 +116,25 @@ public class ChampCsv {
 			}
 		}
 		return (AdapterCsv<Object>) MAP_ADAPTERS.get(adapter);
+	}
+
+	/**
+	 * Construit un nouveau validateur seulement si on en a pas déjà créer un.
+	 * 
+	 * @return le validateur à utiliser.
+	 */
+	public ValidatorCsv getNewValidatorCsv() {
+		if (validator == null) {
+			return null;
+		}
+		if (!MAP_VALIDATOR.containsKey(validator)) {
+			try {
+				Constructor<? extends ValidatorCsv> construteur = validator.getConstructor((Class<?>[]) null);
+				MAP_VALIDATOR.put(validator, construteur.newInstance((Object[]) null));
+			} catch (Exception exception) {
+				throw new MoteurCsvException(exception);
+			}
+		}
+		return MAP_VALIDATOR.get(validator);
 	}
 }

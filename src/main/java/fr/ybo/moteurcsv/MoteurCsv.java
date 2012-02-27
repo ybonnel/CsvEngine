@@ -34,6 +34,7 @@ import java.util.logging.Logger;
 
 import fr.ybo.moteurcsv.annotation.BaliseCsv;
 import fr.ybo.moteurcsv.annotation.FichierCsv;
+import fr.ybo.moteurcsv.annotation.Validation;
 import fr.ybo.moteurcsv.exception.MoteurCsvException;
 import fr.ybo.moteurcsv.factory.AbstractReaderCsv;
 import fr.ybo.moteurcsv.factory.AbstractWriterCsv;
@@ -43,6 +44,7 @@ import fr.ybo.moteurcsv.modele.ChampCsv;
 import fr.ybo.moteurcsv.modele.ClassCsv;
 import fr.ybo.moteurcsv.modele.InsertInList;
 import fr.ybo.moteurcsv.modele.InsertObject;
+import fr.ybo.moteurcsv.validator.ValidatorCsv;
 
 /**
  * Moteur de lecture et écriture de fichier CSV.<br/>
@@ -251,8 +253,11 @@ public class MoteurCsv {
 		ClassCsv classCsv = new ClassCsv(fichierCsv.separateur(), clazz);
 		for (Field field : clazz.getDeclaredFields()) {
 			BaliseCsv baliseCsv = field.getAnnotation(BaliseCsv.class);
+			Validation validation = field.getAnnotation(Validation.class);
 			if (baliseCsv != null) {
-				classCsv.setChampCsv(baliseCsv.value(), new ChampCsv(baliseCsv.adapter(), field));
+				Class<? extends ValidatorCsv> validator = validation == null ? null : validation.value();
+				classCsv.setChampCsv(baliseCsv.value(),
+						new ChampCsv(baliseCsv.adapter(), validator, field, baliseCsv.obligatoire()));
 				classCsv.putOrdre(baliseCsv.value(), baliseCsv.ordre());
 			}
 		}

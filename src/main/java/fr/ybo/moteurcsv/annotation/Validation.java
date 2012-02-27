@@ -36,5 +36,5 @@ public @interface Validation {
 	/**
 	 * Validateur à utiliser pour valider la colonne.
 	 */
-	Class<? extends ValidatorCsv> adapter();
+	Class<? extends ValidatorCsv> value();
 }
