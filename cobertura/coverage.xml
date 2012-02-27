@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
 
-<coverage line-rate="0.94" branch-rate="0.7741935483870968" lines-covered="188" lines-valid="200" branches-covered="48" branches-valid="62" complexity="1.9622641509433962" version="1.9.4.1" timestamp="1329750043607">
+<coverage line-rate="0.9411764705882353" branch-rate="0.7857142857142857" lines-covered="192" lines-valid="204" branches-covered="55" branches-valid="70" complexity="2.0" version="1.9.4.1" timestamp="1330340826734">
 	<sources>
 		<source>--source</source>
 		<source>/scratch/hudson/workspace/MoteurCsv-deploySnapshot/src/main/java</source>
@@ -747,7 +747,7 @@
 				</class>
 			</classes>
 		</package>
-		<package name="fr.ybo.moteurcsv.factory" line-rate="1.0" branch-rate="1.0" complexity="1.0">
+		<package name="fr.ybo.moteurcsv.factory" line-rate="1.0" branch-rate="0.875" complexity="1.2307692307692308">
 			<classes>
 				<class name="fr.ybo.moteurcsv.factory.AbstractReaderCsv" filename="fr/ybo/moteurcsv/factory/AbstractReaderCsv.java" line-rate="1.0" branch-rate="1.0" complexity="1.0">
 					<methods>
@@ -803,7 +803,7 @@
 					<lines>
 					</lines>
 				</class>
-				<class name="fr.ybo.moteurcsv.factory.ReaderOpenCsv" filename="fr/ybo/moteurcsv/factory/ReaderOpenCsv.java" line-rate="1.0" branch-rate="1.0" complexity="1.0">
+				<class name="fr.ybo.moteurcsv.factory.ReaderOpenCsv" filename="fr/ybo/moteurcsv/factory/ReaderOpenCsv.java" line-rate="1.0" branch-rate="0.875" complexity="1.75">
 					<methods>
 						<method name="&lt;init&gt;" signature="(Ljava/io/Reader;C)V" line-rate="1.0" branch-rate="1.0">
 							<lines>
@@ -814,13 +814,31 @@
 						</method>
 						<method name="close" signature="()V" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="62" hits="2" branch="false"/>
-								<line number="63" hits="2" branch="false"/>
+								<line number="70" hits="2" branch="false"/>
+								<line number="71" hits="2" branch="false"/>
+							</lines>
+						</method>
+						<method name="isEmpty" signature="([Ljava/lang/String;)Z" line-rate="1.0" branch-rate="0.8333333333333334">
+							<lines>
+								<line number="51" hits="19" branch="true" condition-coverage="83 % (5/6)">
+									<conditions>
+										<condition number="0" type="jump" coverage="100 %"/>
+										<condition number="1" type="jump" coverage="100 %"/>
+										<condition number="2" type="jump" coverage="50 %"/>
+									</conditions>
+								</line>
 							</lines>
 						</method>
 						<method name="readLine" signature="()[Ljava/lang/String;" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="52" hits="18" branch="false"/>
+								<line number="56" hits="19" branch="false"/>
+								<line number="57" hits="19" branch="true" condition-coverage="100 % (2/2)">
+									<conditions>
+										<condition number="0" type="jump" coverage="100 %"/>
+									</conditions>
+								</line>
+								<line number="58" hits="1" branch="false"/>
+								<line number="60" hits="19" branch="false"/>
 							</lines>
 						</method>
 					</methods>
@@ -828,9 +846,23 @@
 						<line number="46" hits="2" branch="false"/>
 						<line number="47" hits="2" branch="false"/>
 						<line number="48" hits="2" branch="false"/>
-						<line number="52" hits="18" branch="false"/>
-						<line number="62" hits="2" branch="false"/>
-						<line number="63" hits="2" branch="false"/>
+						<line number="51" hits="19" branch="true" condition-coverage="83 % (5/6)">
+							<conditions>
+								<condition number="0" type="jump" coverage="100 %"/>
+								<condition number="1" type="jump" coverage="100 %"/>
+								<condition number="2" type="jump" coverage="50 %"/>
+							</conditions>
+						</line>
+						<line number="56" hits="19" branch="false"/>
+						<line number="57" hits="19" branch="true" condition-coverage="100 % (2/2)">
+							<conditions>
+								<condition number="0" type="jump" coverage="100 %"/>
+							</conditions>
+						</line>
+						<line number="58" hits="1" branch="false"/>
+						<line number="60" hits="19" branch="false"/>
+						<line number="70" hits="2" branch="false"/>
+						<line number="71" hits="2" branch="false"/>
 					</lines>
 				</class>
 				<class name="fr.ybo.moteurcsv.factory.WriterOpenCsv" filename="fr/ybo/moteurcsv/factory/WriterOpenCsv.java" line-rate="1.0" branch-rate="1.0" complexity="1.0">
