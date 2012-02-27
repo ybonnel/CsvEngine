@@ -71,20 +71,6 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.factory.package-info.java">fr/ybo/moteurcsv/factory/package-info.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  2
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.adapter.AdapterCsv.java">fr/ybo/moteurcsv/adapter/AdapterCsv.java</a>
                 </td>
                 <td>
@@ -92,6 +78,20 @@
                 </td>
                 <td>
                   0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.factory.package-info.java">fr/ybo/moteurcsv/factory/package-info.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
                 </td>
                 <td>
                   0
@@ -113,7 +113,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.factory.GestionnaireCsvFactory.java">fr/ybo/moteurcsv/factory/GestionnaireCsvFactory.java</a>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.modele.ClassCsv.java">fr/ybo/moteurcsv/modele/ClassCsv.java</a>
                 </td>
                 <td>
                   0
@@ -127,7 +127,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.modele.ClassCsv.java">fr/ybo/moteurcsv/modele/ClassCsv.java</a>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.factory.GestionnaireCsvFactory.java">fr/ybo/moteurcsv/factory/GestionnaireCsvFactory.java</a>
                 </td>
                 <td>
                   0
@@ -211,7 +211,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.package-info.java">fr/ybo/moteurcsv/package-info.java</a>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.adapter.AdapterString.java">fr/ybo/moteurcsv/adapter/AdapterString.java</a>
                 </td>
                 <td>
                   0
@@ -225,7 +225,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.adapter.AdapterString.java">fr/ybo/moteurcsv/adapter/AdapterString.java</a>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.package-info.java">fr/ybo/moteurcsv/package-info.java</a>
                 </td>
                 <td>
                   0
@@ -323,7 +323,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.factory.DefaultGestionnaireCsvFactory.java">fr/ybo/moteurcsv/factory/DefaultGestionnaireCsvFactory.java</a>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.adapter.AdapterDouble.java">fr/ybo/moteurcsv/adapter/AdapterDouble.java</a>
                 </td>
                 <td>
                   0
@@ -351,7 +351,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.adapter.AdapterDouble.java">fr/ybo/moteurcsv/adapter/AdapterDouble.java</a>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.factory.DefaultGestionnaireCsvFactory.java">fr/ybo/moteurcsv/factory/DefaultGestionnaireCsvFactory.java</a>
                 </td>
                 <td>
                   0
