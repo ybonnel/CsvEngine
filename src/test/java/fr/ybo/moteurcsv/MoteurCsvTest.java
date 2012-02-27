@@ -42,8 +42,8 @@ import fr.ybo.moteurcsv.adapter.AdapterTime;
 import fr.ybo.moteurcsv.annotation.BaliseCsv;
 import fr.ybo.moteurcsv.annotation.FichierCsv;
 import fr.ybo.moteurcsv.exception.MoteurCsvException;
-import fr.ybo.moteurcsv.factory.AbstractWriterCsv;
 import fr.ybo.moteurcsv.factory.AbstractReaderCsv;
+import fr.ybo.moteurcsv.factory.AbstractWriterCsv;
 import fr.ybo.moteurcsv.factory.GestionnaireCsvFactory;
 
 /**
@@ -209,7 +209,7 @@ public class MoteurCsvTest {
 		moteur = new MoteurCsv(ObjetCsv.class, ObjetCsv.class);
 		stream = new InputStream() {
 			String chaine = ENTETE_654321 + "\n01:30|String1|5|8.0|1|String2\n" + "|String1|5|8.0|1|String2\n"
-					+ "01:30||5|8.0|1|String2\n" + "01:30|String1||8.0|1|String2\n" + "01:30|String1|5||1|String2\n"
+					+ "\n01:30||5|8.0|1|String2\n" + "01:30|String1||8.0|1|String2\n" + "01:30|String1|5||1|String2\n"
 					+ "01:30|String1|5|8.0||String2\n" + "01:30|String1|5|8.0|1|\n";
 			private int count = 0;
 
