@@ -47,9 +47,17 @@ public class ReaderOpenCsv extends AbstractReaderCsv {
 		this.reader = new CSVReader(reader, separator);
 	}
 	
+	protected static boolean isEmpty(String[] nextLine) {
+		return (nextLine != null && nextLine.length == 1 && "".equals(nextLine[0]));
+	}
+
 	@Override
 	public String[] readLine() throws IOException {
-		return reader.readNext();
+		String[] nextLine = reader.readNext();
+		if (isEmpty(nextLine)) {
+			nextLine = readLine();
+		}
+		return nextLine;
 	}
 
 	/**
