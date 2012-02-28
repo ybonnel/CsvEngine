@@ -44,6 +44,7 @@ import fr.ybo.moteurcsv.modele.ChampCsv;
 import fr.ybo.moteurcsv.modele.ClassCsv;
 import fr.ybo.moteurcsv.modele.InsertInList;
 import fr.ybo.moteurcsv.modele.InsertObject;
+import fr.ybo.moteurcsv.modele.Parametres;
 import fr.ybo.moteurcsv.validator.ValidatorCsv;
 
 /**
@@ -97,6 +98,18 @@ public class MoteurCsv {
 	 */
 	public void setFactory(GestionnaireCsvFactory factory) {
 		this.factory = factory;
+	}
+
+	/**
+	 * Paramètres du moteur.
+	 */
+	private Parametres parametres = new Parametres();
+
+	/**
+	 * @return les paramètres du moteur.
+	 */
+	public Parametres getParametres() {
+		return parametres;
 	}
 
 	/**
