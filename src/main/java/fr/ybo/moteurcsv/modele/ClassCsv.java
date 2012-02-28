@@ -68,6 +68,7 @@ public class ClassCsv {
 		this.clazz = clazz;
 		try {
 			contructeur = clazz.getDeclaredConstructor((Class<?>[]) null);
+			contructeur.setAccessible(true);
 		} catch (Exception e) {
 			throw new MoteurCsvException("Erreur a la récupération du constructeur de " + clazz.getSimpleName(), e);
 		}
