@@ -42,9 +42,11 @@ import fr.ybo.moteurcsv.factory.DefaultGestionnaireCsvFactory;
 import fr.ybo.moteurcsv.factory.GestionnaireCsvFactory;
 import fr.ybo.moteurcsv.modele.ChampCsv;
 import fr.ybo.moteurcsv.modele.ClassCsv;
+import fr.ybo.moteurcsv.modele.Erreur;
 import fr.ybo.moteurcsv.modele.InsertInList;
 import fr.ybo.moteurcsv.modele.InsertObject;
 import fr.ybo.moteurcsv.modele.Parametres;
+import fr.ybo.moteurcsv.modele.Resultat;
 import fr.ybo.moteurcsv.validator.ValidatorCsv;
 
 /**
@@ -218,11 +220,12 @@ public class MoteurCsv {
 	 * @return la liste d'<Objet> représentant les enregistrements du fichier
 	 *         CSV.
 	 */
-	public <Objet> List<Objet> parseInputStream(InputStream intputStream, Class<Objet> clazz) {
-		List<Objet> objets = new ArrayList<Objet>();
-		parseFileAndInsert(new BufferedReader(new InputStreamReader(intputStream)), clazz, new InsertInList<Objet>(
-				objets));
-		return objets;
+	public <Objet> Resultat<Objet> parseInputStream(InputStream intputStream, Class<Objet> clazz) {
+		Resultat<Objet> resultat = new Resultat<Objet>();
+		resultat.getErreurs().addAll(
+				parseFileAndInsert(new BufferedReader(new InputStreamReader(intputStream)), clazz,
+						new InsertInList<Objet>(resultat.getObjets())));
+		return resultat;
 	}
 
 	/**
@@ -237,9 +240,11 @@ public class MoteurCsv {
 	 *            classe de l'objet associé au CSV.
 	 * @param insert
 	 *            traitement à éffectuer pour chaque enregistrement.
+	 * @return les erreurs rencontrées.
 	 */
 	@SuppressWarnings("unchecked")
-	public <Objet> void parseFileAndInsert(Reader reader, Class<Objet> clazz, InsertObject<Objet> insert) {
+	public <Objet> List<Erreur> parseFileAndInsert(Reader reader, Class<Objet> clazz, InsertObject<Objet> insert) {
+		List<Erreur> erreurs = new ArrayList<Erreur>();
 		nouveauFichier(reader, clazz);
 		Objet objet = (Objet) creerObjet();
 		while (objet != null) {
@@ -247,6 +252,7 @@ public class MoteurCsv {
 			objet = (Objet) creerObjet();
 		}
 		closeLecteurCourant();
+		return erreurs;
 	}
 
 	/**

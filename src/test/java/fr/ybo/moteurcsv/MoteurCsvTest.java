@@ -226,7 +226,7 @@ public class MoteurCsvTest {
 	@Test
 	public void testParseInputStream() throws IOException {
 
-		List<ObjetCsv> objets = moteur.parseInputStream(stream, ObjetCsv.class);
+		List<ObjetCsv> objets = moteur.parseInputStream(stream, ObjetCsv.class).getObjets();
 		assertEquals(7, objets.size());
 		assertTrue(objets.get(0).equals("String2", true, 8.0, 5, "String1", 90));
 		assertTrue(objets.get(1).equals("String2", true, 8.0, 5, "String1", null));
@@ -240,7 +240,7 @@ public class MoteurCsvTest {
 
 		moteur.writeFile(new FileWriter(file), objets, ObjetCsv.class);
 
-		List<ObjetCsv> newObjets = moteur.parseInputStream(new FileInputStream(file), ObjetCsv.class);
+		List<ObjetCsv> newObjets = moteur.parseInputStream(new FileInputStream(file), ObjetCsv.class).getObjets();
 		assertEquals(objets, newObjets);
 
 	}
@@ -289,7 +289,7 @@ public class MoteurCsvTest {
 			}
 		});
 
-		assertTrue(moteur.parseInputStream(stream, ObjetCsv.class).isEmpty());
+		assertTrue(moteur.parseInputStream(stream, ObjetCsv.class).getObjets().isEmpty());
 
 	}
 
