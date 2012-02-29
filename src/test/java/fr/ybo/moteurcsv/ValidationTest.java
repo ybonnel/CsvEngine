@@ -47,8 +47,10 @@ import fr.ybo.moteurcsv.modele.Resultat;
 public class ValidationTest {
 
 	/**
+	 * InputStream permettant de simuler.
+	 * 
 	 * @author ybonnel
-	 *
+	 * 
 	 */
 	private final class StringStream extends InputStream {
 		private String chaine;
@@ -69,47 +71,96 @@ public class ValidationTest {
 
 	}
 
+	/**
+	 * Classe pour la RG1.
+	 */
 	@FichierCsv()
-	private static class ObjetRg1_1 {
+	public static class ObjetRg1_1 {
+		/**
+		 * Facultatif.
+		 */
 		@BaliseCsv(value = "att1")
-		private String att1;
+		public String att1;
+		/**
+		 * Facultatif.
+		 */
 		@BaliseCsv(value = "att2")
-		private String att2;
+		public String att2;
 	}
 
+	/**
+	 * Classe pour la RG1.
+	 */
 	@FichierCsv()
-	private static class ObjetRg1_2 {
+	public static class ObjetRg1_2 {
+		/**
+		 * Obligatoire.
+		 */
 		@BaliseCsv(value = "att1", obligatoire = true)
-		private String att1;
+		public String att1;
+		/**
+		 * Facultatif.
+		 */
 		@BaliseCsv(value = "att2")
-		private String att2;
+		public String att2;
 	}
 
+	/**
+	 * Classe pour la RG1.
+	 */
 	@FichierCsv()
-	private static class ObjetRg1_3 {
+	public static class ObjetRg1_3 {
+		/**
+		 * Facultatif.
+		 */
 		@BaliseCsv(value = "att1")
-		private String att1;
+		public String att1;
+		/**
+		 * Obligatoire.
+		 */
 		@BaliseCsv(value = "att2", obligatoire = true)
-		private String att2;
+		public String att2;
 	}
 
+	/**
+	 * Classe pour la RG1.
+	 */
 	@FichierCsv()
-	private static class ObjetRg1_4 {
+	public static class ObjetRg1_4 {
+		/**
+		 * Obligatoire.
+		 */
 		@BaliseCsv(value = "att1", obligatoire = true)
-		private String att1;
+		public String att1;
+		/**
+		 * Obligatoire.
+		 */
 		@BaliseCsv(value = "att2", obligatoire = true)
-		private String att2;
+		public String att2;
 	}
 
+	/**
+	 * Construction des streams et des moteurs nécessaires aux tests.
+	 */
 	@Before
 	public void setup() {
 		streamRg1 = new StringStream("att1,att2\nval1,\n,val2\n,");
 		moteurRg1 = new MoteurCsv(ObjetRg1_1.class, ObjetRg1_2.class, ObjetRg1_3.class, ObjetRg1_4.class);
+		moteurRg1.getParametres().setValidation(true);
 	}
 
+	/**
+	 * Stream pour tester la RG1.
+	 */
 	private InputStream streamRg1;
+	/**
+	 * Moteur pour tester la RG1.
+	 */
 	private MoteurCsv moteurRg1;
 
+	/**
+	 * Test de la RG1 avec les deux champs facultatifs.
+	 */
 	@Test
 	public void testRg1_1() {
 		// Test avec les deux champs facultatif.
@@ -119,6 +170,10 @@ public class ValidationTest {
 		assertEquals(0, resultat.getErreurs().size());
 	}
 
+	/**
+	 * Test de la RG1 avec le premiers champ obligatoire et le second
+	 * facultatif.
+	 */
 	@Test
 	public void testRg1_2() {
 		// Test avec le premier champ obligatoire.
@@ -138,6 +193,10 @@ public class ValidationTest {
 		assertTrue(erreur2.getMessages().get(0).contains("att1"));
 	}
 
+	/**
+	 * Test de la RG1 avec le premiers champ facultatif et le second
+	 * obligatoire.
+	 */
 	@Test
 	public void testRg1_3() {
 		// Test avec le deuxième champ obligatoire.
@@ -157,6 +216,9 @@ public class ValidationTest {
 		assertTrue(erreur2.getMessages().get(0).contains("att2"));
 	}
 
+	/**
+	 * Test de la RG1 avec les deux champs obligatoire.
+	 */
 	@Test
 	public void testRg1_4() {
 		// Test avec les deux champs obligatoires
@@ -169,30 +231,39 @@ public class ValidationTest {
 		assertEquals(1, erreur1.getMessages().size());
 		assertTrue(erreur1.getMessages().get(0).contains("obligatoire"));
 		assertTrue(erreur1.getMessages().get(0).contains("att2"));
-		Erreur erreur2 = resultat.getErreurs().get(0);
+		Erreur erreur2 = resultat.getErreurs().get(1);
 		assertEquals(",val2", erreur2.getLigneCsv());
 		assertEquals(1, erreur2.getMessages().size());
 		assertTrue(erreur2.getMessages().get(0).contains("obligatoire"));
 		assertTrue(erreur2.getMessages().get(0).contains("att1"));
-		Erreur erreur3 = resultat.getErreurs().get(1);
+		Erreur erreur3 = resultat.getErreurs().get(2);
 		assertEquals(",", erreur3.getLigneCsv());
 		assertEquals(2, erreur3.getMessages().size());
 		assertTrue(erreur3.getMessages().get(0).contains("obligatoire"));
 		assertTrue(erreur3.getMessages().get(0).contains("att1"));
 		assertTrue(erreur3.getMessages().get(1).contains("obligatoire"));
-		assertTrue(erreur3.getMessages().get(1).contains("att1"));
+		assertTrue(erreur3.getMessages().get(1).contains("att2"));
 	}
 
+	/**
+	 * Test de la RG2. TODO à faire.
+	 */
 	@Test
 	public void testRg2() {
 
 	}
 
+	/**
+	 * Test de la RG3. TODO à faire.
+	 */
 	@Test
 	public void testRg3() {
 
 	}
 
+	/**
+	 * Test de la RG4. TODO à faire.
+	 */
 	@Test
 	public void testRg4() {
 

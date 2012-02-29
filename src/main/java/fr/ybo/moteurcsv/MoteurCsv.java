@@ -47,6 +47,7 @@ import fr.ybo.moteurcsv.modele.InsertInList;
 import fr.ybo.moteurcsv.modele.InsertObject;
 import fr.ybo.moteurcsv.modele.Parametres;
 import fr.ybo.moteurcsv.modele.Resultat;
+import fr.ybo.moteurcsv.validator.ErreurValidation;
 import fr.ybo.moteurcsv.validator.ValidatorCsv;
 
 /**
@@ -133,12 +134,35 @@ public class MoteurCsv {
 	private AbstractReaderCsv lecteurCsv;
 
 	/**
+	 * Permet de recontruire une ligne à partir des champs qui la compose.
+	 * 
+	 * @param champs
+	 *            liste des champs.
+	 * @return ligne CSV.
+	 */
+	private String construireLigne(String[] champs) {
+		StringBuilder builder = new StringBuilder();
+		boolean first = true;
+		for (String champ : champs) {
+			if (first) {
+				first = false;
+			} else {
+				builder.append(classCourante.getSeparateurWithoutEscape());
+			}
+			builder.append(champ);
+		}
+		return builder.toString();
+	}
+
+	/**
 	 * Crée un objet à partir de la ligne courante du csv.
 	 * {@link MoteurCsv#nouveauFichier(Reader, Class)} doit être appelé avant.
 	 * 
 	 * @return l'ojet créer.
+	 * @throws ErreurValidation
+	 *             en cas d'erreur de validation.
 	 */
-	protected Object creerObjet() {
+	protected Object creerObjet() throws ErreurValidation {
 		if (classCourante == null) {
 			throw new MoteurCsvException(
 					"La méthode creerObjet a étée appelée sans que la méthode nouveauFichier n'est été appelée.");
@@ -146,27 +170,56 @@ public class MoteurCsv {
 		String[] champs = null;
 		try {
 			champs = lecteurCsv.readLine();
-			if (champs == null) {
-				return null;
-			}
-			Object objetCsv = classCourante.getContructeur().newInstance((Object[]) null);
-			for (int numChamp = 0; numChamp < champs.length; numChamp++) {
-				String champ = champs[numChamp];
-				if (champ != null && !"".equals(champ)) {
-					String nomChamp = enteteCourante[numChamp];
-					ChampCsv champCsv = classCourante.getChampCsv(nomChamp);
-					if (champCsv != null) {
-						champCsv.getField().setAccessible(true);
+		} catch (IOException e) {
+			throw new MoteurCsvException("Erreur à la lecture d'une ligne", e);
+		}
+		if (champs == null) {
+			return null;
+		}
+		ErreurValidation validation = null;
+		Object objetCsv = null;
+		try {
+			objetCsv = classCourante.getContructeur().newInstance((Object[]) null);
+		} catch (Exception exception) {
+			throw new MoteurCsvException("Erreur à l'instanciation de la class "
+					+ classCourante.getClazz().getSimpleName() + " pour la ligne " + construireLigne(champs), exception);
+		}
+		for (int numChamp = 0; numChamp < champs.length; numChamp++) {
+			String champ = champs[numChamp];
+			if (champ != null && !"".equals(champ)) {
+				String nomChamp = enteteCourante[numChamp];
+				ChampCsv champCsv = classCourante.getChampCsv(nomChamp);
+				if (champCsv != null) {
+					champCsv.getField().setAccessible(true);
+					try {
 						champCsv.getField().set(objetCsv, champCsv.getNewAdapterCsv().parse(champ));
-						champCsv.getField().setAccessible(false);
+					} catch (Exception e) {
+						if (validation == null) {
+							validation = new ErreurValidation(construireLigne(champs));
+						}
+						validation
+								.getErreur()
+								.getMessages()
+								.add("Le champ " + enteteCourante[numChamp] + " n'a pas pu être interprété. "
+										+ e.getMessage());
 					}
+					champCsv.getField().setAccessible(false);
+				}
+			} else if (parametres.hasValidation()) {
+				ChampCsv champCsv = classCourante.getChampCsv(enteteCourante[numChamp]);
+				if (champCsv != null && champCsv.isObligatoire()) {
+					if (validation == null) {
+						validation = new ErreurValidation(construireLigne(champs));
+					}
+					validation.getErreur().getMessages()
+							.add("Le champ " + enteteCourante[numChamp] + " est obligatoire");
 				}
 			}
-			return objetCsv;
-		} catch (Exception e) {
-			throw new MoteurCsvException("Erreur à l'instanciation de la class "
-					+ classCourante.getClazz().getSimpleName() + " pour la ligne " + champs, e);
 		}
+		if (validation != null) {
+			throw validation;
+		}
+		return objetCsv;
 	}
 
 	/**
@@ -246,11 +299,20 @@ public class MoteurCsv {
 	public <Objet> List<Erreur> parseFileAndInsert(Reader reader, Class<Objet> clazz, InsertObject<Objet> insert) {
 		List<Erreur> erreurs = new ArrayList<Erreur>();
 		nouveauFichier(reader, clazz);
-		Objet objet = (Objet) creerObjet();
-		while (objet != null) {
-			insert.insertObject(objet);
-			objet = (Objet) creerObjet();
-		}
+		Objet objet = null;
+		boolean erreurValidation = false;
+		do {
+			try {
+				erreurValidation = false;
+				objet = (Objet) creerObjet();
+				if (objet != null) {
+					insert.insertObject(objet);
+				}
+			} catch (ErreurValidation exceptionValidation) {
+				erreurValidation = true;
+				erreurs.add(exceptionValidation.getErreur());
+			}
+		} while (objet != null || erreurValidation);
 		closeLecteurCourant();
 		return erreurs;
 	}
@@ -299,8 +361,8 @@ public class MoteurCsv {
 	 * @throws IllegalAccessException
 	 *             ne doit pas arriver.
 	 */
-	private <Objet> void writeLigne(AbstractWriterCsv writerCsv, List<String> nomChamps, ClassCsv classCsv,
-			Objet objet) throws IllegalAccessException {
+	private <Objet> void writeLigne(AbstractWriterCsv writerCsv, List<String> nomChamps, ClassCsv classCsv, Objet objet)
+			throws IllegalAccessException {
 		List<String> champs = new ArrayList<String>();
 		for (String nomChamp : nomChamps) {
 			ChampCsv champCsv = classCsv.getChampCsv(nomChamp);
