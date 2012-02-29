@@ -28,8 +28,11 @@ import org.junit.Test;
 
 import fr.ybo.moteurcsv.annotation.BaliseCsv;
 import fr.ybo.moteurcsv.annotation.FichierCsv;
+import fr.ybo.moteurcsv.annotation.Validation;
 import fr.ybo.moteurcsv.modele.Erreur;
 import fr.ybo.moteurcsv.modele.Resultat;
+import fr.ybo.moteurcsv.validator.ValidateException;
+import fr.ybo.moteurcsv.validator.ValidatorCsv;
 
 /**
  * Tester la validation.
@@ -147,6 +150,7 @@ public class ValidationTest {
 		streamRg1 = new StringStream("att1,att2\nval1,\n,val2\n,");
 		moteurRg1 = new MoteurCsv(ObjetRg1_1.class, ObjetRg1_2.class, ObjetRg1_3.class, ObjetRg1_4.class);
 		moteurRg1.getParametres().setValidation(true);
+		moteurRg1.getParametres().setNbLinesWithErrorsToStop(999);
 	}
 
 	/**
@@ -244,12 +248,61 @@ public class ValidationTest {
 		assertTrue(erreur3.getMessages().get(1).contains("obligatoire"));
 		assertTrue(erreur3.getMessages().get(1).contains("att2"));
 	}
+	
+	@FichierCsv
+	public static class ObjetRg2 {
+		@Validation(ValidationRg2.class)
+		@BaliseCsv("att1")
+		public String att1;
+		@Validation(ValidationRg2.class)
+		@BaliseCsv("att2")
+		public String att2;
+	}
+	
+	public static class ValidationRg2 implements ValidatorCsv {
+		
+		/* (non-Javadoc)
+		 * @see fr.ybo.moteurcsv.validator.ValidatorCsv#validate(java.lang.String)
+		 */
+		public void validate(String champ) throws ValidateException {
+			if (!"RG2".equals(champ)) {
+				throw new ValidateException("Le champs doit être également à RG2");
+			}
+		}
+		
+	}
 
 	/**
-	 * Test de la RG2. TODO à faire.
+	 * Test de la RG2.
 	 */
 	@Test
 	public void testRg2() {
+		MoteurCsv moteurRg2 = new MoteurCsv(ObjetRg2.class);
+		moteurRg2.getParametres().setValidation(true);
+		moteurRg2.getParametres().setNbLinesWithErrorsToStop(999);
+		InputStream stream = new StringStream("att1,att2\nRG2,RG2\nRG2,RG1\nRG1,RG2\nRG1,RG3");
+
+		Resultat<ObjetRg2> resultat = moteurRg2.parseInputStream(stream, ObjetRg2.class);
+		assertNotNull(resultat);
+		assertEquals(1, resultat.getObjets().size());
+		assertEquals(3, resultat.getErreurs().size());
+		Erreur erreur1 = resultat.getErreurs().get(0);
+		assertEquals("RG2,RG1", erreur1.getLigneCsv());
+		assertEquals(1, erreur1.getMessages().size());
+		assertTrue(erreur1.getMessages().get(0).endsWith("Le champs doit être également à RG2"));
+		assertTrue(erreur1.getMessages().get(0).contains("att2"));
+		Erreur erreur2 = resultat.getErreurs().get(1);
+		assertEquals("RG1,RG2", erreur2.getLigneCsv());
+		assertEquals(1, erreur2.getMessages().size());
+		assertTrue(erreur2.getMessages().get(0).endsWith("Le champs doit être également à RG2"));
+		assertTrue(erreur2.getMessages().get(0).contains("att1"));
+		Erreur erreur3 = resultat.getErreurs().get(2);
+		assertEquals("RG1,RG3", erreur3.getLigneCsv());
+		assertEquals(2, erreur3.getMessages().size());
+		assertTrue(erreur3.getMessages().get(0).endsWith("Le champs doit être également à RG2"));
+		assertTrue(erreur3.getMessages().get(0).contains("att1"));
+		assertTrue(erreur3.getMessages().get(1).endsWith("Le champs doit être également à RG2"));
+		assertTrue(erreur3.getMessages().get(1).contains("att2"));
 
 	}
 
