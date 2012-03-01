@@ -205,33 +205,88 @@ public class MoteurCsv {
 		ErreurValidation validation = null;
 		Object objetCsv = construireObjet();
 		for (int numChamp = 0; numChamp < champs.length; numChamp++) {
-			String champ = champs[numChamp];
-			if (champ != null && !"".equals(champ)) {
-				String nomChamp = enteteCourante[numChamp];
-				ChampCsv champCsv = classCourante.getChampCsv(nomChamp);
-				if (champCsv != null) {
-					try {
-						if (parametres.hasValidation()) {
-							champCsv.validate(champ);
-						}
-						setValeur(champCsv, objetCsv, champ);
-					} catch (ValidateException exception) {
-						validation = addMessageValidation(champs, validation, enteteCourante[numChamp], exception);
-					}
-				}
-			} else if (parametres.hasValidation()) {
-				ChampCsv champCsv = classCourante.getChampCsv(enteteCourante[numChamp]);
-				if (champCsv != null && champCsv.isObligatoire()) {
-					validation =
-							addMessageValidation(champs, validation, enteteCourante[numChamp], new ValidateException(
-									"Le champ est obligatoire"));
-				}
-			}
+			validation = traitementChamp(champs, validation, objetCsv, numChamp);
 		}
 		if (validation != null) {
 			throw validation;
 		}
 		return objetCsv;
+	}
+
+	/**
+	 * Traitmeent d'un champ.
+	 * 
+	 * @param champs
+	 *            liste des valeurs de champs.
+	 * @param validation
+	 *            conteneur d'erreur de validation.
+	 * @param objetCsv
+	 *            objet à remplir.
+	 * @param numChamp
+	 *            numéro du champ.
+	 * @return conteneur d'erreur de validation.
+	 */
+	private ErreurValidation traitementChamp(String[] champs, ErreurValidation validation, Object objetCsv, int numChamp) {
+		String champ = champs[numChamp];
+		if (champ != null && !"".equals(champ)) {
+			validation = remplirAttribut(champs, validation, objetCsv, numChamp, champ);
+		} else if (parametres.hasValidation()) {
+			validation = validChampObligatoire(champs, validation, numChamp);
+		}
+		return validation;
+	}
+
+	/**
+	 * Validation du caractère obligatoire du champ.
+	 * 
+	 * @param champs
+	 *            liste des champs.
+	 * @param validation
+	 *            conteneur d'erreur de validation.
+	 * @param numChamp
+	 *            numéro du champ.
+	 * @return conteneur d'erreur de validation.
+	 */
+	private ErreurValidation validChampObligatoire(String[] champs, ErreurValidation validation, int numChamp) {
+		ChampCsv champCsv = classCourante.getChampCsv(enteteCourante[numChamp]);
+		if (champCsv != null && champCsv.isObligatoire()) {
+			validation =
+					addMessageValidation(champs, validation, enteteCourante[numChamp], new ValidateException(
+							"Le champ est obligatoire"));
+		}
+		return validation;
+	}
+
+	/**
+	 * Valide le champ et rempli l'attribut correspondant au champ
+	 * 
+	 * @param champs
+	 *            liste des valeurs de champ.
+	 * @param validation
+	 *            conteneur d'erreur de validation.
+	 * @param objetCsv
+	 *            objet à remplir.
+	 * @param numChamp
+	 *            numéro du champ.
+	 * @param champ
+	 *            valeur du champ.
+	 * @return conteneur d'erreur de validation.
+	 */
+	private ErreurValidation remplirAttribut(String[] champs, ErreurValidation validation, Object objetCsv,
+			int numChamp, String champ) {
+		String nomChamp = enteteCourante[numChamp];
+		ChampCsv champCsv = classCourante.getChampCsv(nomChamp);
+		if (champCsv != null) {
+			try {
+				if (parametres.hasValidation()) {
+					champCsv.validate(champ);
+				}
+				setValeur(champCsv, objetCsv, champ);
+			} catch (ValidateException exception) {
+				validation = addMessageValidation(champs, validation, enteteCourante[numChamp], exception);
+			}
+		}
+		return validation;
 	}
 
 	/**
