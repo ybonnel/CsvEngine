@@ -35,6 +35,15 @@ public class Parametres {
 	private int nbLinesWithErrorsToStop = 0;
 
 	/**
+	 * Création d'un builder.
+	 * 
+	 * @return le builder.
+	 */
+	public ParametresBuilder createBuilder() {
+		return new ParametresBuilder();
+	}
+
+	/**
 	 * @return validation active?
 	 */
 	public boolean hasValidation() {

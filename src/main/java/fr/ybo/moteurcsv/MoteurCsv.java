@@ -107,7 +107,7 @@ public class MoteurCsv {
 	/**
 	 * Paramètres du moteur.
 	 */
-	private Parametres parametres = new Parametres();
+	private final Parametres parametres;
 
 	/**
 	 * @return les paramètres du moteur.
@@ -123,6 +123,27 @@ public class MoteurCsv {
 	 *            liste des classes à gérer.
 	 */
 	public MoteurCsv(Class<?>... classes) {
+		parametres = new Parametres();
+		factory = new DefaultGestionnaireCsvFactory();
+		for (Class<?> clazz : classes) {
+			scannerClass(clazz);
+		}
+	}
+
+	/**
+	 * Constructeur du moteur.
+	 * 
+	 * @param parametres
+	 *            parametres du moteur (vous pouvez utiliser:
+	 *            {@link Parametres#createBuilder()} pour plus de facilité).<br/>
+	 *            Exemple : Parametres parametres =
+	 *            Parameters.createBuilder().setValidation(true).build();
+	 * 
+	 * @param classes
+	 *            liste des classes à gérer.
+	 */
+	public MoteurCsv(Parametres parametres, Class<?>... classes) {
+		this.parametres = parametres;
 		factory = new DefaultGestionnaireCsvFactory();
 		for (Class<?> clazz : classes) {
 			scannerClass(clazz);
