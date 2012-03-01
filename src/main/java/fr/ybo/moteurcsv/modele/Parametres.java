@@ -39,7 +39,7 @@ public class Parametres {
 	 * 
 	 * @return le builder.
 	 */
-	public ParametresBuilder createBuilder() {
+	public static ParametresBuilder createBuilder() {
 		return new ParametresBuilder();
 	}
 
