@@ -30,6 +30,7 @@ import fr.ybo.moteurcsv.annotation.BaliseCsv;
 import fr.ybo.moteurcsv.annotation.FichierCsv;
 import fr.ybo.moteurcsv.annotation.Validation;
 import fr.ybo.moteurcsv.modele.Erreur;
+import fr.ybo.moteurcsv.modele.Parametres;
 import fr.ybo.moteurcsv.modele.Resultat;
 import fr.ybo.moteurcsv.validator.ValidateException;
 import fr.ybo.moteurcsv.validator.ValidatorCsv;
@@ -148,9 +149,10 @@ public class ValidationTest {
 	@Before
 	public void setup() {
 		streamRg1 = new StringStream("att1,att2\nval1,\n,val2\n,");
-		moteurRg1 = new MoteurCsv(ObjetRg1_1.class, ObjetRg1_2.class, ObjetRg1_3.class, ObjetRg1_4.class);
-		moteurRg1.getParametres().setValidation(true);
-		moteurRg1.getParametres().setNbLinesWithErrorsToStop(999);
+		moteurRg1 =
+				new MoteurCsv(Parametres.createBuilder().setValidation(true).setNbLinesWithErrorsToStop(999).build(),
+						ObjetRg1_1.class, ObjetRg1_2.class, ObjetRg1_3.class, ObjetRg1_4.class);
+
 	}
 
 	/**
@@ -248,7 +250,7 @@ public class ValidationTest {
 		assertTrue(erreur3.getMessages().get(1).contains("obligatoire"));
 		assertTrue(erreur3.getMessages().get(1).contains("att2"));
 	}
-	
+
 	@FichierCsv
 	public static class ObjetRg2 {
 		@Validation(ValidationRg2.class)
@@ -258,18 +260,21 @@ public class ValidationTest {
 		@BaliseCsv("att2")
 		public String att2;
 	}
-	
+
 	public static class ValidationRg2 implements ValidatorCsv {
-		
-		/* (non-Javadoc)
-		 * @see fr.ybo.moteurcsv.validator.ValidatorCsv#validate(java.lang.String)
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * fr.ybo.moteurcsv.validator.ValidatorCsv#validate(java.lang.String)
 		 */
 		public void validate(String champ) throws ValidateException {
 			if (!"RG2".equals(champ)) {
 				throw new ValidateException("Le champs doit être également à RG2");
 			}
 		}
-		
+
 	}
 
 	/**
@@ -277,9 +282,9 @@ public class ValidationTest {
 	 */
 	@Test
 	public void testRg2() {
-		MoteurCsv moteurRg2 = new MoteurCsv(ObjetRg2.class);
-		moteurRg2.getParametres().setValidation(true);
-		moteurRg2.getParametres().setNbLinesWithErrorsToStop(999);
+		MoteurCsv moteurRg2 =
+				new MoteurCsv(Parametres.createBuilder().setValidation(true).setNbLinesWithErrorsToStop(999).build(),
+						ObjetRg2.class);
 		InputStream stream = new StringStream("att1,att2\nRG2,RG2\nRG2,RG1\nRG1,RG2\nRG1,RG3");
 
 		Resultat<ObjetRg2> resultat = moteurRg2.parseInputStream(stream, ObjetRg2.class);
@@ -306,11 +311,31 @@ public class ValidationTest {
 	}
 
 	/**
-	 * Test de la RG3. TODO à faire.
+	 * Test de la RG3.<br/>
+	 * Test avec le jeu de données de RG1_4 (attributs obligatoires).
 	 */
 	@Test
-	public void testRg3() {
+	public void testRg3_1() {
+		moteurRg1.getParametres().setValidation(false);
+		Resultat<ObjetRg1_4> resultat = moteurRg1.parseInputStream(streamRg1, ObjetRg1_4.class);
+		assertNotNull(resultat);
+		assertEquals(3, resultat.getObjets().size());
+	}
 
+	/**
+	 * Test de la RG3.<br/>
+	 * Test avec le jeu de données de RG2 (avec validateur).
+	 */
+	@Test
+	public void testRg3_2() {
+		MoteurCsv moteurRg2 =
+				new MoteurCsv(Parametres.createBuilder().setValidation(false).setNbLinesWithErrorsToStop(999).build(),
+						ObjetRg2.class);
+		InputStream stream = new StringStream("att1,att2\nRG2,RG2\nRG2,RG1\nRG1,RG2\nRG1,RG3");
+
+		Resultat<ObjetRg2> resultat = moteurRg2.parseInputStream(stream, ObjetRg2.class);
+		assertNotNull(resultat);
+		assertEquals(4, resultat.getObjets().size());
 	}
 
 	/**
