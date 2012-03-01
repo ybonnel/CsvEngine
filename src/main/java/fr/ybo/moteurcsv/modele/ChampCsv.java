@@ -23,6 +23,7 @@ import java.util.Map;
 
 import fr.ybo.moteurcsv.adapter.AdapterCsv;
 import fr.ybo.moteurcsv.exception.MoteurCsvException;
+import fr.ybo.moteurcsv.validator.ValidateException;
 import fr.ybo.moteurcsv.validator.ValidatorCsv;
 
 /**
@@ -123,7 +124,7 @@ public class ChampCsv {
 	 * 
 	 * @return le validateur à utiliser.
 	 */
-	public ValidatorCsv getNewValidatorCsv() {
+	private ValidatorCsv getNewValidatorCsv() {
 		if (validator == null) {
 			return null;
 		}
@@ -136,5 +137,20 @@ public class ChampCsv {
 			}
 		}
 		return MAP_VALIDATOR.get(validator);
+	}
+
+	/**
+	 * Méthode permettant de valider la valeur d'un champ.
+	 * 
+	 * @param valeur
+	 *            valeur à valider.
+	 * @throws ValidateException
+	 *             renvoyée en cas d'erreur de validation.
+	 */
+	public void validate(String valeur) throws ValidateException {
+		ValidatorCsv validator = getNewValidatorCsv();
+		if (validator != null) {
+			validator.validate(valeur);
+		}
 	}
 }

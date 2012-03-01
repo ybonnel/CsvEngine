@@ -303,7 +303,6 @@ public class ValidationTest {
 		assertTrue(erreur3.getMessages().get(0).contains("att1"));
 		assertTrue(erreur3.getMessages().get(1).endsWith("Le champs doit être également à RG2"));
 		assertTrue(erreur3.getMessages().get(1).contains("att2"));
-
 	}
 
 	/**

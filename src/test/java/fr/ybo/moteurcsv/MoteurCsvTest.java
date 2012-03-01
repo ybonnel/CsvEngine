@@ -339,7 +339,6 @@ public class MoteurCsvTest {
 			fail("Une exception aurait du être levée");
 		} catch (MoteurCsvException exception) {
 			assertEquals(IOException.class, exception.getCause().getClass());
-			assertTrue(exception.getMessage().contains("ObjetCsv"));
 		}
 	}
 

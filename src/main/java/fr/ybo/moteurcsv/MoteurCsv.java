@@ -48,6 +48,7 @@ import fr.ybo.moteurcsv.modele.InsertObject;
 import fr.ybo.moteurcsv.modele.Parametres;
 import fr.ybo.moteurcsv.modele.Resultat;
 import fr.ybo.moteurcsv.validator.ErreurValidation;
+import fr.ybo.moteurcsv.validator.ValidateException;
 import fr.ybo.moteurcsv.validator.ValidatorCsv;
 
 /**
@@ -154,6 +155,15 @@ public class MoteurCsv {
 		return builder.toString();
 	}
 
+	private void setValeur(ChampCsv champCsv, Object objetCsv, String champ) throws ValidateException {
+		champCsv.getField().setAccessible(true);
+		try {
+			champCsv.getField().set(objetCsv, champCsv.getNewAdapterCsv().parse(champ));
+		} catch (Exception e) {
+			throw new ValidateException("Erreur à l'assignation", e);
+		}
+	}
+
 	/**
 	 * Crée un objet à partir de la ligne courante du csv.
 	 * {@link MoteurCsv#nouveauFichier(Reader, Class)} doit être appelé avant.
@@ -167,52 +177,33 @@ public class MoteurCsv {
 			throw new MoteurCsvException(
 					"La méthode creerObjet a étée appelée sans que la méthode nouveauFichier n'est été appelée.");
 		}
-		String[] champs = null;
-		try {
-			champs = lecteurCsv.readLine();
-		} catch (IOException e) {
-			throw new MoteurCsvException("Erreur à la lecture d'une ligne", e);
-		}
+		String[] champs = readLine();
 		if (champs == null) {
 			return null;
 		}
 		ErreurValidation validation = null;
-		Object objetCsv = null;
-		try {
-			objetCsv = classCourante.getContructeur().newInstance((Object[]) null);
-		} catch (Exception exception) {
-			throw new MoteurCsvException("Erreur à l'instanciation de la class "
-					+ classCourante.getClazz().getSimpleName() + " pour la ligne " + construireLigne(champs), exception);
-		}
+		Object objetCsv = construireObjet();
 		for (int numChamp = 0; numChamp < champs.length; numChamp++) {
 			String champ = champs[numChamp];
 			if (champ != null && !"".equals(champ)) {
 				String nomChamp = enteteCourante[numChamp];
 				ChampCsv champCsv = classCourante.getChampCsv(nomChamp);
 				if (champCsv != null) {
-					champCsv.getField().setAccessible(true);
 					try {
-						champCsv.getField().set(objetCsv, champCsv.getNewAdapterCsv().parse(champ));
-					} catch (Exception e) {
-						if (validation == null) {
-							validation = new ErreurValidation(construireLigne(champs));
+						if (parametres.hasValidation()) {
+							champCsv.validate(champ);
 						}
-						validation
-								.getErreur()
-								.getMessages()
-								.add("Le champ " + enteteCourante[numChamp] + " n'a pas pu être interprété. "
-										+ e.getMessage());
+						setValeur(champCsv, objetCsv, champ);
+					} catch (ValidateException exception) {
+						validation = addMessageValidation(champs, validation, enteteCourante[numChamp], exception);
 					}
-					champCsv.getField().setAccessible(false);
 				}
 			} else if (parametres.hasValidation()) {
 				ChampCsv champCsv = classCourante.getChampCsv(enteteCourante[numChamp]);
 				if (champCsv != null && champCsv.isObligatoire()) {
-					if (validation == null) {
-						validation = new ErreurValidation(construireLigne(champs));
-					}
-					validation.getErreur().getMessages()
-							.add("Le champ " + enteteCourante[numChamp] + " est obligatoire");
+					validation =
+							addMessageValidation(champs, validation, enteteCourante[numChamp], new ValidateException(
+									"Le champ est obligatoire"));
 				}
 			}
 		}
@@ -220,6 +211,67 @@ public class MoteurCsv {
 			throw validation;
 		}
 		return objetCsv;
+	}
+
+	/**
+	 * Ajout du message de validation.
+	 * 
+	 * @param champs
+	 *            champs de la ligne CSV.
+	 * @param validation
+	 *            erreur de validation courante.
+	 * @param nomChamp
+	 *            nom du champ.
+	 * @param exception
+	 *            exception de validation.
+	 * @return l'erreur de validation.
+	 */
+	private ErreurValidation addMessageValidation(String[] champs, ErreurValidation validation, String nomChamp,
+			ValidateException exception) {
+		if (validation == null) {
+			validation = new ErreurValidation(construireLigne(champs));
+		}
+		StringBuilder message = new StringBuilder("Erreur de validation sur le champ ");
+		message.append(nomChamp);
+		message.append(" : ");
+		message.append(exception.getMessage());
+		if (exception.getCause() != null) {
+			message.append(" (cause : ");
+			message.append(exception.getMessage());
+			message.append(')');
+		}
+		validation.getErreur().getMessages().add(message.toString());
+		return validation;
+	}
+
+	/**
+	 * Méthode permettant de construire un objet.
+	 * 
+	 * @return objet constuit.
+	 */
+	private Object construireObjet() {
+		Object objetCsv = null;
+		try {
+			objetCsv = classCourante.getContructeur().newInstance((Object[]) null);
+		} catch (Exception exception) {
+			throw new MoteurCsvException("Erreur à l'instanciation de la class "
+					+ classCourante.getClazz().getSimpleName() + ", il doit manquer un constructeur sans paramètre.",
+					exception);
+		}
+		return objetCsv;
+	}
+
+	/**
+	 * Lecture d'une ligne.
+	 * 
+	 * @return ligne lue.
+	 */
+	private String[] readLine() {
+		try {
+			return lecteurCsv.readLine();
+		} catch (IOException e) {
+			throw new MoteurCsvException("Erreur à la lecture d'une ligne", e);
+		}
 	}
 
 	/**
