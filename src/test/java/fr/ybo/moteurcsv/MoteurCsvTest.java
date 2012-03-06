@@ -42,6 +42,7 @@ import fr.ybo.moteurcsv.adapter.AdapterTime;
 import fr.ybo.moteurcsv.annotation.BaliseCsv;
 import fr.ybo.moteurcsv.annotation.FichierCsv;
 import fr.ybo.moteurcsv.exception.MoteurCsvException;
+import fr.ybo.moteurcsv.exception.NombreErreurDepasseException;
 import fr.ybo.moteurcsv.factory.AbstractReaderCsv;
 import fr.ybo.moteurcsv.factory.AbstractWriterCsv;
 import fr.ybo.moteurcsv.factory.GestionnaireCsvFactory;
@@ -225,7 +226,7 @@ public class MoteurCsvTest {
 	}
 
 	@Test
-	public void testParseInputStream() throws IOException {
+	public void testParseInputStream() throws IOException, NombreErreurDepasseException {
 
 		List<ObjetCsv> objets = moteur.parseInputStream(stream, ObjetCsv.class).getObjets();
 		assertEquals(7, objets.size());
@@ -247,7 +248,7 @@ public class MoteurCsvTest {
 	}
 
 	@Test
-	public void testOtherFactory() {
+	public void testOtherFactory() throws NombreErreurDepasseException {
 
 		moteur.setFactory(new GestionnaireCsvFactory() {
 

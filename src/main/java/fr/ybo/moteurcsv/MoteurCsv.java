@@ -36,6 +36,7 @@ import fr.ybo.moteurcsv.annotation.BaliseCsv;
 import fr.ybo.moteurcsv.annotation.FichierCsv;
 import fr.ybo.moteurcsv.annotation.Validation;
 import fr.ybo.moteurcsv.exception.MoteurCsvException;
+import fr.ybo.moteurcsv.exception.NombreErreurDepasseException;
 import fr.ybo.moteurcsv.factory.AbstractReaderCsv;
 import fr.ybo.moteurcsv.factory.AbstractWriterCsv;
 import fr.ybo.moteurcsv.factory.DefaultGestionnaireCsvFactory;
@@ -400,8 +401,12 @@ public class MoteurCsv {
 	 *            classe de l'objet associé au CSV.
 	 * @return la liste d'<Objet> représentant les enregistrements du fichier
 	 *         CSV.
+	 * @throws NombreErreurDepasseException
+	 *             si le nombre d'erreurs rencontrées et suppérieur au nombre
+	 *             accepté {@link Parametres#getNbLinesWithErrorsToStop()}.
 	 */
-	public <Objet> Resultat<Objet> parseInputStream(InputStream intputStream, Class<Objet> clazz) {
+	public <Objet> Resultat<Objet> parseInputStream(InputStream intputStream, Class<Objet> clazz)
+			throws NombreErreurDepasseException {
 		Resultat<Objet> resultat = new Resultat<Objet>();
 		resultat.getErreurs().addAll(
 				parseFileAndInsert(new BufferedReader(new InputStreamReader(intputStream)), clazz,
@@ -422,9 +427,13 @@ public class MoteurCsv {
 	 * @param insert
 	 *            traitement à éffectuer pour chaque enregistrement.
 	 * @return les erreurs rencontrées.
+	 * @throws NombreErreurDepasseException
+	 *             si le nombre d'erreurs rencontrées et suppérieur au nombre
+	 *             accepté {@link Parametres#getNbLinesWithErrorsToStop()}.
 	 */
 	@SuppressWarnings("unchecked")
-	public <Objet> List<Erreur> parseFileAndInsert(Reader reader, Class<Objet> clazz, InsertObject<Objet> insert) {
+	public <Objet> List<Erreur> parseFileAndInsert(Reader reader, Class<Objet> clazz, InsertObject<Objet> insert)
+			throws NombreErreurDepasseException {
 		List<Erreur> erreurs = new ArrayList<Erreur>();
 		nouveauFichier(reader, clazz);
 		Objet objet = null;

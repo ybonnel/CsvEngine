@@ -19,6 +19,7 @@ package fr.ybo.moteurcsv;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,6 +30,7 @@ import org.junit.Test;
 import fr.ybo.moteurcsv.annotation.BaliseCsv;
 import fr.ybo.moteurcsv.annotation.FichierCsv;
 import fr.ybo.moteurcsv.annotation.Validation;
+import fr.ybo.moteurcsv.exception.NombreErreurDepasseException;
 import fr.ybo.moteurcsv.modele.Erreur;
 import fr.ybo.moteurcsv.modele.Parametres;
 import fr.ybo.moteurcsv.modele.Resultat;
@@ -166,9 +168,10 @@ public class ValidationTest {
 
 	/**
 	 * Test de la RG1 avec les deux champs facultatifs.
+	 * @throws NombreErreurDepasseException exception.
 	 */
 	@Test
-	public void testRg1_1() {
+	public void testRg1_1() throws NombreErreurDepasseException {
 		// Test avec les deux champs facultatif.
 		Resultat<ObjetRg1_1> resultat = moteurRg1.parseInputStream(streamRg1, ObjetRg1_1.class);
 		assertNotNull(resultat);
@@ -179,9 +182,12 @@ public class ValidationTest {
 	/**
 	 * Test de la RG1 avec le premiers champ obligatoire et le second
 	 * facultatif.
+	 * 
+	 * @throws NombreErreurDepasseException
+	 *             exception.
 	 */
 	@Test
-	public void testRg1_2() {
+	public void testRg1_2() throws NombreErreurDepasseException {
 		// Test avec le premier champ obligatoire.
 		Resultat<ObjetRg1_2> resultat = moteurRg1.parseInputStream(streamRg1, ObjetRg1_2.class);
 		assertNotNull(resultat);
@@ -202,9 +208,12 @@ public class ValidationTest {
 	/**
 	 * Test de la RG1 avec le premiers champ facultatif et le second
 	 * obligatoire.
+	 * 
+	 * @throws NombreErreurDepasseException
+	 *             exception.
 	 */
 	@Test
-	public void testRg1_3() {
+	public void testRg1_3() throws NombreErreurDepasseException {
 		// Test avec le deuxième champ obligatoire.
 		Resultat<ObjetRg1_3> resultat = moteurRg1.parseInputStream(streamRg1, ObjetRg1_3.class);
 		assertNotNull(resultat);
@@ -224,9 +233,12 @@ public class ValidationTest {
 
 	/**
 	 * Test de la RG1 avec les deux champs obligatoire.
+	 * 
+	 * @throws NombreErreurDepasseException
+	 *             exception.
 	 */
 	@Test
-	public void testRg1_4() {
+	public void testRg1_4() throws NombreErreurDepasseException {
 		// Test avec les deux champs obligatoires
 		Resultat<ObjetRg1_4> resultat = moteurRg1.parseInputStream(streamRg1, ObjetRg1_4.class);
 		assertNotNull(resultat);
@@ -279,9 +291,12 @@ public class ValidationTest {
 
 	/**
 	 * Test de la RG2.
+	 * 
+	 * @throws NombreErreurDepasseException
+	 *             exception.
 	 */
 	@Test
-	public void testRg2() {
+	public void testRg2() throws NombreErreurDepasseException {
 		MoteurCsv moteurRg2 =
 				new MoteurCsv(Parametres.createBuilder().setValidation(true).setNbLinesWithErrorsToStop(999).build(),
 						ObjetRg2.class);
@@ -313,9 +328,12 @@ public class ValidationTest {
 	/**
 	 * Test de la RG3.<br/>
 	 * Test avec le jeu de données de RG1_4 (attributs obligatoires).
+	 * 
+	 * @throws NombreErreurDepasseException
+	 *             exception.
 	 */
 	@Test
-	public void testRg3_1() {
+	public void testRg3_1() throws NombreErreurDepasseException {
 		moteurRg1.getParametres().setValidation(false);
 		Resultat<ObjetRg1_4> resultat = moteurRg1.parseInputStream(streamRg1, ObjetRg1_4.class);
 		assertNotNull(resultat);
@@ -325,9 +343,12 @@ public class ValidationTest {
 	/**
 	 * Test de la RG3.<br/>
 	 * Test avec le jeu de données de RG2 (avec validateur).
+	 * 
+	 * @throws NombreErreurDepasseException
+	 *             exception.
 	 */
 	@Test
-	public void testRg3_2() {
+	public void testRg3_2() throws NombreErreurDepasseException {
 		MoteurCsv moteurRg2 =
 				new MoteurCsv(Parametres.createBuilder().setValidation(false).setNbLinesWithErrorsToStop(999).build(),
 						ObjetRg2.class);
@@ -339,11 +360,78 @@ public class ValidationTest {
 	}
 
 	/**
-	 * Test de la RG4. TODO à faire.
+	 * Test de la RG4. Test en mettant le nombre d'erreurs acceptées à 1.
 	 */
 	@Test
-	public void testRg4() {
+	public void testRg4_1() {
+		MoteurCsv moteurRg2 =
+				new MoteurCsv(Parametres.createBuilder().setValidation(true).setNbLinesWithErrorsToStop(1).build(),
+						ObjetRg2.class);
+		InputStream stream = new StringStream("att1,att2\nRG2,RG2\nRG2,RG1\nRG1,RG2\nRG1,RG3");
 
+		try {
+			moteurRg2.parseInputStream(stream, ObjetRg2.class);
+			fail("Une exception devrait être levée.");
+		} catch (NombreErreurDepasseException exception) {
+			assertEquals(2, exception.getErreurs().size());
+		}
+	}
+
+	/**
+	 * Test de la RG4. Test en mettant le nombre d'erreurs acceptées à 0.
+	 */
+	@Test
+	public void testRg4_2() {
+		MoteurCsv moteurRg2 =
+				new MoteurCsv(Parametres.createBuilder().setValidation(true).setNbLinesWithErrorsToStop(0).build(),
+						ObjetRg2.class);
+		InputStream stream = new StringStream("att1,att2\nRG2,RG2\nRG2,RG1\nRG1,RG2\nRG1,RG3");
+
+		try {
+			moteurRg2.parseInputStream(stream, ObjetRg2.class);
+			fail("Une exception devrait être levée.");
+		} catch (NombreErreurDepasseException exception) {
+			assertEquals(1, exception.getErreurs().size());
+		}
+	}
+
+	/**
+	 * Test de la RG4. Test en mettant le nombre d'erreurs acceptées à -1
+	 * (infinie).
+	 * 
+	 * @throws NombreErreurDepasseException
+	 *             exception.
+	 */
+	@Test
+	public void testRg4_3() throws NombreErreurDepasseException {
+		MoteurCsv moteurRg2 =
+				new MoteurCsv(Parametres.createBuilder().setValidation(true).setNbLinesWithErrorsToStop(-1).build(),
+						ObjetRg2.class);
+		InputStream stream = new StringStream("att1,att2\nRG2,RG2\nRG2,RG1\nRG1,RG2\nRG1,RG3");
+
+		Resultat<ObjetRg2> resultat = moteurRg2.parseInputStream(stream, ObjetRg2.class);
+		assertNotNull(resultat);
+		assertEquals(1, resultat.getObjets().size());
+		assertEquals(3, resultat.getErreurs().size());
+	}
+
+	/**
+	 * Test de la RG4. Test en mettant le nombre d'erreurs acceptées à 3.
+	 * 
+	 * @throws NombreErreurDepasseException
+	 *             exception.
+	 */
+	@Test
+	public void testRg4_4() throws NombreErreurDepasseException {
+		MoteurCsv moteurRg2 =
+				new MoteurCsv(Parametres.createBuilder().setValidation(true).setNbLinesWithErrorsToStop(3).build(),
+						ObjetRg2.class);
+		InputStream stream = new StringStream("att1,att2\nRG2,RG2\nRG2,RG1\nRG1,RG2\nRG1,RG3");
+
+		Resultat<ObjetRg2> resultat = moteurRg2.parseInputStream(stream, ObjetRg2.class);
+		assertNotNull(resultat);
+		assertEquals(1, resultat.getObjets().size());
+		assertEquals(3, resultat.getErreurs().size());
 	}
 
 }
