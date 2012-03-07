@@ -4,3 +4,4 @@ fr.ybo.moteurcsv.annotation
 fr.ybo.moteurcsv.exception
 fr.ybo.moteurcsv.factory
 fr.ybo.moteurcsv.modele
+fr.ybo.moteurcsv.validator

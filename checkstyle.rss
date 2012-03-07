@@ -8,9 +8,9 @@
     <language>en-us</language>
     <copyright>&#169;2012</copyright>
     <item>
-      <title>File: 26,
+      <title>File: 35,
              Errors: 0,
-             Warnings: 6,
+             Warnings: 18,
              Infos: 0
       </title>
             <link>https://github.com/ybonnel/MoteurCsv/checkstyle.html</link>
@@ -44,6 +44,34 @@
                           <tr>
                 <td>
                   <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.modele.package-info.java">fr/ybo/moteurcsv/modele/package-info.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.annotation.Validation.java">fr/ybo/moteurcsv/annotation/Validation.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.modele.Erreur.java">fr/ybo/moteurcsv/modele/Erreur.java</a>
                 </td>
                 <td>
                   0
@@ -99,7 +127,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.annotation.FichierCsv.java">fr/ybo/moteurcsv/annotation/FichierCsv.java</a>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.validator.ErreurValidation.java">fr/ybo/moteurcsv/validator/ErreurValidation.java</a>
                 </td>
                 <td>
                   0
@@ -113,7 +141,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.modele.ClassCsv.java">fr/ybo/moteurcsv/modele/ClassCsv.java</a>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.annotation.FichierCsv.java">fr/ybo/moteurcsv/annotation/FichierCsv.java</a>
                 </td>
                 <td>
                   0
@@ -141,7 +169,35 @@
               </tr>
                           <tr>
                 <td>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.modele.ClassCsv.java">fr/ybo/moteurcsv/modele/ClassCsv.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.adapter.AdapterInteger.java">fr/ybo/moteurcsv/adapter/AdapterInteger.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.validator.ValidateException.java">fr/ybo/moteurcsv/validator/ValidateException.java</a>
                 </td>
                 <td>
                   0
@@ -211,13 +267,27 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.adapter.AdapterString.java">fr/ybo/moteurcsv/adapter/AdapterString.java</a>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.validator.ValidatorCsv.java">fr/ybo/moteurcsv/validator/ValidatorCsv.java</a>
                 </td>
                 <td>
                   0
                 </td>
                 <td>
                   0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.modele.ParametresBuilder.java">fr/ybo/moteurcsv/modele/ParametresBuilder.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
                 </td>
                 <td>
                   0
@@ -239,6 +309,34 @@
               </tr>
                           <tr>
                 <td>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.adapter.AdapterString.java">fr/ybo/moteurcsv/adapter/AdapterString.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.modele.Resultat.java">fr/ybo/moteurcsv/modele/Resultat.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  4
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.modele.InsertObject.java">fr/ybo/moteurcsv/modele/InsertObject.java</a>
                 </td>
                 <td>
@@ -253,7 +351,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.exception.MoteurCsvException.java">fr/ybo/moteurcsv/exception/MoteurCsvException.java</a>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.exception.NombreErreurDepasseException.java">fr/ybo/moteurcsv/exception/NombreErreurDepasseException.java</a>
                 </td>
                 <td>
                   0
@@ -281,7 +379,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.MoteurCsv.java">fr/ybo/moteurcsv/MoteurCsv.java</a>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.exception.MoteurCsvException.java">fr/ybo/moteurcsv/exception/MoteurCsvException.java</a>
                 </td>
                 <td>
                   0
@@ -295,7 +393,35 @@
               </tr>
                           <tr>
                 <td>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.MoteurCsv.java">fr/ybo/moteurcsv/MoteurCsv.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  6
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.annotation.package-info.java">fr/ybo/moteurcsv/annotation/package-info.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.modele.Parametres.java">fr/ybo/moteurcsv/modele/Parametres.java</a>
                 </td>
                 <td>
                   0
@@ -337,20 +463,6 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.annotation.BaliseCsv.java">fr/ybo/moteurcsv/annotation/BaliseCsv.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.factory.DefaultGestionnaireCsvFactory.java">fr/ybo/moteurcsv/factory/DefaultGestionnaireCsvFactory.java</a>
                 </td>
                 <td>
@@ -365,7 +477,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.factory.AbstractReaderCsv.java">fr/ybo/moteurcsv/factory/AbstractReaderCsv.java</a>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.annotation.BaliseCsv.java">fr/ybo/moteurcsv/annotation/BaliseCsv.java</a>
                 </td>
                 <td>
                   0
@@ -380,6 +492,20 @@
                           <tr>
                 <td>
                   <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.adapter.AdapterBoolean.java">fr/ybo/moteurcsv/adapter/AdapterBoolean.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ybonnel/MoteurCsv/checkstyle.html#fr.ybo.moteurcsv.factory.AbstractReaderCsv.java">fr/ybo/moteurcsv/factory/AbstractReaderCsv.java</a>
                 </td>
                 <td>
                   0
