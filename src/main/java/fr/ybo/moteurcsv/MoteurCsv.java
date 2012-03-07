@@ -435,22 +435,29 @@ public class MoteurCsv {
 	public <Objet> List<Erreur> parseFileAndInsert(Reader reader, Class<Objet> clazz, InsertObject<Objet> insert)
 			throws NombreErreurDepasseException {
 		List<Erreur> erreurs = new ArrayList<Erreur>();
-		nouveauFichier(reader, clazz);
-		Objet objet = null;
-		boolean erreurValidation = false;
-		do {
-			try {
-				erreurValidation = false;
-				objet = (Objet) creerObjet();
-				if (objet != null) {
-					insert.insertObject(objet);
+		try {
+			nouveauFichier(reader, clazz);
+			Objet objet = null;
+			boolean erreurValidation = false;
+			do {
+				try {
+					erreurValidation = false;
+					objet = (Objet) creerObjet();
+					if (objet != null) {
+						insert.insertObject(objet);
+					}
+				} catch (ErreurValidation exceptionValidation) {
+					erreurValidation = true;
+					erreurs.add(exceptionValidation.getErreur());
+					if (parametres.getNbLinesWithErrorsToStop() >= 0
+							&& erreurs.size() > parametres.getNbLinesWithErrorsToStop()) {
+						throw new NombreErreurDepasseException(erreurs);
+					}
 				}
-			} catch (ErreurValidation exceptionValidation) {
-				erreurValidation = true;
-				erreurs.add(exceptionValidation.getErreur());
-			}
-		} while (objet != null || erreurValidation);
-		closeLecteurCourant();
+			} while (objet != null || erreurValidation);
+		} finally {
+			closeLecteurCourant();
+		}
 		return erreurs;
 	}
 
