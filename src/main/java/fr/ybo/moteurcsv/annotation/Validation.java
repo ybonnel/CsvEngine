@@ -37,4 +37,9 @@ public @interface Validation {
 	 * Validateur à utiliser pour valider la colonne.
 	 */
 	Class<? extends ValidatorCsv> value();
+
+	/**
+	 * Paramètres du validateur. Aucun paramètre par défaut.
+	 */
+	Param[] params() default {};
 }

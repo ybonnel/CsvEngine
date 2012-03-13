@@ -21,42 +21,66 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import fr.ybo.moteurcsv.adapter.AdapterCsv;
-import fr.ybo.moteurcsv.adapter.AdapterString;
-
 /**
- * Annotation utilisée pour représenté une colonne csv.
+ * Annotation utilisée pour contenir un paramètre des Adapter et des Validator.
  * 
  * @author ybonnel
  * 
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface BaliseCsv {
+public @interface Param {
 
 	/**
-	 * adapter à utiliser pour transformer l'objet en chaine et inversement.
+	 * Nom du paramètre.
 	 */
-	Class<? extends AdapterCsv<?>> adapter() default AdapterString.class;
+	String name();
 
 	/**
-	 * nom de la colonne CSV.
+	 * Valeur du paramètre.
 	 */
 	String value();
 
 	/**
-	 * Ordre de la colonne (permet d'assurer que les colonnes soient toujours
-	 * écrite dans un ordre défini).
+	 * Type du paramètre : String par défaut.
+	 * 
+	 * @return
 	 */
-	int ordre() default 0;
+	TypeParam type() default TypeParam.STRING;
 
 	/**
-	 * Permet de décrire si le champ est obligatoire (false par défaut).
+	 * Représente le type d'un paramètre.
 	 */
-	boolean obligatoire() default false;
+	public static enum TypeParam {
+		/**
+		 * {@link Integer}.
+		 */
+		INTEGER(Integer.class),
+		/**
+		 * {@link String}.
+		 */
+		STRING(String.class);
 
-	/**
-	 * Paramètres de l'adapteur. Aucun paramètre par défaut.
-	 */
-	Param[] params() default {};
+		/**
+		 * Classe associée au type.
+		 */
+		private Class<?> clazz;
+
+		/**
+		 * Constructeur de l'énum.
+		 * 
+		 * @param clazz
+		 *            classe associée au type.
+		 */
+		private TypeParam(Class<?> clazz) {
+			this.clazz = clazz;
+		}
+
+		/**
+		 * @return classe associée au type.
+		 */
+		public Class<?> getClazz() {
+			return clazz;
+		}
+	}
 }
