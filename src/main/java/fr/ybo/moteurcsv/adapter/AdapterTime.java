@@ -23,7 +23,7 @@ package fr.ybo.moteurcsv.adapter;
  * @author ybonnel
  * 
  */
-public class AdapterTime implements AdapterCsv<Integer> {
+public class AdapterTime extends AdapterCsv<Integer> {
 
 	/**
 	 * Une dixaine.

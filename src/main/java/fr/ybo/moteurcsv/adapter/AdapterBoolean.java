@@ -26,7 +26,7 @@ package fr.ybo.moteurcsv.adapter;
  * @author ybonnel
  * 
  */
-public class AdapterBoolean implements AdapterCsv<Boolean> {
+public class AdapterBoolean extends AdapterCsv<Boolean> {
 
 	/**
 	 * Transforme une chaine en Boolean.

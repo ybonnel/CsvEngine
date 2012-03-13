@@ -22,7 +22,7 @@ package fr.ybo.moteurcsv.adapter;
  * @author ybonnel
  * 
  */
-public class AdapterInteger implements AdapterCsv<Integer> {
+public class AdapterInteger extends AdapterCsv<Integer> {
 
 	/**
 	 * Transforme une chaine en Integer.

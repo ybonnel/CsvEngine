@@ -273,7 +273,7 @@ public class ValidationTest {
 		public String att2;
 	}
 
-	public static class ValidationRg2 implements ValidatorCsv {
+	public static class ValidationRg2 extends ValidatorCsv {
 
 		/*
 		 * (non-Javadoc)

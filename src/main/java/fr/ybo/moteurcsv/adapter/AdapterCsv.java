@@ -24,7 +24,7 @@ package fr.ybo.moteurcsv.adapter;
  * @param <Objet>
  *            Objet à adapter en CSV (associé à une colonne).
  */
-public interface AdapterCsv<Objet> {
+public abstract class AdapterCsv<Objet> {
 
 	/**
 	 * Transforme une chaine en Objet.
@@ -33,7 +33,7 @@ public interface AdapterCsv<Objet> {
 	 *            la chaine à transformer.
 	 * @return l'objet tranformé.
 	 */
-	Objet parse(String chaine);
+	public abstract Objet parse(String chaine);
 
 	/**
 	 * Transforme un objet en chaine.
@@ -42,5 +42,5 @@ public interface AdapterCsv<Objet> {
 	 *            objet à tranformer.
 	 * @return la chaine obtenu.
 	 */
-	String toString(Objet objet);
+	public abstract String toString(Objet objet);
 }

@@ -22,7 +22,7 @@ package fr.ybo.moteurcsv.adapter;
  * @author ybonnel
  * 
  */
-public class AdapterString implements AdapterCsv<String> {
+public class AdapterString extends AdapterCsv<String> {
 
 	/**
 	 * Ne fait rien.

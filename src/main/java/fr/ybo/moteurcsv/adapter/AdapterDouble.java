@@ -22,7 +22,7 @@ package fr.ybo.moteurcsv.adapter;
  * @author ybonnel
  * 
  */
-public class AdapterDouble implements AdapterCsv<Double> {
+public class AdapterDouble extends AdapterCsv<Double> {
 
 	/**
 	 * Transforme une chaine en Double.

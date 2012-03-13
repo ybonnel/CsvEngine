@@ -22,7 +22,7 @@ package fr.ybo.moteurcsv.validator;
  * @author ybonnel
  * 
  */
-public interface ValidatorCsv {
+public abstract class ValidatorCsv {
 
 	/**
 	 * Méthode à implémenter pour la validation du champ.
@@ -32,5 +32,5 @@ public interface ValidatorCsv {
 	 * @throws ValidateException
 	 *             en cas d'erreur de validation.
 	 */
-	void validate(String champ) throws ValidateException;
+	public abstract void validate(String champ) throws ValidateException;
 }
