@@ -40,47 +40,4 @@ public @interface Param {
 	 * Valeur du paramètre.
 	 */
 	String value();
-
-	/**
-	 * Type du paramètre : String par défaut.
-	 * 
-	 * @return
-	 */
-	TypeParam type() default TypeParam.STRING;
-
-	/**
-	 * Représente le type d'un paramètre.
-	 */
-	public static enum TypeParam {
-		/**
-		 * {@link Integer}.
-		 */
-		INTEGER(Integer.class),
-		/**
-		 * {@link String}.
-		 */
-		STRING(String.class);
-
-		/**
-		 * Classe associée au type.
-		 */
-		private Class<?> clazz;
-
-		/**
-		 * Constructeur de l'énum.
-		 * 
-		 * @param clazz
-		 *            classe associée au type.
-		 */
-		private TypeParam(Class<?> clazz) {
-			this.clazz = clazz;
-		}
-
-		/**
-		 * @return classe associée au type.
-		 */
-		public Class<?> getClazz() {
-			return clazz;
-		}
-	}
 }
