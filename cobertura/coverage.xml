@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
 
-<coverage line-rate="0.9285714285714286" branch-rate="0.8482142857142857" lines-covered="312" lines-valid="336" branches-covered="95" branches-valid="112" complexity="1.9772727272727273" version="1.9.4.1" timestamp="1331133118008">
+<coverage line-rate="0.9101449275362319" branch-rate="0.8482142857142857" lines-covered="314" lines-valid="345" branches-covered="95" branches-valid="112" complexity="1.9555555555555555" version="1.9.4.1" timestamp="1331654901093">
 	<sources>
 		<source>--source</source>
 		<source>/scratch/hudson/workspace/MoteurCsv-deploySnapshot/src/main/java</source>
@@ -715,7 +715,7 @@
 				</class>
 			</classes>
 		</package>
-		<package name="fr.ybo.moteurcsv.adapter" line-rate="0.8787878787878788" branch-rate="0.5" complexity="1.75">
+		<package name="fr.ybo.moteurcsv.adapter" line-rate="0.8823529411764706" branch-rate="0.5" complexity="1.75">
 			<classes>
 				<class name="fr.ybo.moteurcsv.adapter.AdapterBoolean" filename="fr/ybo/moteurcsv/adapter/AdapterBoolean.java" line-rate="1.0" branch-rate="0.5" complexity="1.5">
 					<methods>
@@ -767,8 +767,14 @@
 				</class>
 				<class name="fr.ybo.moteurcsv.adapter.AdapterCsv" filename="fr/ybo/moteurcsv/adapter/AdapterCsv.java" line-rate="1.0" branch-rate="1.0" complexity="1.0">
 					<methods>
+						<method name="&lt;init&gt;" signature="()V" line-rate="1.0" branch-rate="1.0">
+							<lines>
+								<line number="27" hits="5" branch="false"/>
+							</lines>
+						</method>
 					</methods>
 					<lines>
+						<line number="27" hits="5" branch="false"/>
 					</lines>
 				</class>
 				<class name="fr.ybo.moteurcsv.adapter.AdapterDouble" filename="fr/ybo/moteurcsv/adapter/AdapterDouble.java" line-rate="1.0" branch-rate="1.0" complexity="1.0">
@@ -977,7 +983,7 @@
 				</class>
 			</classes>
 		</package>
-		<package name="fr.ybo.moteurcsv.annotation" line-rate="1.0" branch-rate="1.0" complexity="0.0">
+		<package name="fr.ybo.moteurcsv.annotation" line-rate="0.0" branch-rate="1.0" complexity="1.0">
 			<classes>
 				<class name="fr.ybo.moteurcsv.annotation.BaliseCsv" filename="fr/ybo/moteurcsv/annotation/BaliseCsv.java" line-rate="1.0" branch-rate="1.0" complexity="0.0">
 					<methods>
@@ -989,6 +995,52 @@
 					<methods>
 					</methods>
 					<lines>
+					</lines>
+				</class>
+				<class name="fr.ybo.moteurcsv.annotation.Param" filename="fr/ybo/moteurcsv/annotation/Param.java" line-rate="1.0" branch-rate="1.0" complexity="1.0">
+					<methods>
+					</methods>
+					<lines>
+					</lines>
+				</class>
+				<class name="fr.ybo.moteurcsv.annotation.Param$TypeParam" filename="fr/ybo/moteurcsv/annotation/Param.java" line-rate="0.0" branch-rate="1.0" complexity="1.0">
+					<methods>
+						<method name="&lt;clinit&gt;" signature="()V" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="54" hits="0" branch="false"/>
+								<line number="58" hits="0" branch="false"/>
+								<line number="62" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="&lt;init&gt;" signature="(Ljava/lang/String;ILjava/lang/Class;)V" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="75" hits="0" branch="false"/>
+								<line number="76" hits="0" branch="false"/>
+								<line number="77" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="getClazz" signature="()Ljava/lang/Class;" line-rate="0.0" branch-rate="1.0">
+							<lines>
+								<line number="83" hits="0" branch="false"/>
+							</lines>
+						</method>
+						<method name="valueOf" signature="(Ljava/lang/String;)Lfr/ybo/moteurcsv/annotation/Param$TypeParam;" line-rate="1.0" branch-rate="1.0">
+							<lines>
+							</lines>
+						</method>
+						<method name="values" signature="()[Lfr/ybo/moteurcsv/annotation/Param$TypeParam;" line-rate="1.0" branch-rate="1.0">
+							<lines>
+							</lines>
+						</method>
+					</methods>
+					<lines>
+						<line number="54" hits="0" branch="false"/>
+						<line number="58" hits="0" branch="false"/>
+						<line number="62" hits="0" branch="false"/>
+						<line number="75" hits="0" branch="false"/>
+						<line number="76" hits="0" branch="false"/>
+						<line number="77" hits="0" branch="false"/>
+						<line number="83" hits="0" branch="false"/>
 					</lines>
 				</class>
 				<class name="fr.ybo.moteurcsv.annotation.Validation" filename="fr/ybo/moteurcsv/annotation/Validation.java" line-rate="1.0" branch-rate="1.0" complexity="0.0">
@@ -1657,7 +1709,7 @@
 				</class>
 			</classes>
 		</package>
-		<package name="fr.ybo.moteurcsv.validator" line-rate="0.7777777777777778" branch-rate="1.0" complexity="1.0">
+		<package name="fr.ybo.moteurcsv.validator" line-rate="0.8" branch-rate="1.0" complexity="1.0">
 			<classes>
 				<class name="fr.ybo.moteurcsv.validator.ErreurValidation" filename="fr/ybo/moteurcsv/validator/ErreurValidation.java" line-rate="1.0" branch-rate="1.0" complexity="1.0">
 					<methods>
@@ -1707,8 +1759,14 @@
 				</class>
 				<class name="fr.ybo.moteurcsv.validator.ValidatorCsv" filename="fr/ybo/moteurcsv/validator/ValidatorCsv.java" line-rate="1.0" branch-rate="1.0" complexity="1.0">
 					<methods>
+						<method name="&lt;init&gt;" signature="()V" line-rate="1.0" branch-rate="1.0">
+							<lines>
+								<line number="25" hits="1" branch="false"/>
+							</lines>
+						</method>
 					</methods>
 					<lines>
+						<line number="25" hits="1" branch="false"/>
 					</lines>
 				</class>
 			</classes>
