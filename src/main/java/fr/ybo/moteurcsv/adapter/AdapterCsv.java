@@ -16,6 +16,11 @@
  */
 package fr.ybo.moteurcsv.adapter;
 
+import java.util.Map;
+
+import fr.ybo.moteurcsv.exception.InvalideParamException;
+import fr.ybo.moteurcsv.validator.ValidateException;
+
 /**
  * Interface à implémenter pour tout les adapter CSV.
  * 
@@ -27,13 +32,27 @@ package fr.ybo.moteurcsv.adapter;
 public abstract class AdapterCsv<Objet> {
 
 	/**
+	 * Méthode appelée après la contruction de l'adapter.<br/>
+	 * Méthode à surcharger si on souhaite utiliser des paramètres.
+	 * 
+	 * @param params
+	 *            paramètres.
+	 * @throws si
+	 *             les paramètres ne sont pas corrects.
+	 */
+	public void addParams(Map<String, String> params) throws InvalideParamException {
+	}
+
+	/**
 	 * Transforme une chaine en Objet.
 	 * 
 	 * @param chaine
 	 *            la chaine à transformer.
 	 * @return l'objet tranformé.
+	 * @throws ValidateException
+	 *             peut être envoyée si la chaine n'a pas le bon format.
 	 */
-	public abstract Objet parse(String chaine);
+	public abstract Objet parse(String chaine) throws ValidateException;
 
 	/**
 	 * Transforme un objet en chaine.
