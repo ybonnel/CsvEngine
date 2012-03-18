@@ -35,6 +35,11 @@ public class ParametresMoteur {
 	private int nbLinesWithErrorsToStop = 0;
 
 	/**
+	 * Permet de désactiver l'ajout de guillemets pour encadrer les champs.
+	 */
+	private boolean addQuoteCar = true;
+
+	/**
 	 * Création d'un builder.
 	 * 
 	 * @return le builder.
@@ -77,6 +82,24 @@ public class ParametresMoteur {
 	 */
 	public void setNbLinesWithErrorsToStop(int nbLinesWithErrorsToStop) {
 		this.nbLinesWithErrorsToStop = nbLinesWithErrorsToStop;
+	}
+
+	/**
+	 * @return l'ajout de caractère de délimitation de champ activé?
+	 */
+	public boolean hasAddQuoteCar() {
+		return addQuoteCar;
+	}
+
+	/**
+	 * Permet d'activer ou non l'ajout de délimiteur de champs (guillemet).<br/>
+	 * true par défaut.
+	 * 
+	 * @param addQuoteCar
+	 *            true pour activer l'ajout de délimiteurs.
+	 */
+	public void setAddQuoteCar(boolean addQuoteCar) {
+		this.addQuoteCar = addQuoteCar;
 	}
 
 }

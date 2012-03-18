@@ -553,7 +553,8 @@ public class MoteurCsv {
 	public <Objet> void writeFile(Writer writer, Iterable<Objet> objets, Class<Objet> clazz) {
 		try {
 			final ClassCsv classCsv = mapClasses.get(clazz);
-			AbstractWriterCsv writerCsv = factory.createWriterCsv(writer, classCsv.getSeparateurWithoutEscape());
+			AbstractWriterCsv writerCsv =
+					factory.createWriterCsv(writer, classCsv.getSeparateurWithoutEscape(), parametres.hasAddQuoteCar());
 			try {
 				List<String> nomChamps = new ArrayList<String>();
 				for (String champ : classCsv.getNomChamps()) {

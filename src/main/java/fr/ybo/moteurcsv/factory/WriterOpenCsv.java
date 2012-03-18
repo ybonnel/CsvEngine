@@ -42,9 +42,15 @@ public class WriterOpenCsv extends AbstractWriterCsv {
 	 *            fichier CSV.
 	 * @param separateur
 	 *            séparateur.
+	 * @param addQuoteCar
+	 *            true pour avoir des délimiteurs de champs.
 	 */
-	public WriterOpenCsv(Writer writer, char separateur) {
-		this.csvWriter = new CSVWriter(writer, separateur);
+	public WriterOpenCsv(Writer writer, char separateur, boolean addQuoteCar) {
+		if (addQuoteCar) {
+			this.csvWriter = new CSVWriter(writer, separateur);
+		} else {
+			this.csvWriter = new CSVWriter(writer, separateur, CSVWriter.NO_QUOTE_CHARACTER);
+		}
 	}
 
 	@Override

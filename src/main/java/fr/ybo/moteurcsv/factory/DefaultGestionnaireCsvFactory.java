@@ -47,10 +47,12 @@ public class DefaultGestionnaireCsvFactory implements GestionnaireCsvFactory {
 	 *            fichier CSV.
 	 * @param separator
 	 *            séparateur.
+	 * @param addQuoteCar
+	 *            true pour avoir des délimiteurs de champs.
 	 * @return WriterCsv à base d'OpenCsv {@link WriterOpenCsv}.
 	 */
-	public AbstractWriterCsv createWriterCsv(Writer writer, char separator) {
-		return new WriterOpenCsv(writer, separator);
+	public AbstractWriterCsv createWriterCsv(Writer writer, char separator, boolean addQuoteCar) {
+		return new WriterOpenCsv(writer, separator, addQuoteCar);
 	}
 
 }

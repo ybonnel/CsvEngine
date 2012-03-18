@@ -37,9 +37,11 @@ public interface GestionnaireCsvFactory {
 	 * 
 	 * @param separator
 	 *            séparateur.
+	 * @param addQuoteCar
+	 *            true pour avoir des délimiteurs de champs.
 	 * @return le writer de CSV.
 	 */
-	AbstractWriterCsv createWriterCsv(Writer writer, char separator);
+	AbstractWriterCsv createWriterCsv(Writer writer, char separator, boolean addQuoteCar);
 
 	/**
 	 * Création d'un reader de CSV.

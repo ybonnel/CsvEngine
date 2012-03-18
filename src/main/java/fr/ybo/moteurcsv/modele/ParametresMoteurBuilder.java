@@ -62,6 +62,19 @@ public class ParametresMoteurBuilder {
 	}
 
 	/**
+	 * Permet d'activer ou non l'ajout de délimiteur de champs (guillemet).<br/>
+	 * true par défaut.
+	 * 
+	 * @param addQuoteCar
+	 *            true pour activer l'ajout de délimiteurs.
+	 * @return le builder.
+	 */
+	public ParametresMoteurBuilder setAddQuoteCar(boolean addQuoteCar) {
+		parametres.setAddQuoteCar(addQuoteCar);
+		return this;
+	}
+
+	/**
 	 * Construit l'instance de {@link ParametresMoteur}.
 	 * 
 	 * @return l'instance construite.

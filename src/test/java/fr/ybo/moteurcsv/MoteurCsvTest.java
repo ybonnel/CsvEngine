@@ -27,8 +27,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
@@ -46,6 +48,7 @@ import fr.ybo.moteurcsv.exception.NombreErreurDepasseException;
 import fr.ybo.moteurcsv.factory.AbstractReaderCsv;
 import fr.ybo.moteurcsv.factory.AbstractWriterCsv;
 import fr.ybo.moteurcsv.factory.GestionnaireCsvFactory;
+import fr.ybo.moteurcsv.modele.ParametresMoteur;
 import fr.ybo.moteurcsv.validator.ErreurValidation;
 
 /**
@@ -252,7 +255,7 @@ public class MoteurCsvTest {
 
 		moteur.setFactory(new GestionnaireCsvFactory() {
 
-			public AbstractWriterCsv createWriterCsv(final Writer writer, char separator) {
+			public AbstractWriterCsv createWriterCsv(final Writer writer, char separator, boolean addQuoteCar) {
 				return new AbstractWriterCsv() {
 
 					public void close() throws IOException {
@@ -311,7 +314,7 @@ public class MoteurCsvTest {
 		}
 
 		moteur.setFactory(new GestionnaireCsvFactory() {
-			public AbstractWriterCsv createWriterCsv(Writer writer, char separator) {
+			public AbstractWriterCsv createWriterCsv(Writer writer, char separator, boolean addQuoteCar) {
 				return null;
 			}
 
@@ -353,7 +356,7 @@ public class MoteurCsvTest {
 		}
 
 		moteur.setFactory(new GestionnaireCsvFactory() {
-			public AbstractWriterCsv createWriterCsv(Writer writer, char separator) {
+			public AbstractWriterCsv createWriterCsv(Writer writer, char separator, boolean addQuoteCar) {
 				return null;
 			}
 
@@ -391,7 +394,7 @@ public class MoteurCsvTest {
 	public void testWriteFile() {
 		moteur.setFactory(new GestionnaireCsvFactory() {
 
-			public AbstractWriterCsv createWriterCsv(Writer writer, char separator) {
+			public AbstractWriterCsv createWriterCsv(Writer writer, char separator, boolean addQuoteCar) {
 				return new AbstractWriterCsv() {
 					public void close() throws IOException {
 					}
@@ -469,6 +472,34 @@ public class MoteurCsvTest {
 		} catch (MoteurCsvException exception) {
 			assertTrue(exception.getMessage().contains("il doit manquer le constructeur sans paramètre"));
 		}
+	}
+
+	@FichierCsv
+	public static class ObjetSimple {
+		@BaliseCsv("att")
+		public String att;
+	}
+
+	@Test
+	public void testAddQuoteCar() {
+		ObjetSimple objet = new ObjetSimple();
+		objet.att = "valeur";
+
+		MoteurCsv moteur =
+				new MoteurCsv(ParametresMoteur.createBuilder().setAddQuoteCar(true).build(), ObjetSimple.class);
+		StringWriter writer = new StringWriter();
+
+		moteur.writeFile(writer, Arrays.asList(objet), ObjetSimple.class);
+
+		assertEquals("\"att\"\n\"valeur\"\n", writer.getBuffer().toString());
+
+		moteur = new MoteurCsv(ParametresMoteur.createBuilder().setAddQuoteCar(false).build(), ObjetSimple.class);
+		writer = new StringWriter();
+
+		moteur.writeFile(writer, Arrays.asList(objet), ObjetSimple.class);
+
+		assertEquals("att\nvaleur\n", writer.getBuffer().toString());
+
 	}
 
 }
