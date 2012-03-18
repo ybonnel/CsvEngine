@@ -54,4 +54,24 @@ public class NombreErreurDepasseException extends Exception {
 		return erreurs;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Throwable#getMessage()
+	 */
+	@Override
+	public String getMessage() {
+		StringBuilder builder = new StringBuilder();
+		for (Erreur erreur : getErreurs()) {
+			for (String message : erreur.getMessages()) {
+				builder.append(message);
+				builder.append('\n');
+			}
+			if (builder.length() > 4000) {
+				break;
+			}
+		}
+		return builder.toString();
+	}
+
 }

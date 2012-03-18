@@ -21,7 +21,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 import org.junit.Before;
@@ -51,31 +50,6 @@ import fr.ybo.moteurcsv.validator.ValidatorCsv;
  * 
  */
 public class ValidationTest {
-
-	/**
-	 * InputStream permettant de simuler.
-	 * 
-	 * @author ybonnel
-	 * 
-	 */
-	private final class StringStream extends InputStream {
-		private String chaine;
-		private int count = 0;
-
-		@Override
-		public int read() throws IOException {
-			if (count >= chaine.length()) {
-				return -1;
-			}
-			return chaine.charAt(count++);
-		}
-
-		public StringStream(String chaine) {
-			super();
-			this.chaine = chaine;
-		}
-
-	}
 
 	/**
 	 * Classe pour la RG1.

@@ -57,7 +57,8 @@ public class AdapterDate extends AdapterCsv<Date> {
 		try {
 			format = new SimpleDateFormat(params.get(PARAM_FORMAT));
 		} catch (IllegalArgumentException exception) {
-			throw new InvalideParamException("Le paramètre \"" + PARAM_FORMAT + "\" n'a pas le bon format", exception);
+			throw new InvalideParamException("Le paramètre \"" + PARAM_FORMAT + "\" n'a pas le bon format : "
+					+ params.get(PARAM_FORMAT), exception);
 		}
 	}
 
@@ -71,7 +72,9 @@ public class AdapterDate extends AdapterCsv<Date> {
 		try {
 			return format.parse(chaine);
 		} catch (ParseException e) {
-			throw new ValidateException("Une date n'a pas le bon format", e);
+			System.out.println(e.getMessage());
+			throw new ValidateException(
+					"Une date n'a pas le bon format, (format attendu : " + format.toPattern() + ")", e);
 		}
 	}
 

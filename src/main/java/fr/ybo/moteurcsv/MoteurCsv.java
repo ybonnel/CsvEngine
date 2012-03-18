@@ -50,7 +50,6 @@ import fr.ybo.moteurcsv.modele.Parametres;
 import fr.ybo.moteurcsv.modele.Resultat;
 import fr.ybo.moteurcsv.validator.ErreurValidation;
 import fr.ybo.moteurcsv.validator.ValidateException;
-import fr.ybo.moteurcsv.validator.ValidatorCsv;
 
 /**
  * Moteur de lecture et écriture de fichier CSV.<br/>
@@ -180,7 +179,9 @@ public class MoteurCsv {
 	private void setValeur(ChampCsv champCsv, Object objetCsv, String champ) throws ValidateException {
 		champCsv.getField().setAccessible(true);
 		try {
-			champCsv.getField().set(objetCsv, champCsv.getNewAdapterCsv().parse(champ));
+			champCsv.getField().set(objetCsv, champCsv.getAdapterCsv().parse(champ));
+		} catch (ValidateException exception) {
+			throw exception;
 		} catch (Exception e) {
 			throw new ValidateException("Erreur à l'assignation", e);
 		}
@@ -314,7 +315,7 @@ public class MoteurCsv {
 		message.append(exception.getMessage());
 		if (exception.getCause() != null) {
 			message.append(" (cause : ");
-			message.append(exception.getMessage());
+			message.append(exception.getCause().getMessage());
 			message.append(')');
 		}
 		validation.getErreur().getMessages().add(message.toString());
@@ -480,9 +481,7 @@ public class MoteurCsv {
 			BaliseCsv baliseCsv = field.getAnnotation(BaliseCsv.class);
 			Validation validation = field.getAnnotation(Validation.class);
 			if (baliseCsv != null) {
-				Class<? extends ValidatorCsv> validator = validation == null ? null : validation.value();
-				classCsv.setChampCsv(baliseCsv.value(),
-						new ChampCsv(baliseCsv.adapter(), validator, field, baliseCsv.obligatoire()));
+				classCsv.setChampCsv(baliseCsv.value(), new ChampCsv(baliseCsv, validation, field));
 				classCsv.putOrdre(baliseCsv.value(), baliseCsv.ordre());
 			}
 		}
@@ -514,7 +513,7 @@ public class MoteurCsv {
 			Object valeur = champCsv.getField().get(objet);
 			champCsv.getField().setAccessible(false);
 			if (valeur != null) {
-				champs.add(champCsv.getNewAdapterCsv().toString(valeur));
+				champs.add(champCsv.getAdapterCsv().toString(valeur));
 			} else {
 				champs.add(null);
 			}
