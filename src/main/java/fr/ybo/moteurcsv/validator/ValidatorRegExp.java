@@ -20,7 +20,6 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-import fr.ybo.moteurcsv.annotation.BaliseCsv;
 import fr.ybo.moteurcsv.exception.InvalideParamException;
 
 /**
@@ -28,7 +27,8 @@ import fr.ybo.moteurcsv.exception.InvalideParamException;
  * régulière. <br/>
  * Paramètre : {@link ValidatorRegExp#PARAM_PATTERN} contient l'expression
  * régulière ({@link Pattern}).<br/>
- * Le paramètre format est à fournir via {@link BaliseCsv#params()}.
+ * Le paramètre format est à fournir via
+ * {@link fr.ybo.moteurcsv.annotation.BaliseCsv#params()}.
  */
 public class ValidatorRegExp extends ValidatorCsv {
 

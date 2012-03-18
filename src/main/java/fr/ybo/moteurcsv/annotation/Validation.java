@@ -41,5 +41,5 @@ public @interface Validation {
 	/**
 	 * Paramètres du validateur. Aucun paramètre par défaut.
 	 */
-	Param[] params() default {};
+	Param[] params() default { };
 }

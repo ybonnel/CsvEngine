@@ -28,6 +28,10 @@ import fr.ybo.moteurcsv.modele.Erreur;
 public class NombreErreurDepasseException extends Exception {
 
 	/**
+	 * Taille max d'un message.
+	 */
+	private static final int TAILLE_MAX_MESSAGE = 4000;
+	/**
 	 * Serial.
 	 */
 	private static final long serialVersionUID = 1L;
@@ -67,7 +71,7 @@ public class NombreErreurDepasseException extends Exception {
 				builder.append(message);
 				builder.append('\n');
 			}
-			if (builder.length() > 4000) {
+			if (builder.length() > TAILLE_MAX_MESSAGE) {
 				break;
 			}
 		}

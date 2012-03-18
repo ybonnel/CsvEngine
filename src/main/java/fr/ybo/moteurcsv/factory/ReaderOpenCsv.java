@@ -47,6 +47,13 @@ public class ReaderOpenCsv extends AbstractReaderCsv {
 		this.reader = new CSVReader(reader, separator);
 	}
 	
+	/**
+	 * Permet de savoir si une ligne est vide ou non.
+	 * 
+	 * @param nextLine
+	 *            la ligne à vérifier.
+	 * @return true si la ligne est vide.
+	 */
 	protected static boolean isEmpty(String[] nextLine) {
 		return (nextLine != null && nextLine.length == 1 && "".equals(nextLine[0]));
 	}

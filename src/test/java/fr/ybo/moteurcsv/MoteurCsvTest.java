@@ -201,7 +201,7 @@ public class MoteurCsvTest {
 	/**
 	 * Entete.
 	 */
-	private final static String ENTETE_654321 = "att_6|att_5|att_4|att_3|att_2|att_1";
+	private static final String ENTETE_654321 = "att_6|att_5|att_4|att_3|att_2|att_1";
 
 	/**
 	 * Setup.

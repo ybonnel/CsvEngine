@@ -22,7 +22,7 @@ package fr.ybo.moteurcsv.modele;
  * @author ybonnel
  * 
  */
-public class Parametres {
+public class ParametresMoteur {
 
 	/**
 	 * Permet d'activer ou non la validation.
@@ -39,8 +39,8 @@ public class Parametres {
 	 * 
 	 * @return le builder.
 	 */
-	public static ParametresBuilder createBuilder() {
-		return new ParametresBuilder();
+	public static ParametresMoteurBuilder createBuilder() {
+		return new ParametresMoteurBuilder();
 	}
 
 	/**

@@ -21,7 +21,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
-import fr.ybo.moteurcsv.annotation.BaliseCsv;
 import fr.ybo.moteurcsv.exception.InvalideParamException;
 import fr.ybo.moteurcsv.validator.ValidateException;
 
@@ -29,7 +28,8 @@ import fr.ybo.moteurcsv.validator.ValidateException;
  * Adapteur pour les dates.<br/>
  * <br/>
  * Paramètre : {@link AdapterDate#PARAM_FORMAT} contient le format de la date.<br/>
- * Le paramètre format est à fournir via {@link BaliseCsv#params()}.
+ * Le paramètre format est à fournir via
+ * {@link fr.ybo.moteurcsv.annotation.BaliseCsv#params()}.
  */
 public class AdapterDate extends AdapterCsv<Date> {
 

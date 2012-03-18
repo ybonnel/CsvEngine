@@ -25,9 +25,10 @@ import java.util.List;
  * <ul>
  * <li>La liste de objets transormés.</li>
  * <li>La liste des erreurs rencontrées.</li>
- * <ul>
+ * </ul>
  * 
- * @author ybonnel
+ * @param <T>
+ *            Objet contenu dans le résultat.
  * 
  */
 public class Resultat<T> {

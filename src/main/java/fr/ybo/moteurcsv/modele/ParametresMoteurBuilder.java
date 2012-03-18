@@ -17,23 +17,23 @@
 package fr.ybo.moteurcsv.modele;
 
 /**
- * Builder pour la classe {@link Parametres}.
+ * Builder pour la classe {@link ParametresMoteur}.
  * 
  * @author ybonnel
  * 
  */
-public class ParametresBuilder {
+public class ParametresMoteurBuilder {
 
 	/**
 	 * Instance de Parametres à construire.
 	 */
-	private final Parametres parametres = new Parametres();
+	private final ParametresMoteur parametres = new ParametresMoteur();
 
 	/**
 	 * Constructeur protégé. Pour construire un builder il faut appeler
-	 * {@link Parametres#createBuilder()}.
+	 * {@link ParametresMoteur#createBuilder()}.
 	 */
-	protected ParametresBuilder() {
+	protected ParametresMoteurBuilder() {
 	}
 
 	/**
@@ -43,7 +43,7 @@ public class ParametresBuilder {
 	 *            true si la validation doit être activée.
 	 * @return le builder.
 	 */
-	public ParametresBuilder setValidation(boolean validation) {
+	public ParametresMoteurBuilder setValidation(boolean validation) {
 		parametres.setValidation(validation);
 		return this;
 	}
@@ -56,17 +56,17 @@ public class ParametresBuilder {
 	 *            nombre de lignes en erreur possible.
 	 * @return le builder.
 	 */
-	public ParametresBuilder setNbLinesWithErrorsToStop(int nbLinesWithErrorsToStop) {
+	public ParametresMoteurBuilder setNbLinesWithErrorsToStop(int nbLinesWithErrorsToStop) {
 		parametres.setNbLinesWithErrorsToStop(nbLinesWithErrorsToStop);
 		return this;
 	}
 
 	/**
-	 * Construit l'instance de {@link Parametres}.
+	 * Construit l'instance de {@link ParametresMoteur}.
 	 * 
-	 * @return
+	 * @return l'instance construite.
 	 */
-	public Parametres build() {
+	public ParametresMoteur build() {
 		return parametres;
 	}
 

@@ -58,5 +58,5 @@ public @interface BaliseCsv {
 	/**
 	 * Paramètres de l'adapteur. Aucun paramètre par défaut.
 	 */
-	Param[] params() default {};
+	Param[] params() default { };
 }

@@ -37,8 +37,8 @@ public abstract class AdapterCsv<Objet> {
 	 * 
 	 * @param params
 	 *            paramètres.
-	 * @throws si
-	 *             les paramètres ne sont pas corrects.
+	 * @throws InvalideParamException
+	 *             si les paramètres ne sont pas corrects.
 	 */
 	public void addParams(Map<String, String> params) throws InvalideParamException {
 	}

@@ -46,7 +46,7 @@ import fr.ybo.moteurcsv.modele.ClassCsv;
 import fr.ybo.moteurcsv.modele.Erreur;
 import fr.ybo.moteurcsv.modele.InsertInList;
 import fr.ybo.moteurcsv.modele.InsertObject;
-import fr.ybo.moteurcsv.modele.Parametres;
+import fr.ybo.moteurcsv.modele.ParametresMoteur;
 import fr.ybo.moteurcsv.modele.Resultat;
 import fr.ybo.moteurcsv.validator.ErreurValidation;
 import fr.ybo.moteurcsv.validator.ValidateException;
@@ -107,12 +107,12 @@ public class MoteurCsv {
 	/**
 	 * Paramètres du moteur.
 	 */
-	private final Parametres parametres;
+	private final ParametresMoteur parametres;
 
 	/**
 	 * @return les paramètres du moteur.
 	 */
-	public Parametres getParametres() {
+	public ParametresMoteur getParametres() {
 		return parametres;
 	}
 
@@ -123,7 +123,7 @@ public class MoteurCsv {
 	 *            liste des classes à gérer.
 	 */
 	public MoteurCsv(Class<?>... classes) {
-		parametres = new Parametres();
+		parametres = new ParametresMoteur();
 		factory = new DefaultGestionnaireCsvFactory();
 		for (Class<?> clazz : classes) {
 			scannerClass(clazz);
@@ -135,14 +135,14 @@ public class MoteurCsv {
 	 * 
 	 * @param parametres
 	 *            parametres du moteur (vous pouvez utiliser:
-	 *            {@link Parametres#createBuilder()} pour plus de facilité).<br/>
+	 *            {@link ParametresMoteur#createBuilder()} pour plus de facilité).<br/>
 	 *            Exemple : Parametres parametres =
 	 *            Parameters.createBuilder().setValidation(true).build();
 	 * 
 	 * @param classes
 	 *            liste des classes à gérer.
 	 */
-	public MoteurCsv(Parametres parametres, Class<?>... classes) {
+	public MoteurCsv(ParametresMoteur parametres, Class<?>... classes) {
 		this.parametres = parametres;
 		factory = new DefaultGestionnaireCsvFactory();
 		for (Class<?> clazz : classes) {
@@ -176,6 +176,18 @@ public class MoteurCsv {
 		return builder.toString();
 	}
 
+	/**
+	 * Permet de setter une valeur d'une champ.
+	 * 
+	 * @param champCsv
+	 *            le champ à setter.
+	 * @param objetCsv
+	 *            l'objet concerné.
+	 * @param champ
+	 *            la valeur à setter.
+	 * @throws ValidateException
+	 *             si la valeur n'est pas valide.
+	 */
 	private void setValeur(ChampCsv champCsv, Object objetCsv, String champ) throws ValidateException {
 		champCsv.getField().setAccessible(true);
 		try {
@@ -216,7 +228,7 @@ public class MoteurCsv {
 	}
 
 	/**
-	 * Traitmeent d'un champ.
+	 * Traitment d'un champ.
 	 * 
 	 * @param champs
 	 *            liste des valeurs de champs.
@@ -228,7 +240,8 @@ public class MoteurCsv {
 	 *            numéro du champ.
 	 * @return conteneur d'erreur de validation.
 	 */
-	private ErreurValidation traitementChamp(String[] champs, ErreurValidation validation, Object objetCsv, int numChamp) {
+	private ErreurValidation traitementChamp(String[] champs, ErreurValidation validation,
+			Object objetCsv, int numChamp) {
 		String champ = champs[numChamp];
 		if (champ != null && !"".equals(champ)) {
 			validation = remplirAttribut(champs, validation, objetCsv, numChamp, champ);
@@ -260,7 +273,7 @@ public class MoteurCsv {
 	}
 
 	/**
-	 * Valide le champ et rempli l'attribut correspondant au champ
+	 * Valide le champ et rempli l'attribut correspondant au champ.
 	 * 
 	 * @param champs
 	 *            liste des valeurs de champ.
@@ -404,7 +417,7 @@ public class MoteurCsv {
 	 *         CSV.
 	 * @throws NombreErreurDepasseException
 	 *             si le nombre d'erreurs rencontrées et suppérieur au nombre
-	 *             accepté {@link Parametres#getNbLinesWithErrorsToStop()}.
+	 *             accepté {@link ParametresMoteur#getNbLinesWithErrorsToStop()}.
 	 */
 	public <Objet> Resultat<Objet> parseInputStream(InputStream intputStream, Class<Objet> clazz)
 			throws NombreErreurDepasseException {
@@ -430,7 +443,7 @@ public class MoteurCsv {
 	 * @return les erreurs rencontrées.
 	 * @throws NombreErreurDepasseException
 	 *             si le nombre d'erreurs rencontrées et suppérieur au nombre
-	 *             accepté {@link Parametres#getNbLinesWithErrorsToStop()}.
+	 *             accepté {@link ParametresMoteur#getNbLinesWithErrorsToStop()}.
 	 */
 	@SuppressWarnings("unchecked")
 	public <Objet> List<Erreur> parseFileAndInsert(Reader reader, Class<Objet> clazz, InsertObject<Objet> insert)

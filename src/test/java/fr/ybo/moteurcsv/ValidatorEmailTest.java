@@ -28,7 +28,7 @@ import fr.ybo.moteurcsv.annotation.FichierCsv;
 import fr.ybo.moteurcsv.annotation.Validation;
 import fr.ybo.moteurcsv.exception.NombreErreurDepasseException;
 import fr.ybo.moteurcsv.modele.Erreur;
-import fr.ybo.moteurcsv.modele.Parametres;
+import fr.ybo.moteurcsv.modele.ParametresMoteur;
 import fr.ybo.moteurcsv.modele.Resultat;
 import fr.ybo.moteurcsv.validator.ValidatorEmail;
 
@@ -53,7 +53,7 @@ public class ValidatorEmailTest {
 				new StringStream("att,email\n" + ",\n" + ",nonvalide@tutu\n" + ",nonvalide\n" + ",@nonvalide.fr\n"
 						+ ",valide@valide.fr");
 		MoteurCsv moteur =
-				new MoteurCsv(Parametres.createBuilder().setNbLinesWithErrorsToStop(999).build(), ObjetEmail.class);
+				new MoteurCsv(ParametresMoteur.createBuilder().setNbLinesWithErrorsToStop(999).build(), ObjetEmail.class);
 		Resultat<ObjetEmail> resultat = moteur.parseInputStream(stream, ObjetEmail.class);
 		assertNotNull(resultat);
 		assertEquals(2, resultat.getObjets().size());

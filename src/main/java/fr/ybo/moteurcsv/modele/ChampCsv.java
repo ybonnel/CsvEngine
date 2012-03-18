@@ -18,13 +18,11 @@ package fr.ybo.moteurcsv.modele;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 import fr.ybo.moteurcsv.adapter.AdapterCsv;
 import fr.ybo.moteurcsv.annotation.BaliseCsv;
-import fr.ybo.moteurcsv.annotation.Param;
 import fr.ybo.moteurcsv.annotation.Validation;
 import fr.ybo.moteurcsv.exception.MoteurCsvException;
 import fr.ybo.moteurcsv.validator.ValidateException;
@@ -47,109 +45,6 @@ public class ChampCsv {
 	 * Validator à utiliser.
 	 */
 	private final ValidatorCsv validator;
-
-	public static class Parametre {
-		private String name;
-		private String value;
-
-		public String getName() {
-			return name;
-		}
-
-		public String getValue() {
-			return value;
-		}
-
-		public Parametre(Param param) {
-			name = param.name();
-			value = param.value();
-		}
-
-		public static Parametre[] paramsToParametres(Param[] params) {
-			Parametre[] parametres = new Parametre[params.length];
-			for (int count = 0; count < params.length; count++) {
-				parametres[count] = new Parametre(params[count]);
-			}
-			return parametres;
-		}
-
-		@Override
-		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result + ((name == null) ? 0 : name.hashCode());
-			result = prime * result + ((value == null) ? 0 : value.hashCode());
-			return result;
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (obj == null)
-				return false;
-			if (getClass() != obj.getClass())
-				return false;
-			Parametre other = (Parametre) obj;
-			if (name == null) {
-				if (other.name != null)
-					return false;
-			} else if (!name.equals(other.name))
-				return false;
-			if (value == null) {
-				if (other.value != null)
-					return false;
-			} else if (!value.equals(other.value))
-				return false;
-			return true;
-		}
-	}
-
-	public static class ClassWithParamKey<T> {
-		private Parametre[] params;
-		private Class<? extends T> clazz;
-
-		public ClassWithParamKey(Param[] params, Class<? extends T> clazz) {
-			this.params = Parametre.paramsToParametres(params);
-			this.clazz = clazz;
-		}
-
-		public Map<String, String> getMapParams() {
-			Map<String, String> mapParams = new HashMap<String, String>();
-			for (Parametre parametre : params) {
-				mapParams.put(parametre.getName(), parametre.getValue());
-			}
-			return mapParams;
-		}
-
-		@Override
-		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result + ((clazz == null) ? 0 : clazz.hashCode());
-			result = prime * result + Arrays.hashCode(params);
-			return result;
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (obj == null)
-				return false;
-			if (getClass() != obj.getClass())
-				return false;
-			ClassWithParamKey<?> other = (ClassWithParamKey<?>) obj;
-			if (clazz == null) {
-				if (other.clazz != null)
-					return false;
-			} else if (!clazz.equals(other.clazz))
-				return false;
-			if (!Arrays.equals(params, other.params))
-				return false;
-			return true;
-		}
-	}
 
 	/**
 	 * Map des adapteurs, permet de ne créer qu'une instance par adapter.
@@ -176,15 +71,12 @@ public class ChampCsv {
 	/**
 	 * Constructeur.
 	 * 
-	 * @param adapter
-	 *            adapter à utiliser.
+	 * @param balise
+	 *            annotation du champ.
+	 * @param validation
+	 *            annotation de validation si elle est présente.
 	 * @param field
 	 *            attribut de la classe à mapper.
-	 * 
-	 * @param validator
-	 *            validator à utiliser.
-	 * @param obligatoire
-	 *            true si le champ est obligatoire.
 	 */
 	public ChampCsv(BaliseCsv balise, Validation validation, Field field) {
 		this.field = field;
@@ -193,6 +85,14 @@ public class ChampCsv {
 		this.validator = constructValidator(validation);
 	}
 
+	/**
+	 * Construit un adapter (en réutilisant un existant si l'adapter avec les
+	 * mêmes paramètres existe déjà).
+	 * 
+	 * @param balise
+	 *            annotation du champ.
+	 * @return l'adapter construit.
+	 */
 	private static AdapterCsv<?> constructAdapter(BaliseCsv balise) {
 		ClassWithParamKey<AdapterCsv<?>> key = new ClassWithParamKey<AdapterCsv<?>>(balise.params(), balise.adapter());
 		if (!MAP_ADAPTERS.containsKey(key)) {
@@ -208,6 +108,14 @@ public class ChampCsv {
 		return MAP_ADAPTERS.get(key);
 	}
 
+	/**
+	 * Construit un validator (en réutilisant un existant si le validator avec
+	 * les mêmes paramètres existe déjà).
+	 * 
+	 * @param validation
+	 *            annotation de validation.
+	 * @return le validator construit.
+	 */
 	private static ValidatorCsv constructValidator(Validation validation) {
 		if (validation == null) {
 			return null;

@@ -23,10 +23,24 @@ package fr.ybo.moteurcsv.exception;
 @SuppressWarnings("serial")
 public class InvalideParamException extends Exception {
 
+	/**
+	 * Constructeur avec un message.
+	 * 
+	 * @param message
+	 *            le message.
+	 */
 	public InvalideParamException(String message) {
 		super(message);
 	}
 
+	/**
+	 * Constructeur avec une message et une exception.
+	 * 
+	 * @param message
+	 *            le message.
+	 * @param exception
+	 *            l'exception.
+	 */
 	public InvalideParamException(String message, Exception exception) {
 		super(message, exception);
 	}

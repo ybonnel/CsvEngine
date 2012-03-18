@@ -31,7 +31,7 @@ import fr.ybo.moteurcsv.annotation.FichierCsv;
 import fr.ybo.moteurcsv.annotation.Validation;
 import fr.ybo.moteurcsv.exception.NombreErreurDepasseException;
 import fr.ybo.moteurcsv.modele.Erreur;
-import fr.ybo.moteurcsv.modele.Parametres;
+import fr.ybo.moteurcsv.modele.ParametresMoteur;
 import fr.ybo.moteurcsv.modele.Resultat;
 import fr.ybo.moteurcsv.validator.ValidateException;
 import fr.ybo.moteurcsv.validator.ValidatorCsv;
@@ -126,7 +126,7 @@ public class ValidationTest {
 	public void setup() {
 		streamRg1 = new StringStream("att1,att2\nval1,\n,val2\n,");
 		moteurRg1 =
-				new MoteurCsv(Parametres.createBuilder().setValidation(true).setNbLinesWithErrorsToStop(999).build(),
+				new MoteurCsv(ParametresMoteur.createBuilder().setValidation(true).setNbLinesWithErrorsToStop(999).build(),
 						ObjetRg1_1.class, ObjetRg1_2.class, ObjetRg1_3.class, ObjetRg1_4.class);
 
 	}
@@ -272,7 +272,7 @@ public class ValidationTest {
 	@Test
 	public void testRg2() throws NombreErreurDepasseException {
 		MoteurCsv moteurRg2 =
-				new MoteurCsv(Parametres.createBuilder().setValidation(true).setNbLinesWithErrorsToStop(999).build(),
+				new MoteurCsv(ParametresMoteur.createBuilder().setValidation(true).setNbLinesWithErrorsToStop(999).build(),
 						ObjetRg2.class);
 		InputStream stream = new StringStream("att1,att2\nRG2,RG2\nRG2,RG1\nRG1,RG2\nRG1,RG3");
 
@@ -324,7 +324,7 @@ public class ValidationTest {
 	@Test
 	public void testRg3_2() throws NombreErreurDepasseException {
 		MoteurCsv moteurRg2 =
-				new MoteurCsv(Parametres.createBuilder().setValidation(false).setNbLinesWithErrorsToStop(999).build(),
+				new MoteurCsv(ParametresMoteur.createBuilder().setValidation(false).setNbLinesWithErrorsToStop(999).build(),
 						ObjetRg2.class);
 		InputStream stream = new StringStream("att1,att2\nRG2,RG2\nRG2,RG1\nRG1,RG2\nRG1,RG3");
 
@@ -339,7 +339,7 @@ public class ValidationTest {
 	@Test
 	public void testRg4_1() {
 		MoteurCsv moteurRg2 =
-				new MoteurCsv(Parametres.createBuilder().setValidation(true).setNbLinesWithErrorsToStop(1).build(),
+				new MoteurCsv(ParametresMoteur.createBuilder().setValidation(true).setNbLinesWithErrorsToStop(1).build(),
 						ObjetRg2.class);
 		InputStream stream = new StringStream("att1,att2\nRG2,RG2\nRG2,RG1\nRG1,RG2\nRG1,RG3");
 
@@ -357,7 +357,7 @@ public class ValidationTest {
 	@Test
 	public void testRg4_2() {
 		MoteurCsv moteurRg2 =
-				new MoteurCsv(Parametres.createBuilder().setValidation(true).setNbLinesWithErrorsToStop(0).build(),
+				new MoteurCsv(ParametresMoteur.createBuilder().setValidation(true).setNbLinesWithErrorsToStop(0).build(),
 						ObjetRg2.class);
 		InputStream stream = new StringStream("att1,att2\nRG2,RG2\nRG2,RG1\nRG1,RG2\nRG1,RG3");
 
@@ -379,7 +379,7 @@ public class ValidationTest {
 	@Test
 	public void testRg4_3() throws NombreErreurDepasseException {
 		MoteurCsv moteurRg2 =
-				new MoteurCsv(Parametres.createBuilder().setValidation(true).setNbLinesWithErrorsToStop(-1).build(),
+				new MoteurCsv(ParametresMoteur.createBuilder().setValidation(true).setNbLinesWithErrorsToStop(-1).build(),
 						ObjetRg2.class);
 		InputStream stream = new StringStream("att1,att2\nRG2,RG2\nRG2,RG1\nRG1,RG2\nRG1,RG3");
 
@@ -398,7 +398,7 @@ public class ValidationTest {
 	@Test
 	public void testRg4_4() throws NombreErreurDepasseException {
 		MoteurCsv moteurRg2 =
-				new MoteurCsv(Parametres.createBuilder().setValidation(true).setNbLinesWithErrorsToStop(3).build(),
+				new MoteurCsv(ParametresMoteur.createBuilder().setValidation(true).setNbLinesWithErrorsToStop(3).build(),
 						ObjetRg2.class);
 		InputStream stream = new StringStream("att1,att2\nRG2,RG2\nRG2,RG1\nRG1,RG2\nRG1,RG3");
 
