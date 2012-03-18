@@ -563,31 +563,32 @@
 <a class="jxr_linenumber" name="553" href="#553">553</a> 	<strong class="jxr_keyword">public</strong> &lt;Objet&gt; <strong class="jxr_keyword">void</strong> writeFile(Writer writer, Iterable&lt;Objet&gt; objets, Class&lt;Objet&gt; clazz) {
 <a class="jxr_linenumber" name="554" href="#554">554</a> 		<strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="555" href="#555">555</a> 			<strong class="jxr_keyword">final</strong> <a href="../../../fr/ybo/moteurcsv/modele/ClassCsv.html">ClassCsv</a> classCsv = mapClasses.get(clazz);
-<a class="jxr_linenumber" name="556" href="#556">556</a> 			AbstractWriterCsv writerCsv = factory.createWriterCsv(writer, classCsv.getSeparateurWithoutEscape());
-<a class="jxr_linenumber" name="557" href="#557">557</a> 			<strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="558" href="#558">558</a> 				List&lt;String&gt; nomChamps = <strong class="jxr_keyword">new</strong> ArrayList&lt;String&gt;();
-<a class="jxr_linenumber" name="559" href="#559">559</a> 				<strong class="jxr_keyword">for</strong> (String champ : classCsv.getNomChamps()) {
-<a class="jxr_linenumber" name="560" href="#560">560</a> 					nomChamps.add(champ);
-<a class="jxr_linenumber" name="561" href="#561">561</a> 				}
-<a class="jxr_linenumber" name="562" href="#562">562</a> 				Collections.sort(nomChamps, <strong class="jxr_keyword">new</strong> Comparator&lt;String&gt;() {
-<a class="jxr_linenumber" name="563" href="#563">563</a> 					<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> compare(String o1, String o2) {
-<a class="jxr_linenumber" name="564" href="#564">564</a> 						<strong class="jxr_keyword">int</strong> thisVal = classCsv.getOrdre(o1);
-<a class="jxr_linenumber" name="565" href="#565">565</a> 						<strong class="jxr_keyword">int</strong> anotherVal = classCsv.getOrdre(o2);
-<a class="jxr_linenumber" name="566" href="#566">566</a> 						<strong class="jxr_keyword">return</strong> (thisVal &lt; anotherVal ? -1 : (thisVal == anotherVal ? 0 : 1));
-<a class="jxr_linenumber" name="567" href="#567">567</a> 					}
-<a class="jxr_linenumber" name="568" href="#568">568</a> 				});
-<a class="jxr_linenumber" name="569" href="#569">569</a> 				writerCsv.writeLine(nomChamps);
-<a class="jxr_linenumber" name="570" href="#570">570</a> 				<strong class="jxr_keyword">for</strong> (Objet objet : objets) {
-<a class="jxr_linenumber" name="571" href="#571">571</a> 					writeLigne(writerCsv, nomChamps, classCsv, objet);
-<a class="jxr_linenumber" name="572" href="#572">572</a> 				}
-<a class="jxr_linenumber" name="573" href="#573">573</a> 			} <strong class="jxr_keyword">finally</strong> {
-<a class="jxr_linenumber" name="574" href="#574">574</a> 				writerCsv.close();
-<a class="jxr_linenumber" name="575" href="#575">575</a> 			}
-<a class="jxr_linenumber" name="576" href="#576">576</a> 		} <strong class="jxr_keyword">catch</strong> (Exception exception) {
-<a class="jxr_linenumber" name="577" href="#577">577</a> 			<strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a href="../../../fr/ybo/moteurcsv/exception/MoteurCsvException.html">MoteurCsvException</a>(exception);
-<a class="jxr_linenumber" name="578" href="#578">578</a> 		}
-<a class="jxr_linenumber" name="579" href="#579">579</a> 	}
-<a class="jxr_linenumber" name="580" href="#580">580</a> }
+<a class="jxr_linenumber" name="556" href="#556">556</a> 			AbstractWriterCsv writerCsv =
+<a class="jxr_linenumber" name="557" href="#557">557</a> 					factory.createWriterCsv(writer, classCsv.getSeparateurWithoutEscape(), parametres.hasAddQuoteCar());
+<a class="jxr_linenumber" name="558" href="#558">558</a> 			<strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="559" href="#559">559</a> 				List&lt;String&gt; nomChamps = <strong class="jxr_keyword">new</strong> ArrayList&lt;String&gt;();
+<a class="jxr_linenumber" name="560" href="#560">560</a> 				<strong class="jxr_keyword">for</strong> (String champ : classCsv.getNomChamps()) {
+<a class="jxr_linenumber" name="561" href="#561">561</a> 					nomChamps.add(champ);
+<a class="jxr_linenumber" name="562" href="#562">562</a> 				}
+<a class="jxr_linenumber" name="563" href="#563">563</a> 				Collections.sort(nomChamps, <strong class="jxr_keyword">new</strong> Comparator&lt;String&gt;() {
+<a class="jxr_linenumber" name="564" href="#564">564</a> 					<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> compare(String o1, String o2) {
+<a class="jxr_linenumber" name="565" href="#565">565</a> 						<strong class="jxr_keyword">int</strong> thisVal = classCsv.getOrdre(o1);
+<a class="jxr_linenumber" name="566" href="#566">566</a> 						<strong class="jxr_keyword">int</strong> anotherVal = classCsv.getOrdre(o2);
+<a class="jxr_linenumber" name="567" href="#567">567</a> 						<strong class="jxr_keyword">return</strong> (thisVal &lt; anotherVal ? -1 : (thisVal == anotherVal ? 0 : 1));
+<a class="jxr_linenumber" name="568" href="#568">568</a> 					}
+<a class="jxr_linenumber" name="569" href="#569">569</a> 				});
+<a class="jxr_linenumber" name="570" href="#570">570</a> 				writerCsv.writeLine(nomChamps);
+<a class="jxr_linenumber" name="571" href="#571">571</a> 				<strong class="jxr_keyword">for</strong> (Objet objet : objets) {
+<a class="jxr_linenumber" name="572" href="#572">572</a> 					writeLigne(writerCsv, nomChamps, classCsv, objet);
+<a class="jxr_linenumber" name="573" href="#573">573</a> 				}
+<a class="jxr_linenumber" name="574" href="#574">574</a> 			} <strong class="jxr_keyword">finally</strong> {
+<a class="jxr_linenumber" name="575" href="#575">575</a> 				writerCsv.close();
+<a class="jxr_linenumber" name="576" href="#576">576</a> 			}
+<a class="jxr_linenumber" name="577" href="#577">577</a> 		} <strong class="jxr_keyword">catch</strong> (Exception exception) {
+<a class="jxr_linenumber" name="578" href="#578">578</a> 			<strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a href="../../../fr/ybo/moteurcsv/exception/MoteurCsvException.html">MoteurCsvException</a>(exception);
+<a class="jxr_linenumber" name="579" href="#579">579</a> 		}
+<a class="jxr_linenumber" name="580" href="#580">580</a> 	}
+<a class="jxr_linenumber" name="581" href="#581">581</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>
