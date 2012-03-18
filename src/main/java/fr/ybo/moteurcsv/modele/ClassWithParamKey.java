@@ -69,33 +69,14 @@ public class ClassWithParamKey<T> {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((clazz == null) ? 0 : clazz.hashCode());
+		result = prime * result + clazz.hashCode();
 		result = prime * result + Arrays.hashCode(params);
 		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
 		ClassWithParamKey<?> other = (ClassWithParamKey<?>) obj;
-		if (clazz == null) {
-			if (other.clazz != null) {
-				return false;
-			}
-		} else if (!clazz.equals(other.clazz)) {
-			return false;
-		}
-		if (!Arrays.equals(params, other.params)) {
-			return false;
-		}
-		return true;
+		return (clazz.equals(other.clazz) && Arrays.equals(params, other.params));
 	}
 }

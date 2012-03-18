@@ -22,6 +22,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.InputStream;
+import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -138,6 +139,9 @@ public class AdapterDateTest {
 		ObjetRg345 objet = objets.getObjets().get(0);
 		assertEquals("att", objet.att);
 		assertEquals("21/12/2012", new SimpleDateFormat("dd/MM/yyyy").format(objet.date));
+		StringWriter writer = new StringWriter();
+		moteurRg345.writeFile(writer, objets.getObjets(), ObjetRg345.class);
+		assertEquals("\"att\",\"date\"\n\"att\",\"21/12/2012\"\n", writer.getBuffer().toString());
 	}
 
 }

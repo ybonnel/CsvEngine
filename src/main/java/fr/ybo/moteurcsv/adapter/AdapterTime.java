@@ -43,9 +43,6 @@ public class AdapterTime extends AdapterCsv<Integer> {
 	 * @return l'integer représentant le nombre de minutes passées de minuit.
 	 */
 	public Integer parse(String chaine) {
-		if (chaine == null) {
-			return null;
-		}
 		String[] champs = chaine.split(":");
 		if (champs.length < 2) {
 			return null;
@@ -62,9 +59,6 @@ public class AdapterTime extends AdapterCsv<Integer> {
 	 * @return la chaine au format HH:MI.
 	 */
 	public String toString(Integer objet) {
-		if (objet == null) {
-			return null;
-		}
 		StringBuilder retour = new StringBuilder();
 		int heures = objet / MINUTES_BY_HOUR;
 		int minutes = objet - heures * MINUTES_BY_HOUR;

@@ -129,7 +129,9 @@ public class ChampCsv {
 				validator.addParams(key.getMapParams());
 				MAP_VALIDATOR.put(key, validator);
 			} catch (Exception exception) {
-				throw new MoteurCsvException(exception);
+				throw new MoteurCsvException("Problème lors de la construction du validateur "
+						+ validation.value().getSimpleName(),
+						exception);
 			}
 		}
 		return MAP_VALIDATOR.get(key);

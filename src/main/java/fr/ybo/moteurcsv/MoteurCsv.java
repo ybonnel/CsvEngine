@@ -23,6 +23,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.Writer;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -345,9 +346,12 @@ public class MoteurCsv {
 		try {
 			objetCsv = classCourante.getContructeur().newInstance((Object[]) null);
 		} catch (Exception exception) {
+			Throwable myException = exception;
+			if (myException instanceof InvocationTargetException) {
+				myException = exception.getCause();
+			}
 			throw new MoteurCsvException("Erreur à l'instanciation de la class "
-					+ classCourante.getClazz().getSimpleName() + ", il doit manquer un constructeur sans paramètre.",
-					exception);
+					+ classCourante.getClazz().getSimpleName(), myException);
 		}
 		return objetCsv;
 	}

@@ -415,4 +415,60 @@ public class MoteurCsvTest {
 		}
 	}
 
+	@FichierCsv
+	public static class ObjetExceptionDansConstructeur {
+
+		public ObjetExceptionDansConstructeur() {
+			throw new NullPointerException();
+		}
+
+		@BaliseCsv("att")
+		public String att;
+	}
+
+	@Test
+	public void testExceptionDansConstructeur() throws NombreErreurDepasseException {
+		MoteurCsv moteur = new MoteurCsv(ObjetExceptionDansConstructeur.class);
+		StringStream stream = new StringStream("att\nvaleur");
+		try {
+			moteur.parseInputStream(stream, ObjetExceptionDansConstructeur.class);
+			fail("Une exception aurait du être levée.");
+		} catch (MoteurCsvException exception) {
+			assertEquals(NullPointerException.class, exception.getCause().getClass());
+		}
+	}
+
+	@FichierCsv(separateur = ",,,")
+	public static class ObjetSeparateurTropGrand {
+
+	}
+
+	@Test
+	public void testSeparateurTropGrand() throws NombreErreurDepasseException {
+		MoteurCsv moteur = new MoteurCsv(ObjetSeparateurTropGrand.class);
+		StringStream stream = new StringStream("att\nvaleur");
+		try {
+			moteur.parseInputStream(stream, ObjetSeparateurTropGrand.class);
+			fail("Une exception aurait du être levée.");
+		} catch (MoteurCsvException exception) {
+			assertTrue(exception.getMessage().contains(",,,"));
+		}
+	}
+
+	@FichierCsv
+	public static class ObjetSansConstructeur {
+		public ObjetSansConstructeur(String unTruc) {
+		}
+	}
+
+	@Test
+	public void testSansConstructeur() {
+		try {
+			new MoteurCsv(ObjetSansConstructeur.class);
+			fail("Une exception aurait du être levée");
+		} catch (MoteurCsvException exception) {
+			assertTrue(exception.getMessage().contains("il doit manquer le constructeur sans paramètre"));
+		}
+	}
+
 }

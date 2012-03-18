@@ -29,6 +29,7 @@ import org.junit.Test;
 import fr.ybo.moteurcsv.annotation.BaliseCsv;
 import fr.ybo.moteurcsv.annotation.FichierCsv;
 import fr.ybo.moteurcsv.annotation.Validation;
+import fr.ybo.moteurcsv.exception.MoteurCsvException;
 import fr.ybo.moteurcsv.exception.NombreErreurDepasseException;
 import fr.ybo.moteurcsv.modele.Erreur;
 import fr.ybo.moteurcsv.modele.ParametresMoteur;
@@ -348,6 +349,7 @@ public class ValidationTest {
 			fail("Une exception devrait être levée.");
 		} catch (NombreErreurDepasseException exception) {
 			assertEquals(2, exception.getErreurs().size());
+			assertNotNull(exception.getMessage());
 		}
 	}
 
@@ -406,6 +408,39 @@ public class ValidationTest {
 		assertNotNull(resultat);
 		assertEquals(1, resultat.getObjets().size());
 		assertEquals(3, resultat.getErreurs().size());
+	}
+
+	public static class ValidatorPbCreation extends ValidatorCsv {
+
+		public ValidatorPbCreation(String unTruc) {
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * fr.ybo.moteurcsv.validator.ValidatorCsv#validate(java.lang.String)
+		 */
+		@Override
+		public void validate(String champ) throws ValidateException {
+		}
+
+	}
+
+	@FichierCsv
+	public static class ObjetPbCreationValidator {
+		@Validation(ValidatorPbCreation.class)
+		@BaliseCsv("att")
+		public String att;
+	}
+
+	@Test
+	public void testPbCreationValidator() {
+		try {
+			new MoteurCsv(ObjetPbCreationValidator.class);
+		} catch (MoteurCsvException exception) {
+			assertTrue(exception.getMessage().contains(ValidatorPbCreation.class.getSimpleName()));
+		}
 	}
 
 }
