@@ -22,14 +22,14 @@ import fr.ybo.moteurcsv.exception.InvalideParamException;
 
 /**
  * Validateur d'email.<br/>
- * Pattern utilisé : "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}$".
+ * Pattern utilisé : "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}$".
  */
 public class ValidatorEmail extends ValidatorRegExp {
 
 	/**
 	 * Pattern pour les mails.
 	 */
-	private static final String PATTERN_EMAIL = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}$";
+	private static final String PATTERN_EMAIL = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}$";
 
 	/*
 	 * (non-Javadoc)
