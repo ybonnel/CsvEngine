@@ -28,7 +28,7 @@ import fr.ybo.moteurcsv.exception.InvalideParamException;
  * Paramètre : {@link ValidatorRegExp#PARAM_PATTERN} contient l'expression
  * régulière ({@link Pattern}).<br/>
  * Le paramètre format est à fournir via
- * {@link fr.ybo.moteurcsv.annotation.BaliseCsv#params()}.
+ * {@link fr.ybo.moteurcsv.annotation.Validation#params()}.
  */
 public class ValidatorRegExp extends ValidatorCsv {
 
