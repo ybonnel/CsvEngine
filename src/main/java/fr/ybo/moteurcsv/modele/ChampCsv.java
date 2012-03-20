@@ -18,12 +18,15 @@ package fr.ybo.moteurcsv.modele;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import fr.ybo.moteurcsv.adapter.AdapterCsv;
 import fr.ybo.moteurcsv.annotation.BaliseCsv;
 import fr.ybo.moteurcsv.annotation.Validation;
+import fr.ybo.moteurcsv.annotation.Validations;
 import fr.ybo.moteurcsv.exception.MoteurCsvException;
 import fr.ybo.moteurcsv.validator.ValidateException;
 import fr.ybo.moteurcsv.validator.ValidatorCsv;
@@ -44,7 +47,7 @@ public class ChampCsv {
 	/**
 	 * Validator à utiliser.
 	 */
-	private final ValidatorCsv validator;
+	private final List<ValidatorCsv> validators = new ArrayList<ValidatorCsv>();
 
 	/**
 	 * Map des adapteurs, permet de ne créer qu'une instance par adapter.
@@ -78,11 +81,11 @@ public class ChampCsv {
 	 * @param field
 	 *            attribut de la classe à mapper.
 	 */
-	public ChampCsv(BaliseCsv balise, Validation validation, Field field) {
+	public ChampCsv(BaliseCsv balise, Validations validations, Validation validation, Field field) {
 		this.field = field;
 		this.obligatoire = balise.obligatoire();
 		this.adapter = constructAdapter(balise);
-		this.validator = constructValidator(validation);
+		constructValidators(validations, validation);
 	}
 
 	/**
@@ -109,6 +112,26 @@ public class ChampCsv {
 	}
 
 	/**
+	 * Remplit la liste des Validator à construire.
+	 * 
+	 * @param validations
+	 *            conteneur d'annotation de validation.
+	 * @param validation
+	 *            annotation de validation.
+	 * @return le validator construit.
+	 */
+	private void constructValidators(Validations validations, Validation validation) {
+		if (validation != null) {
+			validators.add(constructOneValidator(validation));
+		}
+		if (validations != null) {
+			for (Validation oneValidation : validations.value()) {
+				validators.add(constructOneValidator(oneValidation));
+			}
+		}
+	}
+
+	/**
 	 * Construit un validator (en réutilisant un existant si le validator avec
 	 * les mêmes paramètres existe déjà).
 	 * 
@@ -116,10 +139,7 @@ public class ChampCsv {
 	 *            annotation de validation.
 	 * @return le validator construit.
 	 */
-	private static ValidatorCsv constructValidator(Validation validation) {
-		if (validation == null) {
-			return null;
-		}
+	private static ValidatorCsv constructOneValidator(Validation validation) {
 		ClassWithParamKey<ValidatorCsv> key =
 				new ClassWithParamKey<ValidatorCsv>(validation.params(), validation.value());
 		if (!MAP_VALIDATOR.containsKey(key)) {
@@ -170,7 +190,7 @@ public class ChampCsv {
 	 *             renvoyée en cas d'erreur de validation.
 	 */
 	public void validate(String valeur) throws ValidateException {
-		if (validator != null) {
+		for (ValidatorCsv validator : validators) {
 			validator.validate(valeur);
 		}
 	}

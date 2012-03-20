@@ -36,6 +36,7 @@ import java.util.logging.Logger;
 import fr.ybo.moteurcsv.annotation.BaliseCsv;
 import fr.ybo.moteurcsv.annotation.FichierCsv;
 import fr.ybo.moteurcsv.annotation.Validation;
+import fr.ybo.moteurcsv.annotation.Validations;
 import fr.ybo.moteurcsv.exception.MoteurCsvException;
 import fr.ybo.moteurcsv.exception.NombreErreurDepasseException;
 import fr.ybo.moteurcsv.factory.AbstractReaderCsv;
@@ -497,8 +498,9 @@ public class MoteurCsv {
 		for (Field field : clazz.getDeclaredFields()) {
 			BaliseCsv baliseCsv = field.getAnnotation(BaliseCsv.class);
 			Validation validation = field.getAnnotation(Validation.class);
+			Validations validations = field.getAnnotation(Validations.class);
 			if (baliseCsv != null) {
-				classCsv.setChampCsv(baliseCsv.value(), new ChampCsv(baliseCsv, validation, field));
+				classCsv.setChampCsv(baliseCsv.value(), new ChampCsv(baliseCsv, validations, validation, field));
 				classCsv.putOrdre(baliseCsv.value(), baliseCsv.ordre());
 			}
 		}
