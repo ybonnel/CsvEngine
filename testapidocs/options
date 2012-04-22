@@ -15,10 +15,14 @@
 -docencoding
 'UTF-8'
 -doctitle
-'MoteurCsv 1.1.4-SNAPSHOT Test API'
+'MoteurCsv 1.2.1-SNAPSHOT Test API'
+-link
+'http://java.sun.com/j2se/1.5.0/docs/api'
 -link
 '../apidocs'
+-link
+'http://java.sun.com/j2se/1.5.0/docs/api'
 -use
 -version
 -windowtitle
-'MoteurCsv 1.1.4-SNAPSHOT Test API'
+'MoteurCsv 1.2.1-SNAPSHOT Test API'
