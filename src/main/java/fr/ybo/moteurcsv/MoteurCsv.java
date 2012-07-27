@@ -33,12 +33,12 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import fr.ybo.moteurcsv.annotation.BaliseCsv;
-import fr.ybo.moteurcsv.annotation.FichierCsv;
-import fr.ybo.moteurcsv.annotation.Validation;
-import fr.ybo.moteurcsv.annotation.Validations;
+import fr.ybo.moteurcsv.annotation.CsvColumn;
+import fr.ybo.moteurcsv.annotation.CsvFile;
+import fr.ybo.moteurcsv.annotation.CsvValidation;
+import fr.ybo.moteurcsv.annotation.CsvValidations;
 import fr.ybo.moteurcsv.exception.MoteurCsvException;
-import fr.ybo.moteurcsv.exception.NombreErreurDepasseException;
+import fr.ybo.moteurcsv.exception.CsvErrorsExceededException;
 import fr.ybo.moteurcsv.factory.AbstractReaderCsv;
 import fr.ybo.moteurcsv.factory.AbstractWriterCsv;
 import fr.ybo.moteurcsv.factory.DefaultGestionnaireCsvFactory;
@@ -254,7 +254,7 @@ public class MoteurCsv {
 	}
 
 	/**
-	 * Validation du caractère obligatoire du champ.
+	 * CsvValidation du caractère mandatory du champ.
 	 * 
 	 * @param champs
 	 *            liste des champs.
@@ -269,7 +269,7 @@ public class MoteurCsv {
 		if (champCsv != null && champCsv.isObligatoire()) {
 			validation =
 					addMessageValidation(champs, validation, enteteCourante[numChamp], new ValidateException(
-							"Le champ est obligatoire"));
+							"Le champ est mandatory"));
 		}
 		return validation;
 	}
@@ -420,12 +420,12 @@ public class MoteurCsv {
 	 *            classe de l'objet associé au CSV.
 	 * @return la liste d'<Objet> représentant les enregistrements du fichier
 	 *         CSV.
-	 * @throws NombreErreurDepasseException
+	 * @throws fr.ybo.moteurcsv.exception.CsvErrorsExceededException
 	 *             si le nombre d'erreurs rencontrées et suppérieur au nombre
 	 *             accepté {@link ParametresMoteur#getNbLinesWithErrorsToStop()}.
 	 */
 	public <Objet> Resultat<Objet> parseInputStream(InputStream intputStream, Class<Objet> clazz)
-			throws NombreErreurDepasseException {
+			throws CsvErrorsExceededException {
 		Resultat<Objet> resultat = new Resultat<Objet>();
 		resultat.getErreurs().addAll(
 				parseFileAndInsert(new BufferedReader(new InputStreamReader(intputStream)), clazz,
@@ -446,13 +446,13 @@ public class MoteurCsv {
 	 * @param insert
 	 *            traitement à éffectuer pour chaque enregistrement.
 	 * @return les erreurs rencontrées.
-	 * @throws NombreErreurDepasseException
+	 * @throws fr.ybo.moteurcsv.exception.CsvErrorsExceededException
 	 *             si le nombre d'erreurs rencontrées et suppérieur au nombre
 	 *             accepté {@link ParametresMoteur#getNbLinesWithErrorsToStop()}.
 	 */
 	@SuppressWarnings("unchecked")
 	public <Objet> List<Erreur> parseFileAndInsert(Reader reader, Class<Objet> clazz, InsertObject<Objet> insert)
-			throws NombreErreurDepasseException {
+			throws CsvErrorsExceededException {
 		List<Erreur> erreurs = new ArrayList<Erreur>();
 		try {
 			nouveauFichier(reader, clazz);
@@ -470,7 +470,7 @@ public class MoteurCsv {
 					erreurs.add(exceptionValidation.getErreur());
 					if (parametres.getNbLinesWithErrorsToStop() >= 0
 							&& erreurs.size() > parametres.getNbLinesWithErrorsToStop()) {
-						throw new NombreErreurDepasseException(erreurs);
+						throw new CsvErrorsExceededException(erreurs);
 					}
 				}
 			} while (objet != null || erreurValidation);
@@ -487,21 +487,21 @@ public class MoteurCsv {
 	 *            classe à scanner.
 	 */
 	protected void scannerClass(Class<?> clazz) {
-		FichierCsv fichierCsv = clazz.getAnnotation(FichierCsv.class);
-		if (fichierCsv == null) {
-			throw new MoteurCsvException("Annotation FichierCsv non présente sur la classe " + clazz.getSimpleName());
+		CsvFile csvFile = clazz.getAnnotation(CsvFile.class);
+		if (csvFile == null) {
+			throw new MoteurCsvException("Annotation CsvFile non présente sur la classe " + clazz.getSimpleName());
 		}
 		if (mapClasses.get(clazz) != null) {
 			return;
 		}
-		ClassCsv classCsv = new ClassCsv(fichierCsv.separateur(), clazz);
+		ClassCsv classCsv = new ClassCsv(csvFile.separator(), clazz);
 		for (Field field : clazz.getDeclaredFields()) {
-			BaliseCsv baliseCsv = field.getAnnotation(BaliseCsv.class);
-			Validation validation = field.getAnnotation(Validation.class);
-			Validations validations = field.getAnnotation(Validations.class);
-			if (baliseCsv != null) {
-				classCsv.setChampCsv(baliseCsv.value(), new ChampCsv(baliseCsv, validations, validation, field));
-				classCsv.putOrdre(baliseCsv.value(), baliseCsv.ordre());
+			CsvColumn csvColumn = field.getAnnotation(CsvColumn.class);
+			CsvValidation csvValidation = field.getAnnotation(CsvValidation.class);
+			CsvValidations csvValidations = field.getAnnotation(CsvValidations.class);
+			if (csvColumn != null) {
+				classCsv.setChampCsv(csvColumn.value(), new ChampCsv(csvColumn, csvValidations, csvValidation, field));
+				classCsv.putOrdre(csvColumn.value(), csvColumn.order());
 			}
 		}
 		mapClasses.put(clazz, classCsv);

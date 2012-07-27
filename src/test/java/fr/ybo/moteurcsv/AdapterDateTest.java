@@ -26,15 +26,15 @@ import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import fr.ybo.moteurcsv.annotation.CsvFile;
+import fr.ybo.moteurcsv.annotation.CsvParam;
 import org.junit.Test;
 
 import fr.ybo.moteurcsv.adapter.AdapterDate;
-import fr.ybo.moteurcsv.annotation.BaliseCsv;
-import fr.ybo.moteurcsv.annotation.FichierCsv;
-import fr.ybo.moteurcsv.annotation.Param;
-import fr.ybo.moteurcsv.exception.InvalideParamException;
+import fr.ybo.moteurcsv.annotation.CsvColumn;
+import fr.ybo.moteurcsv.exception.InvalidParamException;
 import fr.ybo.moteurcsv.exception.MoteurCsvException;
-import fr.ybo.moteurcsv.exception.NombreErreurDepasseException;
+import fr.ybo.moteurcsv.exception.CsvErrorsExceededException;
 import fr.ybo.moteurcsv.modele.Erreur;
 import fr.ybo.moteurcsv.modele.Resultat;
 
@@ -51,29 +51,29 @@ import fr.ybo.moteurcsv.modele.Resultat;
  */
 public class AdapterDateTest {
 
-	@FichierCsv
+	@CsvFile
 	public static class ObjetRg1 {
 
-		@BaliseCsv(value = "date", adapter = AdapterDate.class)
+		@CsvColumn(value = "date", adapter = AdapterDate.class)
 		public Date date;
 	}
 
-	@FichierCsv
+	@CsvFile
 	public static class ObjetRg2 {
 
-		@BaliseCsv(value = "date", adapter = AdapterDate.class,
-				params = { @Param(name = AdapterDate.PARAM_FORMAT, value = "tutu") })
+		@CsvColumn(value = "date", adapter = AdapterDate.class,
+				params = { @CsvParam(name = AdapterDate.PARAM_FORMAT, value = "tutu") })
 		public Date date;
 	}
 
-	@FichierCsv
+	@CsvFile
 	public static class ObjetRg345 {
 
-		@BaliseCsv("att")
+		@CsvColumn("att")
 		public String att;
 
-		@BaliseCsv(value = "date", adapter = AdapterDate.class,
-				params = { @Param(name = AdapterDate.PARAM_FORMAT, value = "dd/MM/yyyy") })
+		@CsvColumn(value = "date", adapter = AdapterDate.class,
+				params = { @CsvParam(name = AdapterDate.PARAM_FORMAT, value = "dd/MM/yyyy") })
 		public Date date;
 	}
 
@@ -83,8 +83,8 @@ public class AdapterDateTest {
 			new MoteurCsv(ObjetRg1.class);
 			fail("Une excepion aurait du être levée");
 		} catch (MoteurCsvException exception) {
-			assertEquals(InvalideParamException.class, exception.getCause().getClass());
-			assertTrue(exception.getCause().getMessage().contains("obligatoire"));
+			assertEquals(InvalidParamException.class, exception.getCause().getClass());
+			assertTrue(exception.getCause().getMessage().contains("mandatory"));
 			assertTrue(exception.getCause().getMessage().contains("format"));
 		}
 	}
@@ -95,7 +95,7 @@ public class AdapterDateTest {
 			new MoteurCsv(ObjetRg2.class);
 			fail("Une excepion aurait du être levée");
 		} catch (MoteurCsvException exception) {
-			assertEquals(InvalideParamException.class, exception.getCause().getClass());
+			assertEquals(InvalidParamException.class, exception.getCause().getClass());
 			assertTrue(exception.getCause().getMessage(), exception.getCause().getMessage().contains("tutu"));
 			assertTrue(exception.getCause().getMessage(), exception.getCause().getMessage().contains("format"));
 		}
@@ -109,9 +109,9 @@ public class AdapterDateTest {
 		try {
 			moteurRg345.parseInputStream(stream, ObjetRg345.class);
 			fail("Une exception aurait du être levée");
-		} catch (NombreErreurDepasseException exception) {
-			assertEquals(1, exception.getErreurs().size());
-			Erreur erreur = exception.getErreurs().get(0);
+		} catch (CsvErrorsExceededException exception) {
+			assertEquals(1, exception.getErrors().size());
+			Erreur erreur = exception.getErrors().get(0);
 			assertEquals("att,tutu", erreur.getLigneCsv());
 			assertEquals(1, erreur.getMessages().size());
 			assertTrue(erreur.getMessages().get(0), erreur.getMessages().get(0).contains("tutu"));
@@ -120,7 +120,7 @@ public class AdapterDateTest {
 	}
 
 	@Test
-	public void testRg4() throws NombreErreurDepasseException {
+	public void testRg4() throws CsvErrorsExceededException {
 		InputStream stream = new StringStream("att,date\natt,");
 		Resultat<ObjetRg345> objets = moteurRg345.parseInputStream(stream, ObjetRg345.class);
 		assertTrue(objets.getErreurs().isEmpty());
@@ -131,7 +131,7 @@ public class AdapterDateTest {
 	}
 
 	@Test
-	public void testRg5() throws NombreErreurDepasseException {
+	public void testRg5() throws CsvErrorsExceededException {
 		InputStream stream = new StringStream("att,date\natt,21/12/2012");
 		Resultat<ObjetRg345> objets = moteurRg345.parseInputStream(stream, ObjetRg345.class);
 		assertTrue(objets.getErreurs().isEmpty());

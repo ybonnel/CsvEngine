@@ -21,23 +21,42 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import fr.ybo.moteurcsv.adapter.AdapterCsv;
+import fr.ybo.moteurcsv.adapter.AdapterString;
+
 /**
- * Annotation utilisée pour contenir un paramètre des Adapter et des Validator.
+ * Annotation used on attribute of class which is a column of CSV file<br/><br/>
+ * <u><i>French :</i></u> Annotation utilisée pour représenté une colonne csv.
  * 
  * @author ybonnel
  * 
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface Param {
+public @interface CsvColumn {
 
 	/**
-	 * Nom du paramètre.
+     * Adapter to use to transform the Object into String and reverse.
 	 */
-	String name();
+	Class<? extends AdapterCsv<?>> adapter() default AdapterString.class;
 
 	/**
-	 * Valeur du paramètre.
+	 * Name of the CSV Column.
 	 */
 	String value();
+
+	/**
+     * Order of the column (useful to be sure that column are always write in a defined order).
+	 */
+	int order() default 0;
+
+	/**
+     * Describe if the column is mandatory (false by default).
+	 */
+	boolean mandatory() default false;
+
+	/**
+     * Parametes of the adapter, no parameters by default.
+	 */
+	CsvParam[] params() default { };
 }

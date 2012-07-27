@@ -25,7 +25,7 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
-import fr.ybo.moteurcsv.exception.InvalideParamException;
+import fr.ybo.moteurcsv.exception.InvalidParamException;
 
 /**
  * Test de la classe {@link ValidatorTaille}.
@@ -41,25 +41,25 @@ public class ValidatorTailleTest {
 		params = new HashMap<String, String>();
 	}
 
-	@Test(expected = InvalideParamException.class)
-	public void testSsParametre() throws InvalideParamException {
+	@Test(expected = InvalidParamException.class)
+	public void testSsParametre() throws InvalidParamException {
 		validator.addParams(params);
 	}
 
-	@Test(expected = InvalideParamException.class)
-	public void testTailleMinKo() throws InvalideParamException {
+	@Test(expected = InvalidParamException.class)
+	public void testTailleMinKo() throws InvalidParamException {
 		params.put(ValidatorTaille.PARAM_TAILLE_MIN, "tutu");
 		validator.addParams(params);
 	}
 
-	@Test(expected = InvalideParamException.class)
-	public void testTailleMaxKo() throws InvalideParamException {
+	@Test(expected = InvalidParamException.class)
+	public void testTailleMaxKo() throws InvalidParamException {
 		params.put(ValidatorTaille.PARAM_TAILLE_MAX, "tutu");
 		validator.addParams(params);
 	}
 
 	@Test
-	public void testTailleMin() throws InvalideParamException, ValidateException {
+	public void testTailleMin() throws InvalidParamException, ValidateException {
 		params.put(ValidatorTaille.PARAM_TAILLE_MIN, "2");
 		validator.addParams(params);
 
@@ -80,7 +80,7 @@ public class ValidatorTailleTest {
 	}
 
 	@Test
-	public void testTailleMax() throws ValidateException, InvalideParamException {
+	public void testTailleMax() throws ValidateException, InvalidParamException {
 		params.put(ValidatorTaille.PARAM_TAILLE_MAX, "5");
 		validator.addParams(params);
 
@@ -101,7 +101,7 @@ public class ValidatorTailleTest {
 	}
 
 	@Test
-	public void testTailleMinEtTailleMax() throws ValidateException, InvalideParamException {
+	public void testTailleMinEtTailleMax() throws ValidateException, InvalidParamException {
 		params.put(ValidatorTaille.PARAM_TAILLE_MIN, "2");
 		params.put(ValidatorTaille.PARAM_TAILLE_MAX, "5");
 		validator.addParams(params);

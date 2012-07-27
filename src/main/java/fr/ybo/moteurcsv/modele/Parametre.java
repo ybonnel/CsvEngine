@@ -16,7 +16,7 @@
  */
 package fr.ybo.moteurcsv.modele;
 
-import fr.ybo.moteurcsv.annotation.Param;
+import fr.ybo.moteurcsv.annotation.CsvParam;
 
 /**
  * Classe représentant un paramètre avec un nom et une valeur.
@@ -52,20 +52,20 @@ public class Parametre {
 	 * @param param
 	 *            paramètre sous la format de l'annotation.
 	 */
-	public Parametre(Param param) {
+	public Parametre(CsvParam param) {
 		name = param.name();
 		value = param.value();
 	}
 
 	/**
-	 * Permet de convertir une liste de {@link Param} en liste de
+	 * Permet de convertir une liste de {@link fr.ybo.moteurcsv.annotation.CsvParam} en liste de
 	 * {@link Parametre}.
 	 * 
 	 * @param params
-	 *            les Param à convertir.
+	 *            les CsvParam à convertir.
 	 * @return les Parametres convertis.
 	 */
-	public static Parametre[] paramsToParametres(Param[] params) {
+	public static Parametre[] paramsToParametres(CsvParam[] params) {
 		Parametre[] parametres = new Parametre[params.length];
 		for (int count = 0; count < params.length; count++) {
 			parametres[count] = new Parametre(params[count]);

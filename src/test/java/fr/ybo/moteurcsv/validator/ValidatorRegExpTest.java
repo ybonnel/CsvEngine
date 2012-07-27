@@ -24,7 +24,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import fr.ybo.moteurcsv.exception.InvalideParamException;
+import fr.ybo.moteurcsv.exception.InvalidParamException;
 
 /**
  * @author ybonnel
@@ -38,9 +38,9 @@ public class ValidatorRegExpTest {
 		try {
 			validator.addParams(new HashMap<String, String>());
 			fail("Une exception aurait du être levée");
-		} catch (InvalideParamException exception) {
+		} catch (InvalidParamException exception) {
 			assertTrue(exception.getMessage().contains(ValidatorRegExp.PARAM_PATTERN));
-			assertTrue(exception.getMessage().contains("obligatoire"));
+			assertTrue(exception.getMessage().contains("mandatory"));
 		}
 	}
 
@@ -52,7 +52,7 @@ public class ValidatorRegExpTest {
 		try {
 			validator.addParams(params);
 			fail("Une exception aurait du être levée");
-		} catch (InvalideParamException exception) {
+		} catch (InvalidParamException exception) {
 			assertTrue(exception.getMessage().contains(ValidatorRegExp.PARAM_PATTERN));
 			assertTrue(exception.getMessage().contains("format"));
 		}

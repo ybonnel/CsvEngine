@@ -21,42 +21,19 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import fr.ybo.moteurcsv.adapter.AdapterCsv;
-import fr.ybo.moteurcsv.adapter.AdapterString;
-
 /**
- * Annotation utilisée pour représenté une colonne csv.
+ * Annotation used to contain multiple {@link CsvValidation}.<br/><br/>
+ * <u><i>French :</i></u> Annotation utilisée pour contenir plusieurs {@link CsvValidation}.
  * 
  * @author ybonnel
  * 
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface BaliseCsv {
+public @interface CsvValidations {
 
 	/**
-	 * adapter à utiliser pour transformer l'objet en chaine et inversement.
+	 * CsvValidation list to use.
 	 */
-	Class<? extends AdapterCsv<?>> adapter() default AdapterString.class;
-
-	/**
-	 * nom de la colonne CSV.
-	 */
-	String value();
-
-	/**
-	 * Ordre de la colonne (permet d'assurer que les colonnes soient toujours
-	 * écrite dans un ordre défini).
-	 */
-	int ordre() default 0;
-
-	/**
-	 * Permet de décrire si le champ est obligatoire (false par défaut).
-	 */
-	boolean obligatoire() default false;
-
-	/**
-	 * Paramètres de l'adapteur. Aucun paramètre par défaut.
-	 */
-	Param[] params() default { };
+	CsvValidation[] value() default {};
 }

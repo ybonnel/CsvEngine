@@ -23,14 +23,14 @@ import static org.junit.Assert.fail;
 
 import java.io.InputStream;
 
+import fr.ybo.moteurcsv.annotation.CsvColumn;
+import fr.ybo.moteurcsv.annotation.CsvFile;
+import fr.ybo.moteurcsv.annotation.CsvValidation;
 import org.junit.Before;
 import org.junit.Test;
 
-import fr.ybo.moteurcsv.annotation.BaliseCsv;
-import fr.ybo.moteurcsv.annotation.FichierCsv;
-import fr.ybo.moteurcsv.annotation.Validation;
 import fr.ybo.moteurcsv.exception.MoteurCsvException;
-import fr.ybo.moteurcsv.exception.NombreErreurDepasseException;
+import fr.ybo.moteurcsv.exception.CsvErrorsExceededException;
 import fr.ybo.moteurcsv.modele.Erreur;
 import fr.ybo.moteurcsv.modele.ParametresMoteur;
 import fr.ybo.moteurcsv.modele.Resultat;
@@ -40,7 +40,7 @@ import fr.ybo.moteurcsv.validator.ValidatorCsv;
 /**
  * Tester la validation.
  * <ul>
- * <li>REGLE RG1 : permettre de valider un champ sur son côté obligatoire.</li>
+ * <li>REGLE RG1 : permettre de valider un champ sur son côté mandatory.</li>
  * <li>REGLE RG2 : permettre de réaliser n'importe qu'elle validation via des
  * classes spécifiques.</li>
  * <li>REGLE RG3 : permettre de désactiver la validation.</li>
@@ -55,68 +55,68 @@ public class ValidationTest {
 	/**
 	 * Classe pour la RG1.
 	 */
-	@FichierCsv()
+	@CsvFile()
 	public static class ObjetRg1_1 {
 		/**
 		 * Facultatif.
 		 */
-		@BaliseCsv(value = "att1")
+		@CsvColumn(value = "att1")
 		public String att1;
 		/**
 		 * Facultatif.
 		 */
-		@BaliseCsv(value = "att2")
+		@CsvColumn(value = "att2")
 		public String att2;
 	}
 
 	/**
 	 * Classe pour la RG1.
 	 */
-	@FichierCsv()
+	@CsvFile()
 	public static class ObjetRg1_2 {
 		/**
 		 * Obligatoire.
 		 */
-		@BaliseCsv(value = "att1", obligatoire = true)
+		@CsvColumn(value = "att1", mandatory = true)
 		public String att1;
 		/**
 		 * Facultatif.
 		 */
-		@BaliseCsv(value = "att2")
+		@CsvColumn(value = "att2")
 		public String att2;
 	}
 
 	/**
 	 * Classe pour la RG1.
 	 */
-	@FichierCsv()
+	@CsvFile()
 	public static class ObjetRg1_3 {
 		/**
 		 * Facultatif.
 		 */
-		@BaliseCsv(value = "att1")
+		@CsvColumn(value = "att1")
 		public String att1;
 		/**
 		 * Obligatoire.
 		 */
-		@BaliseCsv(value = "att2", obligatoire = true)
+		@CsvColumn(value = "att2", mandatory = true)
 		public String att2;
 	}
 
 	/**
 	 * Classe pour la RG1.
 	 */
-	@FichierCsv()
+	@CsvFile()
 	public static class ObjetRg1_4 {
 		/**
 		 * Obligatoire.
 		 */
-		@BaliseCsv(value = "att1", obligatoire = true)
+		@CsvColumn(value = "att1", mandatory = true)
 		public String att1;
 		/**
 		 * Obligatoire.
 		 */
-		@BaliseCsv(value = "att2", obligatoire = true)
+		@CsvColumn(value = "att2", mandatory = true)
 		public String att2;
 	}
 
@@ -143,10 +143,10 @@ public class ValidationTest {
 
 	/**
 	 * Test de la RG1 avec les deux champs facultatifs.
-	 * @throws NombreErreurDepasseException exception.
+	 * @throws fr.ybo.moteurcsv.exception.CsvErrorsExceededException exception.
 	 */
 	@Test
-	public void testRg1_1() throws NombreErreurDepasseException {
+	public void testRg1_1() throws CsvErrorsExceededException {
 		// Test avec les deux champs facultatif.
 		Resultat<ObjetRg1_1> resultat = moteurRg1.parseInputStream(streamRg1, ObjetRg1_1.class);
 		assertNotNull(resultat);
@@ -155,15 +155,15 @@ public class ValidationTest {
 	}
 
 	/**
-	 * Test de la RG1 avec le premiers champ obligatoire et le second
+	 * Test de la RG1 avec le premiers champ mandatory et le second
 	 * facultatif.
 	 * 
-	 * @throws NombreErreurDepasseException
+	 * @throws fr.ybo.moteurcsv.exception.CsvErrorsExceededException
 	 *             exception.
 	 */
 	@Test
-	public void testRg1_2() throws NombreErreurDepasseException {
-		// Test avec le premier champ obligatoire.
+	public void testRg1_2() throws CsvErrorsExceededException {
+		// Test avec le premier champ mandatory.
 		Resultat<ObjetRg1_2> resultat = moteurRg1.parseInputStream(streamRg1, ObjetRg1_2.class);
 		assertNotNull(resultat);
 		assertEquals(1, resultat.getObjets().size());
@@ -171,25 +171,25 @@ public class ValidationTest {
 		Erreur erreur1 = resultat.getErreurs().get(0);
 		assertEquals(",val2", erreur1.getLigneCsv());
 		assertEquals(1, erreur1.getMessages().size());
-		assertTrue(erreur1.getMessages().get(0).contains("obligatoire"));
+		assertTrue(erreur1.getMessages().get(0).contains("mandatory"));
 		assertTrue(erreur1.getMessages().get(0).contains("att1"));
 		Erreur erreur2 = resultat.getErreurs().get(1);
 		assertEquals(",", erreur2.getLigneCsv());
 		assertEquals(1, erreur2.getMessages().size());
-		assertTrue(erreur2.getMessages().get(0).contains("obligatoire"));
+		assertTrue(erreur2.getMessages().get(0).contains("mandatory"));
 		assertTrue(erreur2.getMessages().get(0).contains("att1"));
 	}
 
 	/**
 	 * Test de la RG1 avec le premiers champ facultatif et le second
-	 * obligatoire.
+	 * mandatory.
 	 * 
-	 * @throws NombreErreurDepasseException
+	 * @throws fr.ybo.moteurcsv.exception.CsvErrorsExceededException
 	 *             exception.
 	 */
 	@Test
-	public void testRg1_3() throws NombreErreurDepasseException {
-		// Test avec le deuxième champ obligatoire.
+	public void testRg1_3() throws CsvErrorsExceededException {
+		// Test avec le deuxième champ mandatory.
 		Resultat<ObjetRg1_3> resultat = moteurRg1.parseInputStream(streamRg1, ObjetRg1_3.class);
 		assertNotNull(resultat);
 		assertEquals(1, resultat.getObjets().size());
@@ -197,23 +197,23 @@ public class ValidationTest {
 		Erreur erreur1 = resultat.getErreurs().get(0);
 		assertEquals("val1,", erreur1.getLigneCsv());
 		assertEquals(1, erreur1.getMessages().size());
-		assertTrue(erreur1.getMessages().get(0).contains("obligatoire"));
+		assertTrue(erreur1.getMessages().get(0).contains("mandatory"));
 		assertTrue(erreur1.getMessages().get(0).contains("att2"));
 		Erreur erreur2 = resultat.getErreurs().get(1);
 		assertEquals(",", erreur2.getLigneCsv());
 		assertEquals(1, erreur2.getMessages().size());
-		assertTrue(erreur2.getMessages().get(0).contains("obligatoire"));
+		assertTrue(erreur2.getMessages().get(0).contains("mandatory"));
 		assertTrue(erreur2.getMessages().get(0).contains("att2"));
 	}
 
 	/**
-	 * Test de la RG1 avec les deux champs obligatoire.
+	 * Test de la RG1 avec les deux champs mandatory.
 	 * 
-	 * @throws NombreErreurDepasseException
+	 * @throws fr.ybo.moteurcsv.exception.CsvErrorsExceededException
 	 *             exception.
 	 */
 	@Test
-	public void testRg1_4() throws NombreErreurDepasseException {
+	public void testRg1_4() throws CsvErrorsExceededException {
 		// Test avec les deux champs obligatoires
 		Resultat<ObjetRg1_4> resultat = moteurRg1.parseInputStream(streamRg1, ObjetRg1_4.class);
 		assertNotNull(resultat);
@@ -222,29 +222,29 @@ public class ValidationTest {
 		Erreur erreur1 = resultat.getErreurs().get(0);
 		assertEquals("val1,", erreur1.getLigneCsv());
 		assertEquals(1, erreur1.getMessages().size());
-		assertTrue(erreur1.getMessages().get(0).contains("obligatoire"));
+		assertTrue(erreur1.getMessages().get(0).contains("mandatory"));
 		assertTrue(erreur1.getMessages().get(0).contains("att2"));
 		Erreur erreur2 = resultat.getErreurs().get(1);
 		assertEquals(",val2", erreur2.getLigneCsv());
 		assertEquals(1, erreur2.getMessages().size());
-		assertTrue(erreur2.getMessages().get(0).contains("obligatoire"));
+		assertTrue(erreur2.getMessages().get(0).contains("mandatory"));
 		assertTrue(erreur2.getMessages().get(0).contains("att1"));
 		Erreur erreur3 = resultat.getErreurs().get(2);
 		assertEquals(",", erreur3.getLigneCsv());
 		assertEquals(2, erreur3.getMessages().size());
-		assertTrue(erreur3.getMessages().get(0).contains("obligatoire"));
+		assertTrue(erreur3.getMessages().get(0).contains("mandatory"));
 		assertTrue(erreur3.getMessages().get(0).contains("att1"));
-		assertTrue(erreur3.getMessages().get(1).contains("obligatoire"));
+		assertTrue(erreur3.getMessages().get(1).contains("mandatory"));
 		assertTrue(erreur3.getMessages().get(1).contains("att2"));
 	}
 
-	@FichierCsv
+	@CsvFile
 	public static class ObjetRg2 {
-		@Validation(ValidationRg2.class)
-		@BaliseCsv("att1")
+		@CsvValidation(ValidationRg2.class)
+		@CsvColumn("att1")
 		public String att1;
-		@Validation(ValidationRg2.class)
-		@BaliseCsv("att2")
+		@CsvValidation(ValidationRg2.class)
+		@CsvColumn("att2")
 		public String att2;
 	}
 
@@ -267,11 +267,11 @@ public class ValidationTest {
 	/**
 	 * Test de la RG2.
 	 * 
-	 * @throws NombreErreurDepasseException
+	 * @throws fr.ybo.moteurcsv.exception.CsvErrorsExceededException
 	 *             exception.
 	 */
 	@Test
-	public void testRg2() throws NombreErreurDepasseException {
+	public void testRg2() throws CsvErrorsExceededException {
 		MoteurCsv moteurRg2 =
 				new MoteurCsv(ParametresMoteur.createBuilder().setValidation(true).setNbLinesWithErrorsToStop(999).build(),
 						ObjetRg2.class);
@@ -304,11 +304,11 @@ public class ValidationTest {
 	 * Test de la RG3.<br/>
 	 * Test avec le jeu de données de RG1_4 (attributs obligatoires).
 	 * 
-	 * @throws NombreErreurDepasseException
+	 * @throws fr.ybo.moteurcsv.exception.CsvErrorsExceededException
 	 *             exception.
 	 */
 	@Test
-	public void testRg3_1() throws NombreErreurDepasseException {
+	public void testRg3_1() throws CsvErrorsExceededException {
 		moteurRg1.getParametres().setValidation(false);
 		Resultat<ObjetRg1_4> resultat = moteurRg1.parseInputStream(streamRg1, ObjetRg1_4.class);
 		assertNotNull(resultat);
@@ -319,11 +319,11 @@ public class ValidationTest {
 	 * Test de la RG3.<br/>
 	 * Test avec le jeu de données de RG2 (avec validateur).
 	 * 
-	 * @throws NombreErreurDepasseException
+	 * @throws fr.ybo.moteurcsv.exception.CsvErrorsExceededException
 	 *             exception.
 	 */
 	@Test
-	public void testRg3_2() throws NombreErreurDepasseException {
+	public void testRg3_2() throws CsvErrorsExceededException {
 		MoteurCsv moteurRg2 =
 				new MoteurCsv(ParametresMoteur.createBuilder().setValidation(false).setNbLinesWithErrorsToStop(999).build(),
 						ObjetRg2.class);
@@ -347,8 +347,8 @@ public class ValidationTest {
 		try {
 			moteurRg2.parseInputStream(stream, ObjetRg2.class);
 			fail("Une exception devrait être levée.");
-		} catch (NombreErreurDepasseException exception) {
-			assertEquals(2, exception.getErreurs().size());
+		} catch (CsvErrorsExceededException exception) {
+			assertEquals(2, exception.getErrors().size());
 			assertNotNull(exception.getMessage());
 		}
 	}
@@ -366,8 +366,8 @@ public class ValidationTest {
 		try {
 			moteurRg2.parseInputStream(stream, ObjetRg2.class);
 			fail("Une exception devrait être levée.");
-		} catch (NombreErreurDepasseException exception) {
-			assertEquals(1, exception.getErreurs().size());
+		} catch (CsvErrorsExceededException exception) {
+			assertEquals(1, exception.getErrors().size());
 		}
 	}
 
@@ -375,11 +375,11 @@ public class ValidationTest {
 	 * Test de la RG4. Test en mettant le nombre d'erreurs acceptées à -1
 	 * (infinie).
 	 * 
-	 * @throws NombreErreurDepasseException
+	 * @throws fr.ybo.moteurcsv.exception.CsvErrorsExceededException
 	 *             exception.
 	 */
 	@Test
-	public void testRg4_3() throws NombreErreurDepasseException {
+	public void testRg4_3() throws CsvErrorsExceededException {
 		MoteurCsv moteurRg2 =
 				new MoteurCsv(ParametresMoteur.createBuilder().setValidation(true).setNbLinesWithErrorsToStop(-1).build(),
 						ObjetRg2.class);
@@ -394,11 +394,11 @@ public class ValidationTest {
 	/**
 	 * Test de la RG4. Test en mettant le nombre d'erreurs acceptées à 3.
 	 * 
-	 * @throws NombreErreurDepasseException
+	 * @throws fr.ybo.moteurcsv.exception.CsvErrorsExceededException
 	 *             exception.
 	 */
 	@Test
-	public void testRg4_4() throws NombreErreurDepasseException {
+	public void testRg4_4() throws CsvErrorsExceededException {
 		MoteurCsv moteurRg2 =
 				new MoteurCsv(ParametresMoteur.createBuilder().setValidation(true).setNbLinesWithErrorsToStop(3).build(),
 						ObjetRg2.class);
@@ -427,10 +427,10 @@ public class ValidationTest {
 
 	}
 
-	@FichierCsv
+	@CsvFile
 	public static class ObjetPbCreationValidator {
-		@Validation(ValidatorPbCreation.class)
-		@BaliseCsv("att")
+		@CsvValidation(ValidatorPbCreation.class)
+		@CsvColumn("att")
 		public String att;
 	}
 

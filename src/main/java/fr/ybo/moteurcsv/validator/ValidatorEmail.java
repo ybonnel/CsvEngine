@@ -18,7 +18,7 @@ package fr.ybo.moteurcsv.validator;
 
 import java.util.Map;
 
-import fr.ybo.moteurcsv.exception.InvalideParamException;
+import fr.ybo.moteurcsv.exception.InvalidParamException;
 
 /**
  * Validateur d'email.<br/>
@@ -37,7 +37,7 @@ public class ValidatorEmail extends ValidatorRegExp {
 	 * @see fr.ybo.moteurcsv.validator.ValidatorRegExp#addParams(java.util.Map)
 	 */
 	@Override
-	public void addParams(Map<String, String> params) throws InvalideParamException {
+	public void addParams(Map<String, String> params) throws InvalidParamException {
 		params.put(PARAM_PATTERN, PATTERN_EMAIL);
 		super.addParams(params);
 	}

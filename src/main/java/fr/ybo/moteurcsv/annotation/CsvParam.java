@@ -22,17 +22,23 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation utilisée pour contenir plusieurs {@link Validation}.
+ * Annotation used to contain a parameter for Adapter and Validator.<br/><br/>
+ * <u><i>French :</i></u> Annotation utilisée pour contenir un paramètre des Adapter et des Validator.
  * 
  * @author ybonnel
  * 
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface Validations {
+public @interface CsvParam {
 
 	/**
-	 * Validations à utiliser.
+	 * Name of parameter.
 	 */
-	Validation[] value() default {};
+	String name();
+
+	/**
+	 * Value of parameter.
+	 */
+	String value();
 }

@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import fr.ybo.moteurcsv.annotation.Param;
+import fr.ybo.moteurcsv.annotation.CsvParam;
 
 /**
  * Classe permettant de repréter la clé contenant une classe et ses paramètres.
@@ -47,7 +47,7 @@ public class ClassWithParamKey<T> {
 	 * @param clazz
 	 *            classe concernée.
 	 */
-	public ClassWithParamKey(Param[] params, Class<? extends T> clazz) {
+	public ClassWithParamKey(CsvParam[] params, Class<? extends T> clazz) {
 		this.params = Parametre.paramsToParametres(params);
 		this.clazz = clazz;
 	}

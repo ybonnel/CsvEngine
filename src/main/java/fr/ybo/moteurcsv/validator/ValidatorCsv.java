@@ -18,7 +18,7 @@ package fr.ybo.moteurcsv.validator;
 
 import java.util.Map;
 
-import fr.ybo.moteurcsv.exception.InvalideParamException;
+import fr.ybo.moteurcsv.exception.InvalidParamException;
 
 /**
  * Interface à implémenter pour ajouter un nouveau Validateur de champs CSV.
@@ -34,10 +34,10 @@ public abstract class ValidatorCsv {
 	 * 
 	 * @param params
 	 *            paramètres.
-	 * @throws InvalideParamException
+	 * @throws fr.ybo.moteurcsv.exception.InvalidParamException
 	 *             si les paramètres ne sont pas corrects.
 	 */
-	public void addParams(Map<String, String> params) throws InvalideParamException {
+	public void addParams(Map<String, String> params) throws InvalidParamException {
 	}
 
 	/**

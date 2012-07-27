@@ -18,7 +18,7 @@ package fr.ybo.moteurcsv.validator;
 
 import java.util.Map;
 
-import fr.ybo.moteurcsv.exception.InvalideParamException;
+import fr.ybo.moteurcsv.exception.InvalidParamException;
 
 /**
  * Validateur permettant de valider un champ sur sa taille (min et max). <br/>
@@ -31,7 +31,7 @@ import fr.ybo.moteurcsv.exception.InvalideParamException;
  * </ul>
  * Au moins un des deux paramètres doit être fournit<br/>
  * Le paramètre format est à fournir via
- * {@link fr.ybo.moteurcsv.annotation.Validation#params()}.
+ * {@link fr.ybo.moteurcsv.annotation.CsvValidation#params()}.
  */
 public class ValidatorTaille extends ValidatorCsv {
 
@@ -60,19 +60,19 @@ public class ValidatorTaille extends ValidatorCsv {
 	 * @see fr.ybo.moteurcsv.validator.ValidatorCsv#addParams(java.util.Map)
 	 */
 	@Override
-	public void addParams(Map<String, String> params) throws InvalideParamException {
+	public void addParams(Map<String, String> params) throws InvalidParamException {
 		super.addParams(params);
 		String tailleMinChaine = params.get(PARAM_TAILLE_MIN);
 		String tailleMaxChaine = params.get(PARAM_TAILLE_MAX);
 		if (tailleMinChaine == null && tailleMaxChaine == null) {
-			throw new InvalideParamException("Au moins un des deux paramètres \"" + PARAM_TAILLE_MIN + "\" ou \""
+			throw new InvalidParamException("Au moins un des deux paramètres \"" + PARAM_TAILLE_MIN + "\" ou \""
 					+ PARAM_TAILLE_MAX + "\" doit être fournit");
 		}
 		if (tailleMinChaine != null) {
 			try {
 				tailleMin = Integer.parseInt(tailleMinChaine);
 			} catch (NumberFormatException exception) {
-				throw new InvalideParamException("Le paramètre \"" + PARAM_TAILLE_MIN + "\" n'a pas le bon format",
+				throw new InvalidParamException("Le paramètre \"" + PARAM_TAILLE_MIN + "\" n'a pas le bon format",
 						exception);
 			}
 		}
@@ -80,7 +80,7 @@ public class ValidatorTaille extends ValidatorCsv {
 			try {
 				tailleMax = Integer.parseInt(tailleMaxChaine);
 			} catch (NumberFormatException exception) {
-				throw new InvalideParamException("Le paramètre \"" + PARAM_TAILLE_MAX + "\" n'a pas le bon format",
+				throw new InvalidParamException("Le paramètre \"" + PARAM_TAILLE_MAX + "\" n'a pas le bon format",
 						exception);
 			}
 		}

@@ -33,7 +33,7 @@ public class DefaultGestionnaireCsvFactory implements GestionnaireCsvFactory {
 	 * @param reader
 	 *            fichier CSV.
 	 * @param separator
-	 *            separateur.
+	 *            separator.
 	 * @return ReaderCsv à base d'OpenCsv {@link ReaderOpenCsv}.
 	 */
 	public AbstractReaderCsv createReaderCsv(Reader reader, char separator) {

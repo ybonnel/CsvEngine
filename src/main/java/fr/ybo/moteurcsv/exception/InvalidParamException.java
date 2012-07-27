@@ -17,31 +17,32 @@
 package fr.ybo.moteurcsv.exception;
 
 /**
- * Exception envoyée si les paramètres des adapteurs ou des validateur sont
+ * Exception throw if parameters of Adapter of Validater are wrong.
+ * <u><i>French :</i></u> Exception envoyée si les paramètres des adapteurs ou des validateur sont
  * mauvais.
  */
 @SuppressWarnings("serial")
-public class InvalideParamException extends Exception {
+public class InvalidParamException extends Exception {
 
 	/**
-	 * Constructeur avec un message.
+	 * Constructor with a message.
 	 * 
 	 * @param message
-	 *            le message.
+	 *            the message.
 	 */
-	public InvalideParamException(String message) {
+	public InvalidParamException(String message) {
 		super(message);
 	}
 
 	/**
-	 * Constructeur avec une message et une exception.
+	 * Constructor with a message and an exception.
 	 * 
 	 * @param message
-	 *            le message.
+	 *            the message.
 	 * @param exception
-	 *            l'exception.
+	 *            the exception.
 	 */
-	public InvalideParamException(String message, Exception exception) {
+	public InvalidParamException(String message, Exception exception) {
 		super(message, exception);
 	}
 }

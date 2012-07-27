@@ -18,7 +18,7 @@ package fr.ybo.moteurcsv.adapter;
 
 import java.util.Map;
 
-import fr.ybo.moteurcsv.exception.InvalideParamException;
+import fr.ybo.moteurcsv.exception.InvalidParamException;
 import fr.ybo.moteurcsv.validator.ValidateException;
 
 /**
@@ -36,9 +36,9 @@ public abstract class AdapterCsv<T> {
      * Method to override if you want use parameters.
      *
      * @param params parameters.
-     * @throws InvalideParamException if parameters are incorrect.
+     * @throws fr.ybo.moteurcsv.exception.InvalidParamException if parameters are incorrect.
      */
-    public void addParams(Map<String, String> params) throws InvalideParamException {
+    public void addParams(Map<String, String> params) throws InvalidParamException {
     }
 
     /**

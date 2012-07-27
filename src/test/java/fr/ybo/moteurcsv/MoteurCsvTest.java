@@ -33,6 +33,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import fr.ybo.moteurcsv.annotation.CsvColumn;
+import fr.ybo.moteurcsv.annotation.CsvFile;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -41,10 +43,8 @@ import fr.ybo.moteurcsv.adapter.AdapterDouble;
 import fr.ybo.moteurcsv.adapter.AdapterInteger;
 import fr.ybo.moteurcsv.adapter.AdapterString;
 import fr.ybo.moteurcsv.adapter.AdapterTime;
-import fr.ybo.moteurcsv.annotation.BaliseCsv;
-import fr.ybo.moteurcsv.annotation.FichierCsv;
 import fr.ybo.moteurcsv.exception.MoteurCsvException;
-import fr.ybo.moteurcsv.exception.NombreErreurDepasseException;
+import fr.ybo.moteurcsv.exception.CsvErrorsExceededException;
 import fr.ybo.moteurcsv.factory.AbstractReaderCsv;
 import fr.ybo.moteurcsv.factory.AbstractWriterCsv;
 import fr.ybo.moteurcsv.factory.GestionnaireCsvFactory;
@@ -65,43 +65,43 @@ public class MoteurCsvTest {
 	 * @author ybonnel
 	 * 
 	 */
-	@FichierCsv(separateur = "\\|")
+	@CsvFile(separator = "\\|")
 	public static class ObjetCsv {
 
 		/**
 		 * Attribut simple.
 		 */
-		@BaliseCsv(value = "att_1", ordre = 0)
+		@CsvColumn(value = "att_1", order = 0)
 		private String attribut1;
 
 		/**
 		 * Attribut de type Boolean.
 		 */
-		@BaliseCsv(value = "att_2", ordre = 1, adapter = AdapterBoolean.class)
+		@CsvColumn(value = "att_2", order = 1, adapter = AdapterBoolean.class)
 		private Boolean attribut2;
 
 		/**
 		 * Attribut de type Double.
 		 */
-		@BaliseCsv(value = "att_3", ordre = 2, adapter = AdapterDouble.class)
+		@CsvColumn(value = "att_3", order = 2, adapter = AdapterDouble.class)
 		private Double attribut3;
 
 		/**
 		 * Attribut de type Integer.
 		 */
-		@BaliseCsv(value = "att_4", ordre = 5, adapter = AdapterInteger.class)
+		@CsvColumn(value = "att_4", order = 5, adapter = AdapterInteger.class)
 		private Integer attribut4;
 
 		/**
 		 * Attribut simple avec un adapter.
 		 */
-		@BaliseCsv(value = "att_5", ordre = 3, adapter = AdapterString.class)
+		@CsvColumn(value = "att_5", order = 3, adapter = AdapterString.class)
 		private String attribut5;
 
 		/**
 		 * Attribut de type Time.
 		 */
-		@BaliseCsv(value = "att_6", ordre = 6, adapter = AdapterTime.class)
+		@CsvColumn(value = "att_6", order = 6, adapter = AdapterTime.class)
 		private Integer attribut6;
 
 		/**
@@ -229,7 +229,7 @@ public class MoteurCsvTest {
 	}
 
 	@Test
-	public void testParseInputStream() throws IOException, NombreErreurDepasseException {
+	public void testParseInputStream() throws IOException, CsvErrorsExceededException {
 
 		List<ObjetCsv> objets = moteur.parseInputStream(stream, ObjetCsv.class).getObjets();
 		assertEquals(7, objets.size());
@@ -251,7 +251,7 @@ public class MoteurCsvTest {
 	}
 
 	@Test
-	public void testOtherFactory() throws NombreErreurDepasseException {
+	public void testOtherFactory() throws CsvErrorsExceededException {
 
 		moteur.setFactory(new GestionnaireCsvFactory() {
 
@@ -418,19 +418,19 @@ public class MoteurCsvTest {
 		}
 	}
 
-	@FichierCsv
+	@CsvFile
 	public static class ObjetExceptionDansConstructeur {
 
 		public ObjetExceptionDansConstructeur() {
 			throw new NullPointerException();
 		}
 
-		@BaliseCsv("att")
+		@CsvColumn("att")
 		public String att;
 	}
 
 	@Test
-	public void testExceptionDansConstructeur() throws NombreErreurDepasseException {
+	public void testExceptionDansConstructeur() throws CsvErrorsExceededException {
 		MoteurCsv moteur = new MoteurCsv(ObjetExceptionDansConstructeur.class);
 		StringStream stream = new StringStream("att\nvaleur");
 		try {
@@ -441,13 +441,13 @@ public class MoteurCsvTest {
 		}
 	}
 
-	@FichierCsv(separateur = ",,,")
+	@CsvFile(separator = ",,,")
 	public static class ObjetSeparateurTropGrand {
 
 	}
 
 	@Test
-	public void testSeparateurTropGrand() throws NombreErreurDepasseException {
+	public void testSeparateurTropGrand() throws CsvErrorsExceededException {
 		MoteurCsv moteur = new MoteurCsv(ObjetSeparateurTropGrand.class);
 		StringStream stream = new StringStream("att\nvaleur");
 		try {
@@ -458,7 +458,7 @@ public class MoteurCsvTest {
 		}
 	}
 
-	@FichierCsv
+	@CsvFile
 	public static class ObjetSansConstructeur {
 		public ObjetSansConstructeur(String unTruc) {
 		}
@@ -474,9 +474,9 @@ public class MoteurCsvTest {
 		}
 	}
 
-	@FichierCsv
+	@CsvFile
 	public static class ObjetSimple {
-		@BaliseCsv("att")
+		@CsvColumn("att")
 		public String att;
 	}
 

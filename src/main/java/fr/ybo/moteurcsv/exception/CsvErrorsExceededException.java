@@ -21,14 +21,15 @@ import java.util.List;
 import fr.ybo.moteurcsv.modele.Erreur;
 
 /**
- * Cette exception est déclenchée quand le nombre d'erreurs atteint dépasse le
+ * This exception is thrown when the number of errors exceed the number authorised.<br/><br/>
+ * <u><i>French :</i></u> Cette exception est déclenchée quand le nombre d'errors atteint dépasse le
  * nombre autorisé.
  * 
  */
-public class NombreErreurDepasseException extends Exception {
+public class CsvErrorsExceededException extends Exception {
 
 	/**
-	 * Taille max d'un message.
+     * Maximum size of a message.
 	 */
 	private static final int TAILLE_MAX_MESSAGE = 4000;
 	/**
@@ -36,26 +37,26 @@ public class NombreErreurDepasseException extends Exception {
 	 */
 	private static final long serialVersionUID = 1L;
 	/**
-	 * Liste des erreurs rencontrées.
+	 * List of errors.
 	 */
-	private List<Erreur> erreurs;
+	private List<Erreur> errors;
 
 	/**
-	 * Constructeur.
+	 * Constructor.
 	 * 
-	 * @param erreurs
-	 *            les erreurs rencontrées.
+	 * @param errors
+	 *            the errors.
 	 */
-	public NombreErreurDepasseException(List<Erreur> erreurs) {
+	public CsvErrorsExceededException(List<Erreur> errors) {
 		super();
-		this.erreurs = erreurs;
+		this.errors = errors;
 	}
 
 	/**
-	 * @return les erreurs rencontrées.
+	 * @return errors.
 	 */
-	public List<Erreur> getErreurs() {
-		return erreurs;
+	public List<Erreur> getErrors() {
+		return errors;
 	}
 
 	/*
@@ -66,7 +67,7 @@ public class NombreErreurDepasseException extends Exception {
 	@Override
 	public String getMessage() {
 		StringBuilder builder = new StringBuilder();
-		for (Erreur erreur : getErreurs()) {
+		for (Erreur erreur : getErrors()) {
 			for (String message : erreur.getMessages()) {
 				builder.append(message);
 				builder.append('\n');

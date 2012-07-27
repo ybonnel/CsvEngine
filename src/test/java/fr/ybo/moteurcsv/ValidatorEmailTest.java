@@ -23,10 +23,10 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import fr.ybo.moteurcsv.annotation.BaliseCsv;
-import fr.ybo.moteurcsv.annotation.FichierCsv;
-import fr.ybo.moteurcsv.annotation.Validation;
-import fr.ybo.moteurcsv.exception.NombreErreurDepasseException;
+import fr.ybo.moteurcsv.annotation.CsvColumn;
+import fr.ybo.moteurcsv.annotation.CsvFile;
+import fr.ybo.moteurcsv.annotation.CsvValidation;
+import fr.ybo.moteurcsv.exception.CsvErrorsExceededException;
 import fr.ybo.moteurcsv.modele.Erreur;
 import fr.ybo.moteurcsv.modele.ParametresMoteur;
 import fr.ybo.moteurcsv.modele.Resultat;
@@ -37,18 +37,18 @@ import fr.ybo.moteurcsv.validator.ValidatorEmail;
  */
 public class ValidatorEmailTest {
 
-	@FichierCsv
+	@CsvFile
 	public static class ObjetEmail {
-		@BaliseCsv("att")
+		@CsvColumn("att")
 		public String att;
 
-		@Validation(ValidatorEmail.class)
-		@BaliseCsv("email")
+		@CsvValidation(ValidatorEmail.class)
+		@CsvColumn("email")
 		public String email;
 	}
 
 	@Test
-	public void testEmail() throws NombreErreurDepasseException {
+	public void testEmail() throws CsvErrorsExceededException {
 		StringStream stream =
 				new StringStream("att,email\n" + ",\n" + ",nonvalide@tutu\n" + ",nonvalide\n" + ",@nonvalide.fr\n"
 						+ ",valide@valide.fr");

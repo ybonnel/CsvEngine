@@ -21,19 +21,26 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import fr.ybo.moteurcsv.validator.ValidatorCsv;
+
 /**
- * Annotation utilisée pour déclarer qu'une classe est à mapper en fichier CSV.
+ * Annotation used to add a Validator on a CSV Column.<br/><br/>
+ * <u><i></i></u>Annotation utilisée pour ajouter un validateur à un champ CSV.
  * 
  * @author ybonnel
  * 
  */
-@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface FichierCsv {
+@Target(ElementType.FIELD)
+public @interface CsvValidation {
 
 	/**
-	 * Séparateur utilisé dans le fichier CSV (par défaut ",").
+     * Validator used to validate the column.
 	 */
-	String separateur() default ",";
+	Class<? extends ValidatorCsv> value();
 
+	/**
+     * Parameters of Validator. No parameter by default.
+	 */
+	CsvParam[] params() default { };
 }

@@ -24,9 +24,9 @@ import java.util.List;
 import java.util.Map;
 
 import fr.ybo.moteurcsv.adapter.AdapterCsv;
-import fr.ybo.moteurcsv.annotation.BaliseCsv;
-import fr.ybo.moteurcsv.annotation.Validation;
-import fr.ybo.moteurcsv.annotation.Validations;
+import fr.ybo.moteurcsv.annotation.CsvColumn;
+import fr.ybo.moteurcsv.annotation.CsvValidation;
+import fr.ybo.moteurcsv.annotation.CsvValidations;
 import fr.ybo.moteurcsv.exception.MoteurCsvException;
 import fr.ybo.moteurcsv.validator.ValidateException;
 import fr.ybo.moteurcsv.validator.ValidatorCsv;
@@ -67,40 +67,40 @@ public class ChampCsv {
 	private final Field field;
 
 	/**
-	 * Permet de savoir si le champ est obligatoire ou non.
+	 * Permet de savoir si le champ est mandatory ou non.
 	 */
 	private final boolean obligatoire;
 
 	/**
 	 * Constructeur.
 	 * 
-	 * @param balise
+	 * @param column
 	 *            annotation du champ.
-	 * @param validation
-	 *            annotation de validation si elle est présente.
+	 * @param csvValidation
+	 *            annotation de csvValidation si elle est présente.
 	 * @param field
 	 *            attribut de la classe à mapper.
 	 */
-	public ChampCsv(BaliseCsv balise, Validations validations, Validation validation, Field field) {
+	public ChampCsv(CsvColumn column, CsvValidations csvValidations, CsvValidation csvValidation, Field field) {
 		this.field = field;
-		this.obligatoire = balise.obligatoire();
-		this.adapter = constructAdapter(balise);
-		constructValidators(validations, validation);
+		this.obligatoire = column.mandatory();
+		this.adapter = constructAdapter(column);
+		constructValidators(csvValidations, csvValidation);
 	}
 
 	/**
 	 * Construit un adapter (en réutilisant un existant si l'adapter avec les
 	 * mêmes paramètres existe déjà).
 	 * 
-	 * @param balise
+	 * @param column
 	 *            annotation du champ.
 	 * @return l'adapter construit.
 	 */
-	private static AdapterCsv<?> constructAdapter(BaliseCsv balise) {
-		ClassWithParamKey<AdapterCsv<?>> key = new ClassWithParamKey<AdapterCsv<?>>(balise.params(), balise.adapter());
+	private static AdapterCsv<?> constructAdapter(CsvColumn column) {
+		ClassWithParamKey<AdapterCsv<?>> key = new ClassWithParamKey<AdapterCsv<?>>(column.params(), column.adapter());
 		if (!MAP_ADAPTERS.containsKey(key)) {
 			try {
-				Constructor<? extends AdapterCsv<?>> construteur = balise.adapter().getConstructor((Class<?>[]) null);
+				Constructor<? extends AdapterCsv<?>> construteur = column.adapter().getConstructor((Class<?>[]) null);
 				AdapterCsv<?> adapter = construteur.newInstance((Object[]) null);
 				adapter.addParams(key.getMapParams());
 				MAP_ADAPTERS.put(key, adapter);
@@ -114,18 +114,18 @@ public class ChampCsv {
 	/**
 	 * Remplit la liste des Validator à construire.
 	 * 
-	 * @param validations
-	 *            conteneur d'annotation de validation.
-	 * @param validation
-	 *            annotation de validation.
+	 * @param csvValidations
+	 *            conteneur d'annotation de csvValidation.
+	 * @param csvValidation
+	 *            annotation de csvValidation.
 	 * @return le validator construit.
 	 */
-	private void constructValidators(Validations validations, Validation validation) {
-		if (validation != null) {
-			validators.add(constructOneValidator(validation));
+	private void constructValidators(CsvValidations csvValidations, CsvValidation csvValidation) {
+		if (csvValidation != null) {
+			validators.add(constructOneValidator(csvValidation));
 		}
-		if (validations != null) {
-			for (Validation oneValidation : validations.value()) {
+		if (csvValidations != null) {
+			for (CsvValidation oneValidation : csvValidations.value()) {
 				validators.add(constructOneValidator(oneValidation));
 			}
 		}
@@ -135,22 +135,22 @@ public class ChampCsv {
 	 * Construit un validator (en réutilisant un existant si le validator avec
 	 * les mêmes paramètres existe déjà).
 	 * 
-	 * @param validation
-	 *            annotation de validation.
+	 * @param csvValidation
+	 *            annotation de csvValidation.
 	 * @return le validator construit.
 	 */
-	private static ValidatorCsv constructOneValidator(Validation validation) {
+	private static ValidatorCsv constructOneValidator(CsvValidation csvValidation) {
 		ClassWithParamKey<ValidatorCsv> key =
-				new ClassWithParamKey<ValidatorCsv>(validation.params(), validation.value());
+				new ClassWithParamKey<ValidatorCsv>(csvValidation.params(), csvValidation.value());
 		if (!MAP_VALIDATOR.containsKey(key)) {
 			try {
-				Constructor<? extends ValidatorCsv> construteur = validation.value().getConstructor((Class<?>[]) null);
+				Constructor<? extends ValidatorCsv> construteur = csvValidation.value().getConstructor((Class<?>[]) null);
 				ValidatorCsv validator = construteur.newInstance((Object[]) null);
 				validator.addParams(key.getMapParams());
 				MAP_VALIDATOR.put(key, validator);
 			} catch (Exception exception) {
 				throw new MoteurCsvException("Problème lors de la construction du validateur "
-						+ validation.value().getSimpleName(),
+						+ csvValidation.value().getSimpleName(),
 						exception);
 			}
 		}
@@ -165,7 +165,7 @@ public class ChampCsv {
 	}
 
 	/**
-	 * @return champ obligatoire?
+	 * @return champ mandatory?
 	 */
 	public boolean isObligatoire() {
 		return obligatoire;

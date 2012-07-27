@@ -137,23 +137,23 @@ public class ClassCsv {
 	}
 
 	/**
-	 * Ajout de l'ordre.
+	 * Ajout de l'order.
 	 * 
 	 * @param nomCsv
 	 *            nom du champ.
 	 * @param ordre
-	 *            ordre.
+	 *            order.
 	 */
 	public void putOrdre(String nomCsv, int ordre) {
 		ordres.put(nomCsv, ordre);
 	}
 
 	/**
-	 * Retourne l'ordre d'un champ.
+	 * Retourne l'order d'un champ.
 	 * 
 	 * @param nomCsv
 	 *            nom du champ.
-	 * @return ordre associé.
+	 * @return order associé.
 	 */
 	public int getOrdre(String nomCsv) {
 		return ordres.get(nomCsv);

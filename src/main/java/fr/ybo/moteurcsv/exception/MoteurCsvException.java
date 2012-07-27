@@ -17,7 +17,7 @@
 package fr.ybo.moteurcsv.exception;
 
 /**
- * Exception utilisée par {@link fr.ybo.moteurcsv.MoteurCsv}.
+ * Exception used by {@link fr.ybo.moteurcsv.MoteurCsv}.
  * 
  * @author ybonnel
  * 
@@ -27,7 +27,7 @@ public class MoteurCsvException extends RuntimeException {
 
 	/**
 	 * @param message
-	 *            message de l'exception.
+	 *            message of the exception.
 	 */
 	public MoteurCsvException(String message) {
 		super(message);
@@ -35,9 +35,9 @@ public class MoteurCsvException extends RuntimeException {
 
 	/**
 	 * @param message
-	 *            message de l'exception.
+	 *            message of the exception.
 	 * @param throwable
-	 *            exception d'origine.
+	 *            source exception.
 	 */
 	public MoteurCsvException(String message, Throwable throwable) {
 		super(message, throwable);
@@ -45,7 +45,7 @@ public class MoteurCsvException extends RuntimeException {
 
 	/**
 	 * @param throwable
-	 *            exception d'origine.
+	 *            source exception.
 	 */
 	public MoteurCsvException(Throwable throwable) {
 		super(throwable);

@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-import fr.ybo.moteurcsv.exception.InvalideParamException;
+import fr.ybo.moteurcsv.exception.InvalidParamException;
 
 /**
  * Validateur permettant de valider un champ à partir d'une expression
@@ -28,7 +28,7 @@ import fr.ybo.moteurcsv.exception.InvalideParamException;
  * Paramètre : {@link ValidatorRegExp#PARAM_PATTERN} contient l'expression
  * régulière ({@link Pattern}).<br/>
  * Le paramètre format est à fournir via
- * {@link fr.ybo.moteurcsv.annotation.Validation#params()}.
+ * {@link fr.ybo.moteurcsv.annotation.CsvValidation#params()}.
  */
 public class ValidatorRegExp extends ValidatorCsv {
 
@@ -48,15 +48,15 @@ public class ValidatorRegExp extends ValidatorCsv {
 	 * @see fr.ybo.moteurcsv.validator.ValidatorCsv#addParams(java.util.Map)
 	 */
 	@Override
-	public void addParams(Map<String, String> params) throws InvalideParamException {
+	public void addParams(Map<String, String> params) throws InvalidParamException {
 		super.addParams(params);
 		if (!params.containsKey(PARAM_PATTERN)) {
-			throw new InvalideParamException("Le paramètre \"" + PARAM_PATTERN + "\" est obligatoire");
+			throw new InvalidParamException("Le paramètre \"" + PARAM_PATTERN + "\" est mandatory");
 		}
 		try {
 			pattern = Pattern.compile(params.get(PARAM_PATTERN));
 		} catch (PatternSyntaxException exception) {
-			throw new InvalideParamException("Le paramètre \"" + PARAM_PATTERN + "\" n'a pas le bon format", exception);
+			throw new InvalidParamException("Le paramètre \"" + PARAM_PATTERN + "\" n'a pas le bon format", exception);
 		}
 	}
 

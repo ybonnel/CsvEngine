@@ -21,21 +21,21 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
-import fr.ybo.moteurcsv.exception.InvalideParamException;
+import fr.ybo.moteurcsv.exception.InvalidParamException;
 import fr.ybo.moteurcsv.validator.ValidateException;
 
 /**
  * Adapter for java.util.Date<br/>
  * <br/>
  * Parameter : {@link AdapterDate#PARAM_FORMAT} contain the format of the date.<br/>
- * The parameter have to be passed with {@link fr.ybo.moteurcsv.annotation.BaliseCsv#params()}.
+ * The parameter have to be passed with {@link fr.ybo.moteurcsv.annotation.CsvColumn#params()}.
  * <br/><br/>
  * <p/>
  * <u><i>French :</i></u> Adapteur pour les dates.<br/>
  * <br/>
  * Paramètre : {@link AdapterDate#PARAM_FORMAT} contient le format de la date.<br/>
  * Le paramètre format est à fournir via
- * {@link fr.ybo.moteurcsv.annotation.BaliseCsv#params()}.
+ * {@link fr.ybo.moteurcsv.annotation.CsvColumn#params()}.
  */
 public class AdapterDate extends AdapterCsv<Date> {
 
@@ -55,15 +55,15 @@ public class AdapterDate extends AdapterCsv<Date> {
       * @see fr.ybo.moteurcsv.adapter.AdapterCsv#addParams(java.util.Map)
       */
     @Override
-    public void addParams(Map<String, String> params) throws InvalideParamException {
+    public void addParams(Map<String, String> params) throws InvalidParamException {
         super.addParams(params);
         if (!params.containsKey(PARAM_FORMAT)) {
-            throw new InvalideParamException("The parameter \"" + PARAM_FORMAT + "\" is mandatory");
+            throw new InvalidParamException("The parameter \"" + PARAM_FORMAT + "\" is mandatory");
         }
         try {
             format = new SimpleDateFormat(params.get(PARAM_FORMAT));
         } catch (IllegalArgumentException exception) {
-            throw new InvalideParamException("The parameter \"" + PARAM_FORMAT + "\" haven't the good format : "
+            throw new InvalidParamException("The parameter \"" + PARAM_FORMAT + "\" haven't the good format : "
                     + params.get(PARAM_FORMAT), exception);
         }
     }

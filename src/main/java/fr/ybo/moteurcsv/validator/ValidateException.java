@@ -17,7 +17,7 @@
 package fr.ybo.moteurcsv.validator;
 
 /**
- * Exception à renvoyer en cas de problème de Validation. {@link ValidatorCsv}
+ * Exception à renvoyer en cas de problème de CsvValidation. {@link ValidatorCsv}
  * 
  * @author ybonnel
  * 
