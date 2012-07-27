@@ -45,9 +45,9 @@ import fr.ybo.moteurcsv.adapter.AdapterString;
 import fr.ybo.moteurcsv.adapter.AdapterTime;
 import fr.ybo.moteurcsv.exception.MoteurCsvException;
 import fr.ybo.moteurcsv.exception.CsvErrorsExceededException;
-import fr.ybo.moteurcsv.factory.AbstractReaderCsv;
-import fr.ybo.moteurcsv.factory.AbstractWriterCsv;
-import fr.ybo.moteurcsv.factory.GestionnaireCsvFactory;
+import fr.ybo.moteurcsv.factory.AbstractCsvReader;
+import fr.ybo.moteurcsv.factory.AbstractCsvWriter;
+import fr.ybo.moteurcsv.factory.CsvManagerFactory;
 import fr.ybo.moteurcsv.modele.ParametresMoteur;
 import fr.ybo.moteurcsv.validator.ErreurValidation;
 
@@ -253,17 +253,17 @@ public class MoteurCsvTest {
 	@Test
 	public void testOtherFactory() throws CsvErrorsExceededException {
 
-		moteur.setFactory(new GestionnaireCsvFactory() {
+		moteur.setFactory(new CsvManagerFactory() {
 
-			public AbstractWriterCsv createWriterCsv(final Writer writer, char separator, boolean addQuoteCar) {
-				return new AbstractWriterCsv() {
+			public AbstractCsvWriter createWriterCsv(final Writer writer, char separator, boolean addQuoteCar) {
+				return new AbstractCsvWriter() {
 
 					public void close() throws IOException {
 						writer.close();
 					}
 
 					@Override
-					public void writeLine(List<String> champs) {
+					public void writeLine(List<String> fields) {
 						try {
 							writer.append("coucou\n");
 						} catch (IOException e) {
@@ -274,8 +274,8 @@ public class MoteurCsvTest {
 				};
 			}
 
-			public AbstractReaderCsv createReaderCsv(final Reader reader, char separator) {
-				return new AbstractReaderCsv() {
+			public AbstractCsvReader createReaderCsv(final Reader reader, char separator) {
+				return new AbstractCsvReader() {
 
 					boolean first = true;
 
@@ -313,13 +313,13 @@ public class MoteurCsvTest {
 			assertTrue(exception.getMessage().contains("nouveauFichier"));
 		}
 
-		moteur.setFactory(new GestionnaireCsvFactory() {
-			public AbstractWriterCsv createWriterCsv(Writer writer, char separator, boolean addQuoteCar) {
+		moteur.setFactory(new CsvManagerFactory() {
+			public AbstractCsvWriter createWriterCsv(Writer writer, char separator, boolean addQuoteCar) {
 				return null;
 			}
 
-			public AbstractReaderCsv createReaderCsv(Reader reader, char separator) {
-				return new AbstractReaderCsv() {
+			public AbstractCsvReader createReaderCsv(Reader reader, char separator) {
+				return new AbstractCsvReader() {
 					public void close() throws IOException {
 					}
 
@@ -355,13 +355,13 @@ public class MoteurCsvTest {
 			assertTrue(exception.getMessage().contains("String"));
 		}
 
-		moteur.setFactory(new GestionnaireCsvFactory() {
-			public AbstractWriterCsv createWriterCsv(Writer writer, char separator, boolean addQuoteCar) {
+		moteur.setFactory(new CsvManagerFactory() {
+			public AbstractCsvWriter createWriterCsv(Writer writer, char separator, boolean addQuoteCar) {
 				return null;
 			}
 
-			public AbstractReaderCsv createReaderCsv(Reader reader, char separator) {
-				return new AbstractReaderCsv() {
+			public AbstractCsvReader createReaderCsv(Reader reader, char separator) {
+				return new AbstractCsvReader() {
 					public void close() throws IOException {
 					}
 
@@ -392,20 +392,20 @@ public class MoteurCsvTest {
 
 	@Test
 	public void testWriteFile() {
-		moteur.setFactory(new GestionnaireCsvFactory() {
+		moteur.setFactory(new CsvManagerFactory() {
 
-			public AbstractWriterCsv createWriterCsv(Writer writer, char separator, boolean addQuoteCar) {
-				return new AbstractWriterCsv() {
+			public AbstractCsvWriter createWriterCsv(Writer writer, char separator, boolean addQuoteCar) {
+				return new AbstractCsvWriter() {
 					public void close() throws IOException {
 					}
 
-					public void writeLine(List<String> champs) {
+					public void writeLine(List<String> fields) {
 						throw new NullPointerException();
 					}
 				};
 			}
 
-			public AbstractReaderCsv createReaderCsv(Reader reader, char separator) {
+			public AbstractCsvReader createReaderCsv(Reader reader, char separator) {
 				return null;
 			}
 		});

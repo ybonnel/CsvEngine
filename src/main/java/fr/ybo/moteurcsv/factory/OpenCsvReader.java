@@ -22,12 +22,13 @@ import java.io.Reader;
 import au.com.bytecode.opencsv.CSVReader;
 
 /**
- * Reader de CSV à base d'OpenCSV.
+ * CsvReader based on OpenCsv.<br/><br/>
+ * <u><i>French :</i></u> Reader de CSV à base d'OpenCSV.
  * 
  * @author ybonnel
  * 
  */
-public class ReaderOpenCsv extends AbstractReaderCsv {
+public class OpenCsvReader extends AbstractCsvReader {
 	
 	/**
 	 * CSVReader.
@@ -35,24 +36,24 @@ public class ReaderOpenCsv extends AbstractReaderCsv {
 	private CSVReader reader;
 	
 	/**
-	 * Constructeur.
-	 * 
-	 * @param reader
-	 *            fichier CSV.
-	 * @param separator
-	 *            séparateur.
+	 * Constructor.
+	 *
+     * @param reader
+     *            reader which represent the CSV File.
+     * @param separator
+     *            separator of fields.
 	 */
-	public ReaderOpenCsv(Reader reader, char separator) {
+	public OpenCsvReader(Reader reader, char separator) {
 		super();
 		this.reader = new CSVReader(reader, separator);
 	}
 	
 	/**
-	 * Permet de savoir si une ligne est vide ou non.
+	 * Used to know if a line is empty or note.
 	 * 
 	 * @param nextLine
-	 *            la ligne à vérifier.
-	 * @return true si la ligne est vide.
+	 *            the line to verify.
+	 * @return true if the line is empty.
 	 */
 	protected static boolean isEmpty(String[] nextLine) {
 		return (nextLine != null && nextLine.length == 1 && "".equals(nextLine[0]));
@@ -68,10 +69,10 @@ public class ReaderOpenCsv extends AbstractReaderCsv {
 	}
 
 	/**
-	 * Fermeture du reader.
+	 * Close the reader.
 	 * 
 	 * @throws IOException
-	 *             erreur d'entrée sortie.
+	 *             input/output error.
 	 */
 	public void close() throws IOException {
 		reader.close();

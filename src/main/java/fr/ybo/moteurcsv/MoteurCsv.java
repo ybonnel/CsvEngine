@@ -39,10 +39,10 @@ import fr.ybo.moteurcsv.annotation.CsvValidation;
 import fr.ybo.moteurcsv.annotation.CsvValidations;
 import fr.ybo.moteurcsv.exception.MoteurCsvException;
 import fr.ybo.moteurcsv.exception.CsvErrorsExceededException;
-import fr.ybo.moteurcsv.factory.AbstractReaderCsv;
-import fr.ybo.moteurcsv.factory.AbstractWriterCsv;
-import fr.ybo.moteurcsv.factory.DefaultGestionnaireCsvFactory;
-import fr.ybo.moteurcsv.factory.GestionnaireCsvFactory;
+import fr.ybo.moteurcsv.factory.AbstractCsvReader;
+import fr.ybo.moteurcsv.factory.AbstractCsvWriter;
+import fr.ybo.moteurcsv.factory.DefaultCsvManagerFactory;
+import fr.ybo.moteurcsv.factory.CsvManagerFactory;
 import fr.ybo.moteurcsv.modele.ChampCsv;
 import fr.ybo.moteurcsv.modele.ClassCsv;
 import fr.ybo.moteurcsv.modele.Erreur;
@@ -94,7 +94,7 @@ public class MoteurCsv {
 	/**
 	 * Factory fournissant les reader et writer csv.
 	 */
-	private GestionnaireCsvFactory factory;
+	private CsvManagerFactory factory;
 
 	/**
 	 * Permet d'utiliser autre chose que open-csv pour la lecture et écriture.
@@ -102,7 +102,7 @@ public class MoteurCsv {
 	 * @param factory
 	 *            factory autre que la factory par défaut.
 	 */
-	public void setFactory(GestionnaireCsvFactory factory) {
+	public void setFactory(CsvManagerFactory factory) {
 		this.factory = factory;
 	}
 
@@ -126,7 +126,7 @@ public class MoteurCsv {
 	 */
 	public MoteurCsv(Class<?>... classes) {
 		parametres = new ParametresMoteur();
-		factory = new DefaultGestionnaireCsvFactory();
+		factory = new DefaultCsvManagerFactory();
 		for (Class<?> clazz : classes) {
 			scannerClass(clazz);
 		}
@@ -146,7 +146,7 @@ public class MoteurCsv {
 	 */
 	public MoteurCsv(ParametresMoteur parametres, Class<?>... classes) {
 		this.parametres = parametres;
-		factory = new DefaultGestionnaireCsvFactory();
+		factory = new DefaultCsvManagerFactory();
 		for (Class<?> clazz : classes) {
 			scannerClass(clazz);
 		}
@@ -155,7 +155,7 @@ public class MoteurCsv {
 	/**
 	 * Lecteur CSV.
 	 */
-	private AbstractReaderCsv lecteurCsv;
+	private AbstractCsvReader csvReader;
 
 	/**
 	 * Permet de recontruire une ligne à partir des champs qui la compose.
@@ -364,7 +364,7 @@ public class MoteurCsv {
 	 */
 	private String[] readLine() {
 		try {
-			return lecteurCsv.readLine();
+			return csvReader.readLine();
 		} catch (IOException e) {
 			throw new MoteurCsvException("Erreur à la lecture d'une ligne", e);
 		}
@@ -383,9 +383,9 @@ public class MoteurCsv {
 		if (classCourante == null) {
 			throw new MoteurCsvException("La class " + clazz.getSimpleName() + " n'est pas gérée");
 		}
-		lecteurCsv = factory.createReaderCsv(reader, classCourante.getSeparateurWithoutEscape());
+		csvReader = factory.createReaderCsv(reader, classCourante.getSeparateurWithoutEscape());
 		try {
-			enteteCourante = lecteurCsv.readLine();
+			enteteCourante = csvReader.readLine();
 		} catch (IOException e) {
 			throw new MoteurCsvException(e);
 		}
@@ -398,13 +398,13 @@ public class MoteurCsv {
 	 * Ferme le lecteur courant.
 	 */
 	private void closeLecteurCourant() {
-		if (lecteurCsv != null) {
+		if (csvReader != null) {
 			try {
-				lecteurCsv.close();
+				csvReader.close();
 			} catch (IOException exception) {
 				LOGGER.log(Level.WARNING, "Erreur lors de la fermeture du LecteurCsv", exception);
 			}
-			lecteurCsv = null;
+			csvReader = null;
 		}
 	}
 
@@ -512,7 +512,7 @@ public class MoteurCsv {
 	 * 
 	 * @param <Objet>
 	 *            Objet associé au CSV.
-	 * @param writerCsv
+	 * @param csvWriter
 	 *            writer à utiliser.
 	 * @param nomChamps
 	 *            liste des champs représentant l'entête du CSV.
@@ -523,7 +523,7 @@ public class MoteurCsv {
 	 * @throws IllegalAccessException
 	 *             ne doit pas arriver.
 	 */
-	private <Objet> void writeLigne(AbstractWriterCsv writerCsv, List<String> nomChamps, ClassCsv classCsv, Objet objet)
+	private <Objet> void writeLigne(AbstractCsvWriter csvWriter, List<String> nomChamps, ClassCsv classCsv, Objet objet)
 			throws IllegalAccessException {
 		List<String> champs = new ArrayList<String>();
 		for (String nomChamp : nomChamps) {
@@ -537,7 +537,7 @@ public class MoteurCsv {
 				champs.add(null);
 			}
 		}
-		writerCsv.writeLine(champs);
+		csvWriter.writeLine(champs);
 	}
 
 	/**
@@ -555,7 +555,7 @@ public class MoteurCsv {
 	public <Objet> void writeFile(Writer writer, Iterable<Objet> objets, Class<Objet> clazz) {
 		try {
 			final ClassCsv classCsv = mapClasses.get(clazz);
-			AbstractWriterCsv writerCsv =
+			AbstractCsvWriter csvWriter =
 					factory.createWriterCsv(writer, classCsv.getSeparateurWithoutEscape(), parametres.hasAddQuoteCar());
 			try {
 				List<String> nomChamps = new ArrayList<String>();
@@ -569,12 +569,12 @@ public class MoteurCsv {
 						return (thisVal < anotherVal ? -1 : (thisVal == anotherVal ? 0 : 1));
 					}
 				});
-				writerCsv.writeLine(nomChamps);
+				csvWriter.writeLine(nomChamps);
 				for (Objet objet : objets) {
-					writeLigne(writerCsv, nomChamps, classCsv, objet);
+					writeLigne(csvWriter, nomChamps, classCsv, objet);
 				}
 			} finally {
-				writerCsv.close();
+				csvWriter.close();
 			}
 		} catch (Exception exception) {
 			throw new MoteurCsvException(exception);

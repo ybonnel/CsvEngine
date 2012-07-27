@@ -23,12 +23,13 @@ import java.util.List;
 import au.com.bytecode.opencsv.CSVWriter;
 
 /**
- * Writer de CSV à base d'open-csv.
+ * CsvWriter based on open-csv.<br/><br/>
+ * <u><i>French :</i></u> Writer de CSV à base d'open-csv.
  * 
  * @author ybonnel
  * 
  */
-public class WriterOpenCsv extends AbstractWriterCsv {
+public class OpenCsvWriter extends AbstractCsvWriter {
 
 	/**
 	 * CSVWriter.
@@ -36,33 +37,31 @@ public class WriterOpenCsv extends AbstractWriterCsv {
 	private CSVWriter csvWriter;
 
 	/**
-	 * Constructeur.
-	 * 
-	 * @param writer
-	 *            fichier CSV.
-	 * @param separateur
-	 *            séparateur.
-	 * @param addQuoteCar
-	 *            true pour avoir des délimiteurs de champs.
+     * @param writer
+     *            writer which represent the CSV File to write.
+     * @param separator
+     *            separator.
+     * @param addQuoteCar
+     *            true to write car to quote elements.
 	 */
-	public WriterOpenCsv(Writer writer, char separateur, boolean addQuoteCar) {
+	public OpenCsvWriter(Writer writer, char separator, boolean addQuoteCar) {
 		if (addQuoteCar) {
-			this.csvWriter = new CSVWriter(writer, separateur);
+			this.csvWriter = new CSVWriter(writer, separator);
 		} else {
-			this.csvWriter = new CSVWriter(writer, separateur, CSVWriter.NO_QUOTE_CHARACTER);
+			this.csvWriter = new CSVWriter(writer, separator, CSVWriter.NO_QUOTE_CHARACTER);
 		}
 	}
 
 	@Override
-	public void writeLine(List<String> champs) {
-		csvWriter.writeNext(champs.toArray(new String[champs.size()]));
+	public void writeLine(List<String> fields) {
+		csvWriter.writeNext(fields.toArray(new String[fields.size()]));
 	}
 
 	/**
-	 * Fermeture du writer.
+	 * Close the writer.
 	 * 
 	 * @throws IOException
-	 *             erreur d'entrée sortie.
+	 *             input/ouput error.
 	 */
 	public void close() throws IOException {
 		csvWriter.close();

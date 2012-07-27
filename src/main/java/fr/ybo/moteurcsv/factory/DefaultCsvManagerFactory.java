@@ -20,39 +20,40 @@ import java.io.Reader;
 import java.io.Writer;
 
 /**
- * Factory par défaut. Fournit des implémentations à base d'opencsv.
+ * Default factory. Provied implementations based on opencsv.<br/><br/>
+ * <u><i>French :</i></u> Factory par défaut. Fournit des implémentations à base d'opencsv.
  * 
  * @author ybonnel
  * 
  */
-public class DefaultGestionnaireCsvFactory implements GestionnaireCsvFactory {
+public class DefaultCsvManagerFactory implements CsvManagerFactory {
 
 	/**
-	 * Créaion d'un ReaderCsv.
+     * CsvReader creation.
 	 * 
 	 * @param reader
-	 *            fichier CSV.
+	 *            reader which represent the CSV File.
 	 * @param separator
-	 *            separator.
-	 * @return ReaderCsv à base d'OpenCsv {@link ReaderOpenCsv}.
+	 *            separator of fields.
+	 * @return CsvReader based on OpenCsv {@link OpenCsvReader}.
 	 */
-	public AbstractReaderCsv createReaderCsv(Reader reader, char separator) {
-		return new ReaderOpenCsv(reader, separator);
+	public AbstractCsvReader createReaderCsv(Reader reader, char separator) {
+		return new OpenCsvReader(reader, separator);
 	}
 
 	/**
-	 * Création d'un WriterCsv.
+     * CsvWriter creation.
 	 * 
 	 * @param writer
-	 *            fichier CSV.
+	 *            writer which represent the CSV File to write.
 	 * @param separator
-	 *            séparateur.
+	 *            separator.
 	 * @param addQuoteCar
-	 *            true pour avoir des délimiteurs de champs.
-	 * @return WriterCsv à base d'OpenCsv {@link WriterOpenCsv}.
+	 *            true to write car to quote elements.
+	 * @return CsvWriter based on OpenCsv {@link OpenCsvWriter}.
 	 */
-	public AbstractWriterCsv createWriterCsv(Writer writer, char separator, boolean addQuoteCar) {
-		return new WriterOpenCsv(writer, separator, addQuoteCar);
+	public AbstractCsvWriter createWriterCsv(Writer writer, char separator, boolean addQuoteCar) {
+		return new OpenCsvWriter(writer, separator, addQuoteCar);
 	}
 
 }

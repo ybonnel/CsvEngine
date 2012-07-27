@@ -16,42 +16,24 @@
  */
 package fr.ybo.moteurcsv.factory;
 
-import java.io.Reader;
-import java.io.Writer;
+import java.io.Closeable;
+import java.util.List;
 
 /**
- * Factory fournissant les Reader et Writer de CSV.
- * 
- * A implémenter si on souhaite utiliser autre chose qu'open-csv.
+ *
+ * Writer of CSV File.
  * 
  * @author ybonnel
  * 
  */
-public interface GestionnaireCsvFactory {
+public abstract class AbstractCsvWriter implements Closeable {
 
 	/**
-	 * Création d'un writer de CSV.
+     * Write a line into the CSV File.
 	 * 
-	 * @param writer
-	 *            fichier CSV.
-	 * 
-	 * @param separator
-	 *            séparateur.
-	 * @param addQuoteCar
-	 *            true pour avoir des délimiteurs de champs.
-	 * @return le writer de CSV.
+	 * @param fields
+	 *            field list to write.
 	 */
-	AbstractWriterCsv createWriterCsv(Writer writer, char separator, boolean addQuoteCar);
-
-	/**
-	 * Création d'un reader de CSV.
-	 * 
-	 * @param reader
-	 *            fichier CSV.
-	 * @param separator
-	 *            séparateur.
-	 * @return le reader de CSV.
-	 */
-	AbstractReaderCsv createReaderCsv(Reader reader, char separator);
+	public abstract void writeLine(List<String> fields);
 
 }

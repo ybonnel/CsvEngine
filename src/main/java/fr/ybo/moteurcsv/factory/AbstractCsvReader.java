@@ -20,19 +20,20 @@ import java.io.Closeable;
 import java.io.IOException;
 
 /**
- * Lecteur de fichier CSV.
+ * Reader of CSV File.<br/><br/>
+ * <u><i>French :</i></u> Lecteur de fichier CSV.
  * 
  * @author ybonnel
  * 
  */
-public abstract class AbstractReaderCsv implements Closeable {
+public abstract class AbstractCsvReader implements Closeable {
 	
 	/**
-	 * Lit une ligne du fichier CSV.
+     * Read a line of CSV File.
 	 * 
-	 * @return la liste des champs de la ligne.
+	 * @return return the field list of the line.
 	 * @throws IOException
-	 *             erreur d'entrée sortie.
+	 *             error reading the line.
 	 */
 	public abstract String[] readLine() throws IOException;
 
