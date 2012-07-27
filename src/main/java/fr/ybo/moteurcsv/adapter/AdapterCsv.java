@@ -22,44 +22,39 @@ import fr.ybo.moteurcsv.exception.InvalideParamException;
 import fr.ybo.moteurcsv.validator.ValidateException;
 
 /**
- * Interface à implémenter pour tout les adapter CSV.
- * 
+ * Class to extend for all Adapter for CSV.<br/>
+ * <u><i>French :</i></u> Class à étendre pour tout les adapteur CSV.
+ *
+ * @param <T> Class to transform in CSV (associate with a column in CSV).<br/>
+ *            <u><i>French :</i></u> Class à adapter en CSV (associé à une colonne).
  * @author ybonnel
- * 
- * @param <Objet>
- *            Objet à adapter en CSV (associé à une colonne).
  */
-public abstract class AdapterCsv<Objet> {
+public abstract class AdapterCsv<T> {
 
-	/**
-	 * Méthode appelée après la contruction de l'adapter.<br/>
-	 * Méthode à surcharger si on souhaite utiliser des paramètres.
-	 * 
-	 * @param params
-	 *            paramètres.
-	 * @throws InvalideParamException
-	 *             si les paramètres ne sont pas corrects.
-	 */
-	public void addParams(Map<String, String> params) throws InvalideParamException {
-	}
+    /**
+     * Method call after the construction of adapter<br/>
+     * Method to override if you want use parameters.
+     *
+     * @param params parameters.
+     * @throws InvalideParamException if parameters are incorrect.
+     */
+    public void addParams(Map<String, String> params) throws InvalideParamException {
+    }
 
-	/**
-	 * Transforme une chaine en Objet.
-	 * 
-	 * @param chaine
-	 *            la chaine à transformer.
-	 * @return l'objet tranformé.
-	 * @throws ValidateException
-	 *             peut être envoyée si la chaine n'a pas le bon format.
-	 */
-	public abstract Objet parse(String chaine) throws ValidateException;
+    /**
+     * Transform a String into T.
+     *
+     * @param string the string to transform.
+     * @return the object transformed.
+     * @throws ValidateException can be throw if the string haven't good format.
+     */
+    public abstract T parse(String string) throws ValidateException;
 
-	/**
-	 * Transforme un objet en chaine.
-	 * 
-	 * @param objet
-	 *            objet à tranformer.
-	 * @return la chaine obtenu.
-	 */
-	public abstract String toString(Objet objet);
+    /**
+     * Transform a T into String.
+     *
+     * @param object object to transform.
+     * @return the resulting string.
+     */
+    public abstract String toString(T object);
 }

@@ -17,32 +17,30 @@
 package fr.ybo.moteurcsv.adapter;
 
 /**
- * Adapteur pour les Double.
- * 
+ * Adapter for Double<br/><br/>
+ * <u><i>French :</i></u> Adapteur pour les Double.
+ *
  * @author ybonnel
- * 
  */
 public class AdapterDouble extends AdapterCsv<Double> {
 
-	/**
-	 * Transforme une chaine en Double.
-	 * 
-	 * @param chaine
-	 *            la chaine à transformer.
-	 * @return le double tranformé.
-	 */
-	public Double parse(String chaine) {
-		return Double.valueOf(chaine);
-	}
 
-	/**
-	 * Transforme un double en chaine.
-	 * 
-	 * @param objet
-	 *            double à tranformer.
-	 * @return la chaine obtenue.
-	 */
-	public String toString(Double objet) {
-		return objet.toString();
-	}
+    /*
+      * (non-Javadoc)
+      *
+      * @see fr.ybo.moteurcsv.adapter.AdapterCsv#parse(java.lang.String)
+      */
+    public Double parse(String string) {
+        return Double.valueOf(string);
+    }
+
+
+    /*
+      * (non-Javadoc)
+      *
+      * @see fr.ybo.moteurcsv.adapter.AdapterCsv#toString(java.lang.Object)
+      */
+    public String toString(Double object) {
+        return object.toString();
+    }
 }

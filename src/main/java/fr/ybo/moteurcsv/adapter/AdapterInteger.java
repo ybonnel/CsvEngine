@@ -17,32 +17,29 @@
 package fr.ybo.moteurcsv.adapter;
 
 /**
- * Adapteur pour les Integer.
+ * Adapter for Integer<br/><br/>
+ * <u><i>French :</i></u> Adapteur pour les Integer.
  * 
  * @author ybonnel
  * 
  */
 public class AdapterInteger extends AdapterCsv<Integer> {
 
-	/**
-	 * Transforme une chaine en Integer.
-	 * 
-	 * @param chaine
-	 *            la chaine à transformer.
-	 * @return l'integer tranformé.
-	 */
-	public Integer parse(String chaine) {
-		return Integer.valueOf(chaine);
+    /*
+      * (non-Javadoc)
+      *
+      * @see fr.ybo.moteurcsv.adapter.AdapterCsv#parse(java.lang.String)
+      */
+	public Integer parse(String string) {
+		return Integer.valueOf(string);
 	}
 
-	/**
-	 * Transforme un integer en chaine.
-	 * 
-	 * @param objet
-	 *            integer à tranformer.
-	 * @return la chaine obtenue.
-	 */
-	public String toString(Integer objet) {
-		return objet.toString();
+    /*
+      * (non-Javadoc)
+      *
+      * @see fr.ybo.moteurcsv.adapter.AdapterCsv#toString(java.lang.Object)
+      */
+	public String toString(Integer object) {
+		return object.toString();
 	}
 }

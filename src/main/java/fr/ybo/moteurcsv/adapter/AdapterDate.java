@@ -25,7 +25,13 @@ import fr.ybo.moteurcsv.exception.InvalideParamException;
 import fr.ybo.moteurcsv.validator.ValidateException;
 
 /**
- * Adapteur pour les dates.<br/>
+ * Adapter for java.util.Date<br/>
+ * <br/>
+ * Parameter : {@link AdapterDate#PARAM_FORMAT} contain the format of the date.<br/>
+ * The parameter have to be passed with {@link fr.ybo.moteurcsv.annotation.BaliseCsv#params()}.
+ * <br/><br/>
+ * <p/>
+ * <u><i>French :</i></u> Adapteur pour les dates.<br/>
  * <br/>
  * Paramètre : {@link AdapterDate#PARAM_FORMAT} contient le format de la date.<br/>
  * Le paramètre format est à fournir via
@@ -33,59 +39,58 @@ import fr.ybo.moteurcsv.validator.ValidateException;
  */
 public class AdapterDate extends AdapterCsv<Date> {
 
-	/**
-	 * Paramètre format.
-	 */
-	public static final String PARAM_FORMAT = "format";
+    /**
+     * Parameter for the Date Format.
+     */
+    public static final String PARAM_FORMAT = "format";
 
-	/**
-	 * SimpleDateFormat utilisé pour parser et formater les dates.
-	 */
-	private SimpleDateFormat format;
+    /**
+     * SimpleDateFormat used for parsed and format dates.
+     */
+    private SimpleDateFormat format;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see fr.ybo.moteurcsv.adapter.AdapterCsv#addParams(java.util.Map)
-	 */
-	@Override
-	public void addParams(Map<String, String> params) throws InvalideParamException {
-		super.addParams(params);
-		if (!params.containsKey(PARAM_FORMAT)) {
-			throw new InvalideParamException("Le paramètre \"" + PARAM_FORMAT + "\" est obligatoire");
-		}
-		try {
-			format = new SimpleDateFormat(params.get(PARAM_FORMAT));
-		} catch (IllegalArgumentException exception) {
-			throw new InvalideParamException("Le paramètre \"" + PARAM_FORMAT + "\" n'a pas le bon format : "
-					+ params.get(PARAM_FORMAT), exception);
-		}
-	}
+    /*
+      * (non-Javadoc)
+      *
+      * @see fr.ybo.moteurcsv.adapter.AdapterCsv#addParams(java.util.Map)
+      */
+    @Override
+    public void addParams(Map<String, String> params) throws InvalideParamException {
+        super.addParams(params);
+        if (!params.containsKey(PARAM_FORMAT)) {
+            throw new InvalideParamException("The parameter \"" + PARAM_FORMAT + "\" is mandatory");
+        }
+        try {
+            format = new SimpleDateFormat(params.get(PARAM_FORMAT));
+        } catch (IllegalArgumentException exception) {
+            throw new InvalideParamException("The parameter \"" + PARAM_FORMAT + "\" haven't the good format : "
+                    + params.get(PARAM_FORMAT), exception);
+        }
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see fr.ybo.moteurcsv.adapter.AdapterCsv#parse(java.lang.String)
-	 */
-	@Override
-	public Date parse(String chaine) throws ValidateException {
-		try {
-			return format.parse(chaine);
-		} catch (ParseException e) {
-			System.out.println(e.getMessage());
-			throw new ValidateException(
-					"Une date n'a pas le bon format, (format attendu : " + format.toPattern() + ")", e);
-		}
-	}
+    /*
+      * (non-Javadoc)
+      *
+      * @see fr.ybo.moteurcsv.adapter.AdapterCsv#parse(java.lang.String)
+      */
+    @Override
+    public Date parse(String string) throws ValidateException {
+        try {
+            return format.parse(string);
+        } catch (ParseException e) {
+            throw new ValidateException(
+                    "A date haven't the good format, (expected format : " + format.toPattern() + ")", e);
+        }
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see fr.ybo.moteurcsv.adapter.AdapterCsv#toString(java.lang.Object)
-	 */
-	@Override
-	public String toString(Date objet) {
-		return format.format(objet);
-	}
+    /*
+      * (non-Javadoc)
+      *
+      * @see fr.ybo.moteurcsv.adapter.AdapterCsv#toString(java.lang.Object)
+      */
+    @Override
+    public String toString(Date object) {
+        return format.format(object);
+    }
 
 }

@@ -17,61 +17,55 @@
 package fr.ybo.moteurcsv.adapter;
 
 /**
- * Adapteur pour les heures au format HH:MI. Retourne un integrer représentant
+ * Adapter for Time in format "HH:MI". Return an Integer represents number of minutes after midnight (very specific adapter).<br/><br/>
+ * <u><i>French :</i></u> Adapteur pour les heures au format HH:MI. Retourne un integrer représentant
  * le nombre de minutes passées de minuit.
- * 
+ *
  * @author ybonnel
- * 
  */
 public class AdapterTime extends AdapterCsv<Integer> {
 
-	/**
-	 * Une dixaine.
-	 */
-	private static final int DIXAINE = 10;
-	/**
-	 * Nombre de minutes dans une heure.
-	 */
-	private static final int MINUTES_BY_HOUR = 60;
+    /**
+     * Ten.
+     */
+    private static final int TEN = 10;
+    /**
+     * Number of minutes in an hour.
+     */
+    private static final int MINUTES_BY_HOUR = 60;
 
-	/**
-	 * Transforme une chaine au format HH:MI en integer représentant le nombre
-	 * de minutes passérs de minuit.
-	 * 
-	 * @param chaine
-	 *            la chaine à transformer.
-	 * @return l'integer représentant le nombre de minutes passées de minuit.
-	 */
-	public Integer parse(String chaine) {
-		String[] champs = chaine.split(":");
-		if (champs.length < 2) {
-			return null;
-		}
-		return Integer.parseInt(champs[0]) * MINUTES_BY_HOUR + Integer.parseInt(champs[1]);
-	}
+    /**
+     * Transform a string in format HH:MI into an Integer represents number of minutes after midnight.
+     *
+     * @see fr.ybo.moteurcsv.adapter.AdapterCsv#parse(java.lang.String)
+     */
+    public Integer parse(String string) {
+        String[] champs = string.split(":");
+        if (champs.length < 2) {
+            return null;
+        }
+        return Integer.parseInt(champs[0]) * MINUTES_BY_HOUR + Integer.parseInt(champs[1]);
+    }
 
-	/**
-	 * Transforme un integer représentant le nombre de minutes passées de minuit
-	 * en chaine au format HH:MI.
-	 * 
-	 * @param objet
-	 *            représentant le nombre de minutes passées de minuit.
-	 * @return la chaine au format HH:MI.
-	 */
-	public String toString(Integer objet) {
-		StringBuilder retour = new StringBuilder();
-		int heures = objet / MINUTES_BY_HOUR;
-		int minutes = objet - heures * MINUTES_BY_HOUR;
-		if (heures < DIXAINE) {
-			retour.append('0');
-		}
-		retour.append(heures);
-		retour.append(':');
-		if (minutes < DIXAINE) {
-			retour.append('0');
-		}
-		retour.append(minutes);
-		retour.append(":00");
-		return retour.toString();
-	}
+    /**
+     * Transform un integer an Integer represents number of minutes after midnight info a String in format HH:MI.
+     *
+     * @see fr.ybo.moteurcsv.adapter.AdapterCsv#toString(Object)
+     */
+    public String toString(Integer object) {
+        StringBuilder retour = new StringBuilder();
+        int heures = object / MINUTES_BY_HOUR;
+        int minutes = object - heures * MINUTES_BY_HOUR;
+        if (heures < TEN) {
+            retour.append('0');
+        }
+        retour.append(heures);
+        retour.append(':');
+        if (minutes < TEN) {
+            retour.append('0');
+        }
+        retour.append(minutes);
+        retour.append(":00");
+        return retour.toString();
+    }
 }
