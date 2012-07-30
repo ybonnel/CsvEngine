@@ -19,13 +19,15 @@ package fr.ybo.moteurcsv.validator;
 import fr.ybo.moteurcsv.model.Error;
 
 /**
- * Exception permettant de gérer les erreurs de validation.<br/>
+ * Exception for validation errors<br/>
+ * This exception is internal<br/><br/>
+ * <u><i>French :</i></u> Exception permettant de gérer les erreurs de validation.<br/>
  * Exception interne au moteur.
  * 
  * @author ybonnel
  * 
  */
-public class ErreurValidation extends Exception {
+public class ValidationError extends Exception {
 
 	/**
 	 * Serial.
@@ -38,20 +40,20 @@ public class ErreurValidation extends Exception {
 	private Error error;
 
 	/**
-	 * Constructeur.
+	 * Constructor.
 	 * 
-	 * @param ligne
-	 *            ligne ayant rencontrée l'error de validation.
+	 * @param line
+	 *            line in which the error occurred.
 	 */
-	public ErreurValidation(String ligne) {
+	public ValidationError(String line) {
 		error = new Error();
-		error.setCsvLine(ligne);
+		error.setCsvLine(line);
 	}
 
 	/**
-	 * @return l'error de validation rencontrée.
+	 * @return the validation error occurred.
 	 */
-	public fr.ybo.moteurcsv.model.Error getError() {
+	public Error getError() {
 		return error;
 	}
 

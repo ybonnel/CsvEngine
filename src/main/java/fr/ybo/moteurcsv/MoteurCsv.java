@@ -45,7 +45,7 @@ import fr.ybo.moteurcsv.factory.DefaultCsvManagerFactory;
 import fr.ybo.moteurcsv.factory.CsvManagerFactory;
 import fr.ybo.moteurcsv.model.*;
 import fr.ybo.moteurcsv.model.Error;
-import fr.ybo.moteurcsv.validator.ErreurValidation;
+import fr.ybo.moteurcsv.validator.ValidationError;
 import fr.ybo.moteurcsv.validator.ValidateException;
 
 /**
@@ -201,10 +201,10 @@ public class MoteurCsv {
 	 * {@link MoteurCsv#nouveauFichier(Reader, Class)} doit être appelé avant.
 	 * 
 	 * @return l'ojet créer.
-	 * @throws ErreurValidation
+	 * @throws fr.ybo.moteurcsv.validator.ValidationError
 	 *             en cas d'erreur de validation.
 	 */
-	protected Object creerObjet() throws ErreurValidation {
+	protected Object creerObjet() throws ValidationError {
 		if (currentCsvClass == null) {
 			throw new MoteurCsvException(
 					"La méthode creerObjet a étée appelée sans que la méthode nouveauFichier n'est été appelée.");
@@ -213,13 +213,13 @@ public class MoteurCsv {
 		if (champs == null) {
 			return null;
 		}
-		ErreurValidation validation = null;
+		ValidationError validationError = null;
 		Object objetCsv = construireObjet();
 		for (int numChamp = 0; numChamp < champs.length; numChamp++) {
-			validation = traitementChamp(champs, validation, objetCsv, numChamp);
+			validationError = traitementChamp(champs, validationError, objetCsv, numChamp);
 		}
-		if (validation != null) {
-			throw validation;
+		if (validationError != null) {
+			throw validationError;
 		}
 		return objetCsv;
 	}
@@ -229,23 +229,23 @@ public class MoteurCsv {
 	 * 
 	 * @param champs
 	 *            liste des valeurs de champs.
-	 * @param validation
-	 *            conteneur d'erreur de validation.
+	 * @param validationError
+	 *            conteneur d'erreur de validationError.
 	 * @param objetCsv
 	 *            objet à remplir.
 	 * @param numChamp
 	 *            numéro du champ.
-	 * @return conteneur d'erreur de validation.
+	 * @return conteneur d'erreur de validationError.
 	 */
-	private ErreurValidation traitementChamp(String[] champs, ErreurValidation validation,
+	private ValidationError traitementChamp(String[] champs, ValidationError validationError,
 			Object objetCsv, int numChamp) {
 		String champ = champs[numChamp];
 		if (champ != null && !"".equals(champ)) {
-			validation = remplirAttribut(champs, validation, objetCsv, numChamp, champ);
+			validationError = remplirAttribut(champs, validationError, objetCsv, numChamp, champ);
 		} else if (parametres.hasValidation()) {
-			validation = validChampObligatoire(champs, validation, numChamp);
+			validationError = validChampObligatoire(champs, validationError, numChamp);
 		}
-		return validation;
+		return validationError;
 	}
 
 	/**
@@ -253,20 +253,20 @@ public class MoteurCsv {
 	 * 
 	 * @param champs
 	 *            liste des champs.
-	 * @param validation
-	 *            conteneur d'erreur de validation.
+	 * @param validationError
+	 *            conteneur d'erreur de validationError.
 	 * @param numChamp
 	 *            numéro du champ.
-	 * @return conteneur d'erreur de validation.
+	 * @return conteneur d'erreur de validationError.
 	 */
-	private ErreurValidation validChampObligatoire(String[] champs, ErreurValidation validation, int numChamp) {
+	private ValidationError validChampObligatoire(String[] champs, ValidationError validationError, int numChamp) {
 		CsvField csvField = currentCsvClass.getCsvField(enteteCourante[numChamp]);
 		if (csvField != null && csvField.isMandatory()) {
-			validation =
-					addMessageValidation(champs, validation, enteteCourante[numChamp], new ValidateException(
+			validationError =
+					addMessageValidation(champs, validationError, enteteCourante[numChamp], new ValidateException(
 							"Le champ est mandatory"));
 		}
-		return validation;
+		return validationError;
 	}
 
 	/**
@@ -274,17 +274,17 @@ public class MoteurCsv {
 	 * 
 	 * @param champs
 	 *            liste des valeurs de champ.
-	 * @param validation
-	 *            conteneur d'erreur de validation.
+	 * @param validationError
+	 *            conteneur d'erreur de validationError.
 	 * @param objetCsv
 	 *            objet à remplir.
 	 * @param numChamp
 	 *            numéro du champ.
 	 * @param champ
 	 *            valeur du champ.
-	 * @return conteneur d'erreur de validation.
+	 * @return conteneur d'erreur de validationError.
 	 */
-	private ErreurValidation remplirAttribut(String[] champs, ErreurValidation validation, Object objetCsv,
+	private ValidationError remplirAttribut(String[] champs, ValidationError validationError, Object objetCsv,
 			int numChamp, String champ) {
 		String nomChamp = enteteCourante[numChamp];
 		CsvField csvField = currentCsvClass.getCsvField(nomChamp);
@@ -295,31 +295,31 @@ public class MoteurCsv {
 				}
 				setValeur(csvField, objetCsv, champ);
 			} catch (ValidateException exception) {
-				validation = addMessageValidation(champs, validation, enteteCourante[numChamp], exception);
+				validationError = addMessageValidation(champs, validationError, enteteCourante[numChamp], exception);
 			}
 		}
-		return validation;
+		return validationError;
 	}
 
 	/**
-	 * Ajout du message de validation.
+	 * Ajout du message de validationError.
 	 * 
 	 * @param champs
 	 *            champs de la ligne CSV.
-	 * @param validation
-	 *            erreur de validation courante.
+	 * @param validationError
+	 *            erreur de validationError courante.
 	 * @param nomChamp
 	 *            nom du champ.
 	 * @param exception
-	 *            exception de validation.
-	 * @return l'erreur de validation.
+	 *            exception de validationError.
+	 * @return l'erreur de validationError.
 	 */
-	private ErreurValidation addMessageValidation(String[] champs, ErreurValidation validation, String nomChamp,
+	private ValidationError addMessageValidation(String[] champs, ValidationError validationError, String nomChamp,
 			ValidateException exception) {
-		if (validation == null) {
-			validation = new ErreurValidation(construireLigne(champs));
+		if (validationError == null) {
+			validationError = new ValidationError(construireLigne(champs));
 		}
-		StringBuilder message = new StringBuilder("Error de validation sur le champ ");
+		StringBuilder message = new StringBuilder("Error de validationError sur le champ ");
 		message.append(nomChamp);
 		message.append(" : ");
 		message.append(exception.getMessage());
@@ -328,8 +328,8 @@ public class MoteurCsv {
 			message.append(exception.getCause().getMessage());
 			message.append(')');
 		}
-		validation.getError().getMessages().add(message.toString());
-		return validation;
+		validationError.getError().getMessages().add(message.toString());
+		return validationError;
 	}
 
 	/**
@@ -460,9 +460,9 @@ public class MoteurCsv {
 					if (objet != null) {
 						insert.insertObject(objet);
 					}
-				} catch (ErreurValidation exceptionValidation) {
+				} catch (ValidationError validationError) {
 					erreurValidation = true;
-					errors.add(exceptionValidation.getError());
+					errors.add(validationError.getError());
 					if (parametres.getNbLinesWithErrorsToStop() >= 0
 							&& errors.size() > parametres.getNbLinesWithErrorsToStop()) {
 						throw new CsvErrorsExceededException(errors);

@@ -255,8 +255,8 @@ public class ValidationTest {
 		 * @see
 		 * fr.ybo.moteurcsv.validator.ValidatorCsv#validate(java.lang.String)
 		 */
-		public void validate(String champ) throws ValidateException {
-			if (!"RG2".equals(champ)) {
+		public void validate(String field) throws ValidateException {
+			if (!"RG2".equals(field)) {
 				throw new ValidateException("Le champs doit être également à RG2");
 			}
 		}
@@ -421,7 +421,7 @@ public class ValidationTest {
 		 * fr.ybo.moteurcsv.validator.ValidatorCsv#validate(java.lang.String)
 		 */
 		@Override
-		public void validate(String champ) throws ValidateException {
+		public void validate(String field) throws ValidateException {
 		}
 
 	}

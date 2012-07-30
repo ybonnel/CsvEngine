@@ -49,7 +49,7 @@ import fr.ybo.moteurcsv.factory.AbstractCsvReader;
 import fr.ybo.moteurcsv.factory.AbstractCsvWriter;
 import fr.ybo.moteurcsv.factory.CsvManagerFactory;
 import fr.ybo.moteurcsv.model.MotorParameters;
-import fr.ybo.moteurcsv.validator.ErreurValidation;
+import fr.ybo.moteurcsv.validator.ValidationError;
 
 /**
  * Classe de test pour le MoteurCsv.
@@ -301,11 +301,11 @@ public class MoteurCsvTest {
 	/**
 	 * Tests techniques
 	 * 
-	 * @throws ErreurValidation
+	 * @throws fr.ybo.moteurcsv.validator.ValidationError
 	 */
 
 	@Test
-	public void testCreerObjet() throws ErreurValidation {
+	public void testCreerObjet() throws ValidationError {
 		try {
 			moteur.creerObjet();
 			fail("Une exception aurait du être levée");

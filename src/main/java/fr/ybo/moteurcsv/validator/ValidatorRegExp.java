@@ -23,22 +23,27 @@ import java.util.regex.PatternSyntaxException;
 import fr.ybo.moteurcsv.exception.InvalidParamException;
 
 /**
- * Validateur permettant de valider un champ à partir d'une expression
+ * Validator use to validate a field with a regular expression<br/>
+ * Parameter : {@link ValidatorRegExp#PARAM_PATTERN} contains the regular expression ({@link Pattern}).<br/>
+ * The parameter must be passed with
+ * {@link fr.ybo.moteurcsv.annotation.CsvValidation#params()}.<br/><br/>
+ *
+ * <u><i>French :</i></u> Validateur permettant de valider un champ à partir d'une expression
  * régulière. <br/>
  * Paramètre : {@link ValidatorRegExp#PARAM_PATTERN} contient l'expression
  * régulière ({@link Pattern}).<br/>
- * Le paramètre format est à fournir via
+ * Le paramètre est à fournir via
  * {@link fr.ybo.moteurcsv.annotation.CsvValidation#params()}.
  */
 public class ValidatorRegExp extends ValidatorCsv {
 
 	/**
-	 * Paramètre contenant l'expression régulière.
+	 * Parameter which contains the regular expression.
 	 */
 	public static final String PARAM_PATTERN = "pattern";
 
 	/**
-	 * Pattern compilé.
+	 * Compiled pattern.
 	 */
 	private Pattern pattern;
 
@@ -51,12 +56,12 @@ public class ValidatorRegExp extends ValidatorCsv {
 	public void addParams(Map<String, String> params) throws InvalidParamException {
 		super.addParams(params);
 		if (!params.containsKey(PARAM_PATTERN)) {
-			throw new InvalidParamException("Le paramètre \"" + PARAM_PATTERN + "\" est mandatory");
+			throw new InvalidParamException("The parameter \"" + PARAM_PATTERN + "\" is mandatory");
 		}
 		try {
 			pattern = Pattern.compile(params.get(PARAM_PATTERN));
 		} catch (PatternSyntaxException exception) {
-			throw new InvalidParamException("Le paramètre \"" + PARAM_PATTERN + "\" n'a pas le bon format", exception);
+			throw new InvalidParamException("The parameter \"" + PARAM_PATTERN + "\" hasn't the good format", exception);
 		}
 	}
 
@@ -64,9 +69,9 @@ public class ValidatorRegExp extends ValidatorCsv {
 	 * @see fr.ybo.moteurcsv.validator.ValidatorCsv#validate(java.lang.String)
 	 */
 	@Override
-	public void validate(String champ) throws ValidateException {
-		if (!pattern.matcher(champ).matches()) {
-			throw new ValidateException("La valeur " + champ + " ne correspond pas au pattern " + pattern.pattern());
+	public void validate(String field) throws ValidateException {
+		if (!pattern.matcher(field).matches()) {
+			throw new ValidateException("The value " + field + " doesn't correspond to the pattern " + pattern.pattern());
 		}
 	}
 

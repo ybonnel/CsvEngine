@@ -17,7 +17,8 @@
 package fr.ybo.moteurcsv.validator;
 
 /**
- * Exception à renvoyer en cas de problème de CsvValidation. {@link ValidatorCsv}
+ * Exception to throw for a validation error. {@link ValidatorCsv}<br/><br/>
+ * <u><i>French :</i></u> Exception à renvoyer en cas de problème de validation. {@link ValidatorCsv}
  * 
  * @author ybonnel
  * 
@@ -30,24 +31,22 @@ public class ValidateException extends Exception {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Constructeur.
+	 * Constructor.
 	 * 
 	 * @param message
-	 *            un message clair (celui-ci sera affiché dans les raisons des
-	 *            rejets).
+     *            a message (this will be display in the reason of the validation error).
 	 * @param cause
-	 *            cause si l'erreur de validation provient d'une exception.
+	 *            cause if the error is associated with a exception.
 	 */
 	public ValidateException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
 	/**
-	 * Constructeur.
+	 * Constructor.
 	 * 
 	 * @param message
-	 *            un message clair (celui-ci sera affiché dans les raisons des
-	 *            rejets).
+     *            a message (this will be display in the reason of the validation error).
 	 */
 	public ValidateException(String message) {
 		super(message);

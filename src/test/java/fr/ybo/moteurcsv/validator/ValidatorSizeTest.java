@@ -28,16 +28,16 @@ import org.junit.Test;
 import fr.ybo.moteurcsv.exception.InvalidParamException;
 
 /**
- * Test de la classe {@link ValidatorTaille}.
+ * Test de la classe {@link ValidatorSize}.
  */
-public class ValidatorTailleTest {
+public class ValidatorSizeTest {
 
-	private ValidatorTaille validator;
+	private ValidatorSize validator;
 	private Map<String, String> params;
 
 	@Before
 	public void setup() {
-		validator = new ValidatorTaille();
+		validator = new ValidatorSize();
 		params = new HashMap<String, String>();
 	}
 
@@ -48,19 +48,19 @@ public class ValidatorTailleTest {
 
 	@Test(expected = InvalidParamException.class)
 	public void testTailleMinKo() throws InvalidParamException {
-		params.put(ValidatorTaille.PARAM_TAILLE_MIN, "tutu");
+		params.put(ValidatorSize.PARAM_MIN_SIZE, "tutu");
 		validator.addParams(params);
 	}
 
 	@Test(expected = InvalidParamException.class)
 	public void testTailleMaxKo() throws InvalidParamException {
-		params.put(ValidatorTaille.PARAM_TAILLE_MAX, "tutu");
+		params.put(ValidatorSize.PARAM_MAX_SIZE, "tutu");
 		validator.addParams(params);
 	}
 
 	@Test
 	public void testTailleMin() throws InvalidParamException, ValidateException {
-		params.put(ValidatorTaille.PARAM_TAILLE_MIN, "2");
+		params.put(ValidatorSize.PARAM_MIN_SIZE, "2");
 		validator.addParams(params);
 
 		// OK
@@ -81,7 +81,7 @@ public class ValidatorTailleTest {
 
 	@Test
 	public void testTailleMax() throws ValidateException, InvalidParamException {
-		params.put(ValidatorTaille.PARAM_TAILLE_MAX, "5");
+		params.put(ValidatorSize.PARAM_MAX_SIZE, "5");
 		validator.addParams(params);
 
 		// OK
@@ -102,8 +102,8 @@ public class ValidatorTailleTest {
 
 	@Test
 	public void testTailleMinEtTailleMax() throws ValidateException, InvalidParamException {
-		params.put(ValidatorTaille.PARAM_TAILLE_MIN, "2");
-		params.put(ValidatorTaille.PARAM_TAILLE_MAX, "5");
+		params.put(ValidatorSize.PARAM_MIN_SIZE, "2");
+		params.put(ValidatorSize.PARAM_MAX_SIZE, "5");
 		validator.addParams(params);
 
 		// OK
