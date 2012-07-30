@@ -19,7 +19,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>fr.ybo</groupId>
 	<artifactId>csvengine</artifactId>
-	<version>1.3.0-SNAPSHOT</version>
+	<version>1.3.1-SNAPSHOT</version>
 	<name>CsvEngine</name>
 	<packaging>jar</packaging>
     <url>https://github.com/ybonnel/CsvEngine</url>
