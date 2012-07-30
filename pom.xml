@@ -22,7 +22,7 @@
 	<version>1.3.0-SNAPSHOT</version>
 	<name>CsvEngine</name>
 	<packaging>jar</packaging>
-    <url>https://github.com/ybonnel/MoteurCsv</url>
+    <url>https://github.com/ybonnel/CsvEngine</url>
     <description>Framework base on annotations to read an write CSV Files.</description>
 
     <properties>
@@ -204,9 +204,9 @@
     </developers>
 
     <scm>
-        <connection>scm:git://github.com/ybonnel/MoteurCsv.git</connection>
-        <developerConnection>scm:git@github.com:ybonnel/MoteurCsv.git</developerConnection>
-        <url>https://github.com/ybonnel/MoteurCsv</url>
+        <connection>scm:git://github.com/ybonnel/CsvEngine.git</connection>
+        <developerConnection>scm:git@github.com:ybonnel/CsvEngine.git</developerConnection>
+        <url>https://github.com/ybonnel/CsvEngine</url>
     </scm>
 
     <repositories>
