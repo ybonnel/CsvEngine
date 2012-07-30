@@ -49,7 +49,18 @@ import fr.ybo.moteurcsv.validator.ValidationError;
 import fr.ybo.moteurcsv.validator.ValidateException;
 
 /**
- * Moteur de lecture et écriture de fichier CSV.<br/>
+ * Engine to write and read CSV File.<br/>
+ * Examples of use :
+ * <ul>
+ * <li>Construction of the engine :<br/>
+ * {@code MoteurCsv engine = new MoteurCsv(CsvObject.class);}</li>
+ * <li>Read a CSV File :<br/>
+ * {@code List<CsvObject> objects = engine.parseInputStream(stream, CsvObject.class);}</li>
+ * <li>Write a CSV File :<br/>
+ * {@code engine.writeFile(new FileWriter(file), objects, CsvObject.class);}</li>
+ * </ul><br/><br/>
+ * <p/>
+ * <u><i>French :</i></u> Moteur de lecture et écriture de fichier CSV.<br/>
  * Voici des exemple d'utilisation :
  * <ul>
  * <li>Construction du moteur :<br/>
@@ -60,519 +71,469 @@ import fr.ybo.moteurcsv.validator.ValidateException;
  * <li>Ecriture d'un fichier CSV :<br/>
  * {@code moteur.writeFile(new FileWriter(file), objets, ObjetCsv.class);}</li>
  * </ul>
- * 
+ *
  * @author ybonnel
- * 
  */
 public class MoteurCsv {
 
-	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER = Logger.getLogger("MoteurCsv");
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(MoteurCsv.class.getSimpleName());
 
-	/**
-	 * Map des classes gérées.
-	 */
-	private final Map<Class<?>, CsvClass> mapClasses = new HashMap<Class<?>, CsvClass>();
+    /**
+     * Map of managed classes.
+     */
+    private final Map<Class<?>, CsvClass> mapClasses = new HashMap<Class<?>, CsvClass>();
 
-	/**
-	 * Entete courante.
-	 */
-	private String[] enteteCourante;
+    /**
+     * Current header.
+     */
+    private String[] currentHeader;
 
-	/**
-	 * Class courante.
-	 */
-	private CsvClass currentCsvClass;
+    /**
+     * Current class.
+     */
+    private CsvClass currentCsvClass;
 
-	/**
-	 * Factory fournissant les reader et writer csv.
-	 */
-	private CsvManagerFactory factory;
+    /**
+     * Factory which deliver CsvReader and CsvWriter.
+     */
+    private CsvManagerFactory factory;
 
-	/**
-	 * Permet d'utiliser autre chose que open-csv pour la lecture et écriture.
-	 * 
-	 * @param factory
-	 *            factory autre que la factory par défaut.
-	 */
-	public void setFactory(CsvManagerFactory factory) {
-		this.factory = factory;
-	}
+    /**
+     * This method can be call to use an other implementation than open-csv for read and write of CSV File.
+     *
+     * @param factory factory which deliver CsvReader and CsvWriter.
+     */
+    public void setFactory(CsvManagerFactory factory) {
+        this.factory = factory;
+    }
 
-	/**
-	 * Paramètres du moteur.
-	 */
-	private final MotorParameters parametres;
+    /**
+     * Parameters of Engine.
+     */
+    private final MotorParameters parameters;
 
-	/**
-	 * @return les paramètres du moteur.
-	 */
-	public MotorParameters getParametres() {
-		return parametres;
-	}
+    /**
+     * @return parameters of the engine.
+     */
+    public MotorParameters getParameters() {
+        return parameters;
+    }
 
-	/**
-	 * Constructeur du moteur.
-	 * 
-	 * @param classes
-	 *            liste des classes à gérer.
-	 */
-	public MoteurCsv(Class<?>... classes) {
-		parametres = new MotorParameters();
-		factory = new DefaultCsvManagerFactory();
-		for (Class<?> clazz : classes) {
-			scannerClass(clazz);
-		}
-	}
+    /**
+     * Constructor of the Engine.
+     *
+     * @param classes list of classes to manage.
+     */
+    public MoteurCsv(Class<?>... classes) {
+        parameters = new MotorParameters();
+        factory = new DefaultCsvManagerFactory();
+        for (Class<?> clazz : classes) {
+            scannerClass(clazz);
+        }
+    }
 
-	/**
-	 * Constructeur du moteur.
-	 * 
-	 * @param parametres
-	 *            parametres du moteur (vous pouvez utiliser:
-	 *            {@link fr.ybo.moteurcsv.model.MotorParameters#createBuilder()} pour plus de facilité).<br/>
-	 *            Exemple : Parametres parametres =
-	 *            Parameters.createBuilder().setValidation(true).build();
-	 * 
-	 * @param classes
-	 *            liste des classes à gérer.
-	 */
-	public MoteurCsv(MotorParameters parametres, Class<?>... classes) {
-		this.parametres = parametres;
-		factory = new DefaultCsvManagerFactory();
-		for (Class<?> clazz : classes) {
-			scannerClass(clazz);
-		}
-	}
+    /**
+     * Constructor of the engine.
+     *
+     * @param parameters parameters of engine (you can use :
+     *                   {@link fr.ybo.moteurcsv.model.MotorParameters#createBuilder()}).<br/>
+     *                   Example : MotorParameters parameters =
+     *                   MotorParameters.createBuilder().setValidation(true).build();
+     * @param classes    list of classes to manage.
+     */
+    public MoteurCsv(MotorParameters parameters, Class<?>... classes) {
+        this.parameters = parameters;
+        factory = new DefaultCsvManagerFactory();
+        for (Class<?> clazz : classes) {
+            scannerClass(clazz);
+        }
+    }
 
-	/**
-	 * Lecteur CSV.
-	 */
-	private AbstractCsvReader csvReader;
+    /**
+     * CSV Reader.
+     */
+    private AbstractCsvReader csvReader;
 
-	/**
-	 * Permet de recontruire une ligne à partir des champs qui la compose.
-	 * 
-	 * @param champs
-	 *            liste des champs.
-	 * @return ligne CSV.
-	 */
-	private String construireLigne(String[] champs) {
-		StringBuilder builder = new StringBuilder();
-		boolean first = true;
-		for (String champ : champs) {
-			if (first) {
-				first = false;
-			} else {
-				builder.append(currentCsvClass.getSeparatorWithoutEscape());
-			}
-			builder.append(champ);
-		}
-		return builder.toString();
-	}
+    /**
+     * Used to construct a line based on the field.
+     *
+     * @param fields list of fields.
+     * @return the CSV line.
+     */
+    private String constructLine(String[] fields) {
+        StringBuilder builder = new StringBuilder();
+        boolean first = true;
+        for (String champ : fields) {
+            if (first) {
+                first = false;
+            } else {
+                builder.append(currentCsvClass.getSeparatorWithoutEscape());
+            }
+            builder.append(champ);
+        }
+        return builder.toString();
+    }
 
-	/**
-	 * Permet de setter une valeur d'une champ.
-	 * 
-	 * @param csvField
-	 *            le champ à setter.
-	 * @param objetCsv
-	 *            l'objet concerné.
-	 * @param champ
-	 *            la valeur à setter.
-	 * @throws ValidateException
-	 *             si la valeur n'est pas valide.
-	 */
-	private void setValeur(CsvField csvField, Object objetCsv, String champ) throws ValidateException {
-		csvField.getField().setAccessible(true);
-		try {
-			csvField.getField().set(objetCsv, csvField.getAdapterCsv().parse(champ));
-		} catch (ValidateException exception) {
-			throw exception;
-		} catch (Exception e) {
-			throw new ValidateException("Error à l'assignation", e);
-		}
-	}
+    /**
+     * Use to set a value of a field.
+     *
+     * @param csvField  the field to set.
+     * @param csvObject the objects to set.
+     * @param value     the value to set.
+     * @throws ValidateException if the value isn't good.
+     */
+    private void setValeur(CsvField csvField, Object csvObject, String value) throws ValidateException {
+        csvField.getField().setAccessible(true);
+        try {
+            csvField.getField().set(csvObject, csvField.getAdapterCsv().parse(value));
+        } catch (ValidateException exception) {
+            throw exception;
+        } catch (Exception e) {
+            throw new ValidateException("Error in set", e);
+        }
+    }
 
-	/**
-	 * Crée un objet à partir de la ligne courante du csv.
-	 * {@link MoteurCsv#nouveauFichier(Reader, Class)} doit être appelé avant.
-	 * 
-	 * @return l'ojet créer.
-	 * @throws fr.ybo.moteurcsv.validator.ValidationError
-	 *             en cas d'erreur de validation.
-	 */
-	protected Object creerObjet() throws ValidationError {
-		if (currentCsvClass == null) {
-			throw new MoteurCsvException(
-					"La méthode creerObjet a étée appelée sans que la méthode nouveauFichier n'est été appelée.");
-		}
-		String[] champs = readLine();
-		if (champs == null) {
-			return null;
-		}
-		ValidationError validationError = null;
-		Object objetCsv = construireObjet();
-		for (int numChamp = 0; numChamp < champs.length; numChamp++) {
-			validationError = traitementChamp(champs, validationError, objetCsv, numChamp);
-		}
-		if (validationError != null) {
-			throw validationError;
-		}
-		return objetCsv;
-	}
+    /**
+     * Create an object from the current line of CSV.
+     * {@link MoteurCsv#newCsvFile} must be call before.
+     *
+     * @return the object created.
+     * @throws fr.ybo.moteurcsv.validator.ValidationError
+     *          in case of validation error.
+     */
+    protected Object createObject() throws ValidationError {
+        if (currentCsvClass == null) {
+            throw new MoteurCsvException(
+                    "The method \"createObject\" have been called without the call of the method newCsvFile.");
+        }
+        String[] fields = readLine();
+        if (fields == null) {
+            return null;
+        }
+        ValidationError validationError = null;
+        Object csvObject = constructObject();
+        for (int numChamp = 0; numChamp < fields.length; numChamp++) {
+            validationError = processField(fields, validationError, csvObject, numChamp);
+        }
+        if (validationError != null) {
+            throw validationError;
+        }
+        return csvObject;
+    }
 
-	/**
-	 * Traitment d'un champ.
-	 * 
-	 * @param champs
-	 *            liste des valeurs de champs.
-	 * @param validationError
-	 *            conteneur d'erreur de validationError.
-	 * @param objetCsv
-	 *            objet à remplir.
-	 * @param numChamp
-	 *            numéro du champ.
-	 * @return conteneur d'erreur de validationError.
-	 */
-	private ValidationError traitementChamp(String[] champs, ValidationError validationError,
-			Object objetCsv, int numChamp) {
-		String champ = champs[numChamp];
-		if (champ != null && !"".equals(champ)) {
-			validationError = remplirAttribut(champs, validationError, objetCsv, numChamp, champ);
-		} else if (parametres.hasValidation()) {
-			validationError = validChampObligatoire(champs, validationError, numChamp);
-		}
-		return validationError;
-	}
+    /**
+     * Process of a field.
+     *
+     * @param fieldsValues    list of flieds values.
+     * @param validationError container of validation error.
+     * @param csvObject       object to fill.
+     * @param fieldNumber     number of the field.
+     * @return container of validation error.
+     */
+    private ValidationError processField(String[] fieldsValues, ValidationError validationError,
+                                         Object csvObject, int fieldNumber) {
+        String fieldValue = fieldsValues[fieldNumber];
+        if (fieldValue != null && !"".equals(fieldValue)) {
+            validationError = fillField(fieldsValues, validationError, csvObject, fieldNumber, fieldValue);
+        } else if (parameters.hasValidation()) {
+            validationError = validateMandatoryField(fieldsValues, validationError, fieldNumber);
+        }
+        return validationError;
+    }
 
-	/**
-	 * CsvValidation du caractère mandatory du champ.
-	 * 
-	 * @param champs
-	 *            liste des champs.
-	 * @param validationError
-	 *            conteneur d'erreur de validationError.
-	 * @param numChamp
-	 *            numéro du champ.
-	 * @return conteneur d'erreur de validationError.
-	 */
-	private ValidationError validChampObligatoire(String[] champs, ValidationError validationError, int numChamp) {
-		CsvField csvField = currentCsvClass.getCsvField(enteteCourante[numChamp]);
-		if (csvField != null && csvField.isMandatory()) {
-			validationError =
-					addMessageValidation(champs, validationError, enteteCourante[numChamp], new ValidateException(
-							"Le champ est mandatory"));
-		}
-		return validationError;
-	}
+    /**
+     * Validation of the mandatory..
+     *
+     * @param fields          list of fields.
+     * @param validationError container of validation errors.
+     * @param fieldNumber     number of the field.
+     * @return container of validation error.
+     */
+    private ValidationError validateMandatoryField(String[] fields, ValidationError validationError, int fieldNumber) {
+        CsvField csvField = currentCsvClass.getCsvField(currentHeader[fieldNumber]);
+        if (csvField != null && csvField.isMandatory()) {
+            validationError =
+                    addValidationMessage(fields, validationError, currentHeader[fieldNumber], new ValidateException(
+                            "The field is mandatory"));
+        }
+        return validationError;
+    }
 
-	/**
-	 * Valide le champ et rempli l'attribut correspondant au champ.
-	 * 
-	 * @param champs
-	 *            liste des valeurs de champ.
-	 * @param validationError
-	 *            conteneur d'erreur de validationError.
-	 * @param objetCsv
-	 *            objet à remplir.
-	 * @param numChamp
-	 *            numéro du champ.
-	 * @param champ
-	 *            valeur du champ.
-	 * @return conteneur d'erreur de validationError.
-	 */
-	private ValidationError remplirAttribut(String[] champs, ValidationError validationError, Object objetCsv,
-			int numChamp, String champ) {
-		String nomChamp = enteteCourante[numChamp];
-		CsvField csvField = currentCsvClass.getCsvField(nomChamp);
-		if (csvField != null) {
-			try {
-				if (parametres.hasValidation()) {
-					csvField.validate(champ);
-				}
-				setValeur(csvField, objetCsv, champ);
-			} catch (ValidateException exception) {
-				validationError = addMessageValidation(champs, validationError, enteteCourante[numChamp], exception);
-			}
-		}
-		return validationError;
-	}
+    /**
+     * Validate the field and fill it.
+     *
+     * @param fieldsValues    values of fields.
+     * @param validationError container of validation errors.
+     * @param csvObjects      object to fill.
+     * @param fieldNumber     field number.
+     * @param value           value of the field.
+     * @return container of validation errors.
+     */
+    private ValidationError fillField(String[] fieldsValues, ValidationError validationError, Object csvObjects,
+                                      int fieldNumber, String value) {
+        String fieldName = currentHeader[fieldNumber];
+        CsvField csvField = currentCsvClass.getCsvField(fieldName);
+        if (csvField != null) {
+            try {
+                if (parameters.hasValidation()) {
+                    csvField.validate(value);
+                }
+                setValeur(csvField, csvObjects, value);
+            } catch (ValidateException exception) {
+                validationError = addValidationMessage(fieldsValues, validationError, currentHeader[fieldNumber], exception);
+            }
+        }
+        return validationError;
+    }
 
-	/**
-	 * Ajout du message de validationError.
-	 * 
-	 * @param champs
-	 *            champs de la ligne CSV.
-	 * @param validationError
-	 *            erreur de validationError courante.
-	 * @param nomChamp
-	 *            nom du champ.
-	 * @param exception
-	 *            exception de validationError.
-	 * @return l'erreur de validationError.
-	 */
-	private ValidationError addMessageValidation(String[] champs, ValidationError validationError, String nomChamp,
-			ValidateException exception) {
-		if (validationError == null) {
-			validationError = new ValidationError(construireLigne(champs));
-		}
-		StringBuilder message = new StringBuilder("Error de validationError sur le champ ");
-		message.append(nomChamp);
-		message.append(" : ");
-		message.append(exception.getMessage());
-		if (exception.getCause() != null) {
-			message.append(" (cause : ");
-			message.append(exception.getCause().getMessage());
-			message.append(')');
-		}
-		validationError.getError().getMessages().add(message.toString());
-		return validationError;
-	}
+    /**
+     * Add the validation message..
+     *
+     * @param fieldsValues    values of the field in CSV line.
+     * @param validationError current validation error.
+     * @param fieldName       field name.
+     * @param exception       exception corresponding to the validation error.
+     * @return the validation error.
+     */
+    private ValidationError addValidationMessage(String[] fieldsValues, ValidationError validationError, String fieldName,
+                                                 ValidateException exception) {
+        if (validationError == null) {
+            validationError = new ValidationError(constructLine(fieldsValues));
+        }
+        StringBuilder message = new StringBuilder("Validation error on the field ");
+        message.append(fieldName);
+        message.append(" : ");
+        message.append(exception.getMessage());
+        if (exception.getCause() != null) {
+            message.append(" (cause : ");
+            message.append(exception.getCause().getMessage());
+            message.append(')');
+        }
+        validationError.getError().getMessages().add(message.toString());
+        return validationError;
+    }
 
-	/**
-	 * Méthode permettant de construire un objet.
-	 * 
-	 * @return objet constuit.
-	 */
-	private Object construireObjet() {
-		Object objetCsv = null;
-		try {
-			objetCsv = currentCsvClass.getConstructor().newInstance((Object[]) null);
-		} catch (Exception exception) {
-			Throwable myException = exception;
-			if (myException instanceof InvocationTargetException) {
-				myException = exception.getCause();
-			}
-			throw new MoteurCsvException("Error à l'instanciation de la class "
-					+ currentCsvClass.getClazz().getSimpleName(), myException);
-		}
-		return objetCsv;
-	}
+    /**
+     * Construct an object.
+     *
+     * @return constructed object.
+     */
+    private Object constructObject() {
+        Object csvObject;
+        try {
+            csvObject = currentCsvClass.getConstructor().newInstance((Object[]) null);
+        } catch (Exception exception) {
+            Throwable myException = exception;
+            if (myException instanceof InvocationTargetException) {
+                myException = exception.getCause();
+            }
+            throw new MoteurCsvException("Error during instantiation of "
+                    + currentCsvClass.getClazz().getSimpleName(), myException);
+        }
+        return csvObject;
+    }
 
-	/**
-	 * Lecture d'une ligne.
-	 * 
-	 * @return ligne lue.
-	 */
-	private String[] readLine() {
-		try {
-			return csvReader.readLine();
-		} catch (IOException e) {
-			throw new MoteurCsvException("Error à la lecture d'une ligne", e);
-		}
-	}
+    /**
+     * Read of un line.
+     *
+     * @return read line.
+     */
+    private String[] readLine() {
+        try {
+            return csvReader.readLine();
+        } catch (IOException e) {
+            throw new MoteurCsvException("Error reading a line", e);
+        }
+    }
 
-	/**
-	 * Démarre la lecture d'une nouveau fichier.
-	 * 
-	 * @param reader
-	 *            le fichier.
-	 * @param clazz
-	 *            la class associée.
-	 */
-	protected void nouveauFichier(Reader reader, Class<?> clazz) {
-		currentCsvClass = mapClasses.get(clazz);
-		if (currentCsvClass == null) {
-			throw new MoteurCsvException("La class " + clazz.getSimpleName() + " n'est pas gérée");
-		}
-		csvReader = factory.createReaderCsv(reader, currentCsvClass.getSeparatorWithoutEscape());
-		try {
-			enteteCourante = csvReader.readLine();
-		} catch (IOException e) {
-			throw new MoteurCsvException(e);
-		}
-		if (Character.isIdentifierIgnorable(enteteCourante[0].charAt(0))) {
-			enteteCourante[0] = enteteCourante[0].substring(1);
-		}
-	}
+    /**
+     * Start the read of a new file.
+     *
+     * @param reader a Reader which represent the CSV File.
+     * @param clazz  the associated class.
+     */
+    protected void newCsvFile(Reader reader, Class<?> clazz) {
+        currentCsvClass = mapClasses.get(clazz);
+        if (currentCsvClass == null) {
+            throw new MoteurCsvException("The class " + clazz.getSimpleName() + " isn't managed");
+        }
+        csvReader = factory.createReaderCsv(reader, currentCsvClass.getSeparatorWithoutEscape());
+        try {
+            currentHeader = csvReader.readLine();
+        } catch (IOException e) {
+            throw new MoteurCsvException(e);
+        }
+        if (Character.isIdentifierIgnorable(currentHeader[0].charAt(0))) {
+            currentHeader[0] = currentHeader[0].substring(1);
+        }
+    }
 
-	/**
-	 * Ferme le lecteur courant.
-	 */
-	private void closeLecteurCourant() {
-		if (csvReader != null) {
-			try {
-				csvReader.close();
-			} catch (IOException exception) {
-				LOGGER.log(Level.WARNING, "Error lors de la fermeture du LecteurCsv", exception);
-			}
-			csvReader = null;
-		}
-	}
+    /**
+     * Close the current reader.
+     */
+    private void closeCurrentReader() {
+        if (csvReader != null) {
+            try {
+                csvReader.close();
+            } catch (IOException exception) {
+                LOGGER.log(Level.WARNING, "Error closing CsvReader", exception);
+            }
+            csvReader = null;
+        }
+    }
 
-	/**
-	 * Parse un inputStream représentant un fichier CSV pour le transformer en
-	 * liste de <Objet>.
-	 * 
-	 * @param <Objet>
-	 *            Objet associé au CSV.
-	 * @param intputStream
-	 *            inputStream représentant le fichier CSV.
-	 * @param clazz
-	 *            classe de l'objet associé au CSV.
-	 * @return la liste d'<Objet> représentant les enregistrements du fichier
-	 *         CSV.
-	 * @throws fr.ybo.moteurcsv.exception.CsvErrorsExceededException
-	 *             si le nombre d'erreurs rencontrées et suppérieur au nombre
-	 *             accepté {@link fr.ybo.moteurcsv.model.MotorParameters#getNbLinesWithErrorsToStop()}.
-	 */
-	public <Objet> Result<Objet> parseInputStream(InputStream intputStream, Class<Objet> clazz)
-			throws CsvErrorsExceededException {
-		Result<Objet> result = new Result<Objet>();
-		result.getErrors().addAll(
-				parseFileAndInsert(new BufferedReader(new InputStreamReader(intputStream)), clazz,
-						new InsertInList<Objet>(result.getObjects())));
-		return result;
-	}
+    /**
+     * Parse an InputStream representing a CSV File to transform it in a list of <T>.
+     *
+     * @param <T>         Class associated to the CSV.
+     * @param inputStream inputStream representing the CSV File.
+     * @param clazz       class associated to the CSV File.
+     * @return the list of <T> representing all rows of the CSV File.
+     * @throws fr.ybo.moteurcsv.exception.CsvErrorsExceededException
+     *          if the number of errors occurred exceed the accepted number
+     *          {@link fr.ybo.moteurcsv.model.MotorParameters#getNbLinesWithErrorsToStop()}.
+     */
+    public <T> Result<T> parseInputStream(InputStream inputStream, Class<T> clazz)
+            throws CsvErrorsExceededException {
+        Result<T> result = new Result<T>();
+        result.getErrors().addAll(
+                parseFileAndInsert(new BufferedReader(new InputStreamReader(inputStream)), clazz,
+                        new InsertInList<T>(result.getObjects())));
+        return result;
+    }
 
-	/**
-	 * Permet de parser un fichier CSV tout en effectuant un traitement à chaque
-	 * enregistrement.
-	 * 
-	 * @param <Objet>
-	 *            Objet associé au CSV.
-	 * @param reader
-	 *            le Reader représentant le fichier CSV.
-	 * @param clazz
-	 *            classe de l'objet associé au CSV.
-	 * @param insert
-	 *            traitement à éffectuer pour chaque enregistrement.
-	 * @return les erreurs rencontrées.
-	 * @throws fr.ybo.moteurcsv.exception.CsvErrorsExceededException
-	 *             si le nombre d'erreurs rencontrées et suppérieur au nombre
-	 *             accepté {@link fr.ybo.moteurcsv.model.MotorParameters#getNbLinesWithErrorsToStop()}.
-	 */
-	@SuppressWarnings("unchecked")
-	public <Objet> List<Error> parseFileAndInsert(Reader reader, Class<Objet> clazz, InsertObject<Objet> insert)
-			throws CsvErrorsExceededException {
-		List<fr.ybo.moteurcsv.model.Error> errors = new ArrayList<Error>();
-		try {
-			nouveauFichier(reader, clazz);
-			Objet objet = null;
-			boolean erreurValidation = false;
-			do {
-				try {
-					erreurValidation = false;
-					objet = (Objet) creerObjet();
-					if (objet != null) {
-						insert.insertObject(objet);
-					}
-				} catch (ValidationError validationError) {
-					erreurValidation = true;
-					errors.add(validationError.getError());
-					if (parametres.getNbLinesWithErrorsToStop() >= 0
-							&& errors.size() > parametres.getNbLinesWithErrorsToStop()) {
-						throw new CsvErrorsExceededException(errors);
-					}
-				}
-			} while (objet != null || erreurValidation);
-		} finally {
-			closeLecteurCourant();
-		}
-		return errors;
-	}
+    /**
+     * Parse a CSV File with an handler on each row.
+     *
+     * @param <T>     The class associated to the CSV File.
+     * @param reader  a Reader which represent the CSV File.
+     * @param clazz   class associated to the CSV File.
+     * @param handler the handler call on each row.
+     * @return the errors occurred.
+     * @throws fr.ybo.moteurcsv.exception.CsvErrorsExceededException
+     *          if the number of errors occurred exceed the accepted number
+     *          {@link fr.ybo.moteurcsv.model.MotorParameters#getNbLinesWithErrorsToStop()}.
+     */
+    @SuppressWarnings("unchecked")
+    public <T> List<Error> parseFileAndInsert(Reader reader, Class<T> clazz, InsertObject<T> handler)
+            throws CsvErrorsExceededException {
+        List<Error> errors = new ArrayList<Error>();
+        try {
+            newCsvFile(reader, clazz);
+            T object = null;
+            boolean hasValidationError;
+            do {
+                try {
+                    hasValidationError = false;
+                    object = (T) createObject();
+                    if (object != null) {
+                        handler.insertObject(object);
+                    }
+                } catch (ValidationError validationError) {
+                    hasValidationError = true;
+                    errors.add(validationError.getError());
+                    if (parameters.getNbLinesWithErrorsToStop() >= 0
+                            && errors.size() > parameters.getNbLinesWithErrorsToStop()) {
+                        throw new CsvErrorsExceededException(errors);
+                    }
+                }
+            } while (object != null || hasValidationError);
+        } finally {
+            closeCurrentReader();
+        }
+        return errors;
+    }
 
-	/**
-	 * Scanne une class pour la gérer dans le moteur.
-	 * 
-	 * @param clazz
-	 *            classe à scanner.
-	 */
-	protected void scannerClass(Class<?> clazz) {
-		CsvFile csvFile = clazz.getAnnotation(CsvFile.class);
-		if (csvFile == null) {
-			throw new MoteurCsvException("Annotation CsvFile non présente sur la classe " + clazz.getSimpleName());
-		}
-		if (mapClasses.get(clazz) != null) {
-			return;
-		}
-		CsvClass csvClass = new CsvClass(csvFile.separator(), clazz);
-		for (Field field : clazz.getDeclaredFields()) {
-			CsvColumn csvColumn = field.getAnnotation(CsvColumn.class);
-			CsvValidation csvValidation = field.getAnnotation(CsvValidation.class);
-			CsvValidations csvValidations = field.getAnnotation(CsvValidations.class);
-			if (csvColumn != null) {
-				csvClass.setCsvField(csvColumn.value(), new CsvField(csvColumn, csvValidations, csvValidation, field));
-				csvClass.putOrder(csvColumn.value(), csvColumn.order());
-			}
-		}
-		mapClasses.put(clazz, csvClass);
-	}
+    /**
+     * Scan a class to manage it in the engine.
+     *
+     * @param clazz class to scan.
+     */
+    protected void scannerClass(Class<?> clazz) {
+        CsvFile csvFile = clazz.getAnnotation(CsvFile.class);
+        if (csvFile == null) {
+            throw new MoteurCsvException("Annotation CsvFile non present for class " + clazz.getSimpleName());
+        }
+        if (mapClasses.get(clazz) != null) {
+            return;
+        }
+        CsvClass csvClass = new CsvClass(csvFile.separator(), clazz);
+        for (Field field : clazz.getDeclaredFields()) {
+            CsvColumn csvColumn = field.getAnnotation(CsvColumn.class);
+            CsvValidation csvValidation = field.getAnnotation(CsvValidation.class);
+            CsvValidations csvValidations = field.getAnnotation(CsvValidations.class);
+            if (csvColumn != null) {
+                csvClass.setCsvField(csvColumn.value(), new CsvField(csvColumn, csvValidations, csvValidation, field));
+                csvClass.putOrder(csvColumn.value(), csvColumn.order());
+            }
+        }
+        mapClasses.put(clazz, csvClass);
+    }
 
-	/**
-	 * Ecrit une ligne dans le ficheir CSV.
-	 * 
-	 * @param <Objet>
-	 *            Objet associé au CSV.
-	 * @param csvWriter
-	 *            writer à utiliser.
-	 * @param nomChamps
-	 *            liste des champs représentant l'entête du CSV.
-	 * @param csvClass
-	 *            classe associée au fichier CSV.
-	 * @param objet
-	 *            objet à écrire dans le CSV.
-	 * @throws IllegalAccessException
-	 *             ne doit pas arriver.
-	 */
-	private <Objet> void writeLigne(AbstractCsvWriter csvWriter, List<String> nomChamps, CsvClass csvClass, Objet objet)
-			throws IllegalAccessException {
-		List<String> champs = new ArrayList<String>();
-		for (String nomChamp : nomChamps) {
-			CsvField csvField = csvClass.getCsvField(nomChamp);
-			csvField.getField().setAccessible(true);
-			Object valeur = csvField.getField().get(objet);
-			csvField.getField().setAccessible(false);
-			if (valeur != null) {
-				champs.add(csvField.getAdapterCsv().toString(valeur));
-			} else {
-				champs.add(null);
-			}
-		}
-		csvWriter.writeLine(champs);
-	}
+    /**
+     * Write a line into the CSV File.
+     *
+     * @param <T>         class associated to the CSV File.
+     * @param csvWriter   writer to use.
+     * @param fieldsNames list of the fields names.
+     * @param csvClass    CsvClass associated to the CSV File.
+     * @param object      Object to write in the CSV File.
+     * @throws IllegalAccessException may not arrive.
+     */
+    private <T> void writeLine(AbstractCsvWriter csvWriter, List<String> fieldsNames, CsvClass csvClass, T object)
+            throws IllegalAccessException {
+        List<String> csvValues = new ArrayList<String>();
+        for (String nomChamp : fieldsNames) {
+            CsvField csvField = csvClass.getCsvField(nomChamp);
+            csvField.getField().setAccessible(true);
+            Object valeur = csvField.getField().get(object);
+            csvField.getField().setAccessible(false);
+            if (valeur != null) {
+                csvValues.add(csvField.getAdapterCsv().toString(valeur));
+            } else {
+                csvValues.add(null);
+            }
+        }
+        csvWriter.writeLine(csvValues);
+    }
 
-	/**
-	 * Ecrit un fichier CSV à partir d'une liste d'objet.
-	 * 
-	 * @param <Objet>
-	 *            Objet associé au CSV.
-	 * @param writer
-	 *            writer représentant le fichier CSV.
-	 * @param objets
-	 *            liste des objets à écrire dans le fichier CSV.
-	 * @param clazz
-	 *            Classe associée au fichier CSV.
-	 */
-	public <Objet> void writeFile(Writer writer, Iterable<Objet> objets, Class<Objet> clazz) {
-		try {
-			final CsvClass csvClass = mapClasses.get(clazz);
-			AbstractCsvWriter csvWriter =
-					factory.createWriterCsv(writer, csvClass.getSeparatorWithoutEscape(), parametres.hasAddQuoteCar());
-			try {
-				List<String> nomChamps = new ArrayList<String>();
-				for (String champ : csvClass.getColumnNames()) {
-					nomChamps.add(champ);
-				}
-				Collections.sort(nomChamps, new Comparator<String>() {
-					public int compare(String o1, String o2) {
-						int thisVal = csvClass.getOrder(o1);
-						int anotherVal = csvClass.getOrder(o2);
-						return (thisVal < anotherVal ? -1 : (thisVal == anotherVal ? 0 : 1));
-					}
-				});
-				csvWriter.writeLine(nomChamps);
-				for (Objet objet : objets) {
-					writeLigne(csvWriter, nomChamps, csvClass, objet);
-				}
-			} finally {
-				csvWriter.close();
-			}
-		} catch (Exception exception) {
-			throw new MoteurCsvException(exception);
-		}
-	}
+    /**
+     * Write a CSV File based on an object list.
+     *
+     * @param <T>     Class associated to the CSV File.
+     * @param writer  writer representing the CSV File.
+     * @param objects objects list to write in CSV File.
+     * @param clazz   Class associated to the CSV File.
+     */
+    public <T> void writeFile(Writer writer, Iterable<T> objects, Class<T> clazz) {
+        try {
+            final CsvClass csvClass = mapClasses.get(clazz);
+            AbstractCsvWriter csvWriter =
+                    factory.createWriterCsv(writer, csvClass.getSeparatorWithoutEscape(), parameters.hasAddQuoteCar());
+            try {
+                List<String> columnsNames = new ArrayList<String>();
+                for (String columnName : csvClass.getColumnNames()) {
+                    columnsNames.add(columnName);
+                }
+                Collections.sort(columnsNames, new Comparator<String>() {
+                    public int compare(String o1, String o2) {
+                        int thisVal = csvClass.getOrder(o1);
+                        int anotherVal = csvClass.getOrder(o2);
+                        return (thisVal < anotherVal ? -1 : (thisVal == anotherVal ? 0 : 1));
+                    }
+                });
+                csvWriter.writeLine(columnsNames);
+                for (T object : objects) {
+                    writeLine(csvWriter, columnsNames, csvClass, object);
+                }
+            } finally {
+                csvWriter.close();
+            }
+        } catch (Exception exception) {
+            throw new MoteurCsvException(exception);
+        }
+    }
 }

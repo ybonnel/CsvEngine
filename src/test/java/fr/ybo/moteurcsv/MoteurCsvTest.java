@@ -307,10 +307,10 @@ public class MoteurCsvTest {
 	@Test
 	public void testCreerObjet() throws ValidationError {
 		try {
-			moteur.creerObjet();
+			moteur.createObject();
 			fail("Une exception aurait du être levée");
 		} catch (MoteurCsvException exception) {
-			assertTrue(exception.getMessage().contains("nouveauFichier"));
+			assertTrue(exception.getMessage().contains("newCsvFile"));
 		}
 
 		moteur.setFactory(new CsvManagerFactory() {
@@ -336,10 +336,10 @@ public class MoteurCsvTest {
 			}
 		});
 
-		moteur.nouveauFichier(new InputStreamReader(stream), ObjetCsv.class);
+		moteur.newCsvFile(new InputStreamReader(stream), ObjetCsv.class);
 
 		try {
-			moteur.creerObjet();
+			moteur.createObject();
 			fail("Une exception aurait du être levée");
 		} catch (MoteurCsvException exception) {
 			assertEquals(IOException.class, exception.getCause().getClass());
@@ -349,7 +349,7 @@ public class MoteurCsvTest {
 	@Test
 	public void testNouveauFichier() {
 		try {
-			moteur.nouveauFichier(null, String.class);
+			moteur.newCsvFile(null, String.class);
 			fail("Une exception aurait du être levée");
 		} catch (MoteurCsvException exception) {
 			assertTrue(exception.getMessage().contains("String"));
@@ -373,7 +373,7 @@ public class MoteurCsvTest {
 		});
 
 		try {
-			moteur.nouveauFichier(null, ObjetCsv.class);
+			moteur.newCsvFile(null, ObjetCsv.class);
 			fail("Une exception aurait du être levée");
 		} catch (MoteurCsvException exception) {
 			assertEquals(IOException.class, exception.getCause().getClass());

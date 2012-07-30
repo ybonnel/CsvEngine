@@ -308,7 +308,7 @@ public class ValidationTest {
 	 */
 	@Test
 	public void testRg3_1() throws CsvErrorsExceededException {
-		moteurRg1.getParametres().setValidation(false);
+		moteurRg1.getParameters().setValidation(false);
 		Result<ObjetRg1_4> result = moteurRg1.parseInputStream(streamRg1, ObjetRg1_4.class);
 		assertNotNull(result);
 		assertEquals(3, result.getObjects().size());
