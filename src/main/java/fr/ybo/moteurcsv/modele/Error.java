@@ -20,46 +20,46 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Classe représentant le résultat du moteur.<br>
- * Contient :
- * <ul>
- * <li>La liste de objets transormés.</li>
- * <li>La liste des erreurs rencontrées.</li>
- * </ul>
+ * Represent an error.<br/><br/>
+ * <u><i>French :</i></u> Classe représentant une erreur.
  * 
- * @param <T>
- *            Objet contenu dans le résultat.
+ * @author ybonnel
  * 
  */
-public class Resultat<T> {
+public class Error {
 
 	/**
-	 * Les objets transformés.
+	 * Line of the CSV File.
 	 */
-	private List<T> objets;
+	private String csvLine;
 
 	/**
-	 * Les erreurs rencontrées.
+	 * @return the line of the CSV File which contain the error.
 	 */
-	private List<Erreur> erreurs;
-
-	/**
-	 * @return Les objets transformés.
-	 */
-	public List<T> getObjets() {
-		if (objets == null) {
-			objets = new ArrayList<T>();
-		}
-		return objets;
+	public String getCsvLine() {
+		return csvLine;
 	}
 
 	/**
-	 * @return les erreurs rencontrées.
+	 * @param csvLine
+	 *            the line of the CSV File which contain the error.
 	 */
-	public List<Erreur> getErreurs() {
-		if (erreurs == null) {
-			erreurs = new ArrayList<Erreur>();
+	public void setCsvLine(String csvLine) {
+		this.csvLine = csvLine;
+	}
+
+	/**
+     * List of the errors messages.
+	 */
+	private List<String> messages;
+
+	/**
+	 * @return the errors messages.
+	 */
+	public List<String> getMessages() {
+		if (messages == null) {
+			messages = new ArrayList<String>();
 		}
-		return erreurs;
+		return messages;
 	}
 }

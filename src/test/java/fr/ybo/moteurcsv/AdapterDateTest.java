@@ -35,8 +35,8 @@ import fr.ybo.moteurcsv.annotation.CsvColumn;
 import fr.ybo.moteurcsv.exception.InvalidParamException;
 import fr.ybo.moteurcsv.exception.MoteurCsvException;
 import fr.ybo.moteurcsv.exception.CsvErrorsExceededException;
-import fr.ybo.moteurcsv.modele.Erreur;
-import fr.ybo.moteurcsv.modele.Resultat;
+import fr.ybo.moteurcsv.modele.Error;
+import fr.ybo.moteurcsv.modele.Result;
 
 /**
  * Test de l'adapter de date.<br/>
@@ -111,21 +111,21 @@ public class AdapterDateTest {
 			fail("Une exception aurait du être levée");
 		} catch (CsvErrorsExceededException exception) {
 			assertEquals(1, exception.getErrors().size());
-			Erreur erreur = exception.getErrors().get(0);
-			assertEquals("att,tutu", erreur.getLigneCsv());
-			assertEquals(1, erreur.getMessages().size());
-			assertTrue(erreur.getMessages().get(0), erreur.getMessages().get(0).contains("tutu"));
-			assertTrue(erreur.getMessages().get(0), erreur.getMessages().get(0).contains("dd/MM/yyyy"));
+			Error error = exception.getErrors().get(0);
+			assertEquals("att,tutu", error.getCsvLine());
+			assertEquals(1, error.getMessages().size());
+			assertTrue(error.getMessages().get(0), error.getMessages().get(0).contains("tutu"));
+			assertTrue(error.getMessages().get(0), error.getMessages().get(0).contains("dd/MM/yyyy"));
 		}
 	}
 
 	@Test
 	public void testRg4() throws CsvErrorsExceededException {
 		InputStream stream = new StringStream("att,date\natt,");
-		Resultat<ObjetRg345> objets = moteurRg345.parseInputStream(stream, ObjetRg345.class);
-		assertTrue(objets.getErreurs().isEmpty());
-		assertEquals(1, objets.getObjets().size());
-		ObjetRg345 objet = objets.getObjets().get(0);
+		Result<ObjetRg345> objets = moteurRg345.parseInputStream(stream, ObjetRg345.class);
+		assertTrue(objets.getErrors().isEmpty());
+		assertEquals(1, objets.getObjects().size());
+		ObjetRg345 objet = objets.getObjects().get(0);
 		assertEquals("att", objet.att);
 		assertNull(objet.date);
 	}
@@ -133,14 +133,14 @@ public class AdapterDateTest {
 	@Test
 	public void testRg5() throws CsvErrorsExceededException {
 		InputStream stream = new StringStream("att,date\natt,21/12/2012");
-		Resultat<ObjetRg345> objets = moteurRg345.parseInputStream(stream, ObjetRg345.class);
-		assertTrue(objets.getErreurs().isEmpty());
-		assertEquals(1, objets.getObjets().size());
-		ObjetRg345 objet = objets.getObjets().get(0);
+		Result<ObjetRg345> objets = moteurRg345.parseInputStream(stream, ObjetRg345.class);
+		assertTrue(objets.getErrors().isEmpty());
+		assertEquals(1, objets.getObjects().size());
+		ObjetRg345 objet = objets.getObjects().get(0);
 		assertEquals("att", objet.att);
 		assertEquals("21/12/2012", new SimpleDateFormat("dd/MM/yyyy").format(objet.date));
 		StringWriter writer = new StringWriter();
-		moteurRg345.writeFile(writer, objets.getObjets(), ObjetRg345.class);
+		moteurRg345.writeFile(writer, objets.getObjects(), ObjetRg345.class);
 		assertEquals("\"att\",\"date\"\n\"att\",\"21/12/2012\"\n", writer.getBuffer().toString());
 	}
 

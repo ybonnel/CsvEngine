@@ -19,37 +19,38 @@ package fr.ybo.moteurcsv.modele;
 import java.util.List;
 
 /**
- * Implémentation de InsertObjet permettant d'insérer dans une liste.
+ * Implementation of InsertObject which insert the Object in a list.<br/><br/>
+ * <u><i>French :</i></u> Implémentation de InsertObjet permettant d'insérer dans une liste.
  * 
  * @author ybonnel
  * 
- * @param <Objet>
- *            objet à insérer.
+ * @param <T>
+ *            object to insert.
  */
-public class InsertInList<Objet> implements InsertObject<Objet> {
+public class InsertInList<T> implements InsertObject<T> {
 
 	/**
-	 * Liste dans laquelle il faut insérer les objets.
+     * List in which we must insert objects.
 	 */
-	private List<Objet> objets;
+	private List<T> objects;
 
 	/**
-	 * Constructeur.
+	 * Constructor.
 	 * 
-	 * @param objets
-	 *            liste dans laquelle il faut insérer les objets.
+	 * @param objects
+	 *            List in which we must insert objects.
 	 */
-	public InsertInList(List<Objet> objets) {
-		this.objets = objets;
+	public InsertInList(List<T> objects) {
+		this.objects = objects;
 	}
 
 	/**
-	 * Insertion de l'objet.
+	 * Insert of the object.
 	 * 
-	 * @param objet
-	 *            à insérer.
+	 * @param object
+	 *            to insert.
 	 */
-	public void insertObject(Objet objet) {
-		objets.add(objet);
+	public void insertObject(T object) {
+        objects.add(object);
 	}
 }

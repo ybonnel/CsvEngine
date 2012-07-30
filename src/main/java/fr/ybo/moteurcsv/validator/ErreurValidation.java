@@ -16,7 +16,7 @@
  */
 package fr.ybo.moteurcsv.validator;
 
-import fr.ybo.moteurcsv.modele.Erreur;
+import fr.ybo.moteurcsv.modele.Error;
 
 /**
  * Exception permettant de gérer les erreurs de validation.<br/>
@@ -33,26 +33,26 @@ public class ErreurValidation extends Exception {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Erreur.
+	 * Error.
 	 */
-	private Erreur erreur;
+	private Error error;
 
 	/**
 	 * Constructeur.
 	 * 
 	 * @param ligne
-	 *            ligne ayant rencontrée l'erreur de validation.
+	 *            ligne ayant rencontrée l'error de validation.
 	 */
 	public ErreurValidation(String ligne) {
-		erreur = new Erreur();
-		erreur.setLigneCsv(ligne);
+		error = new Error();
+		error.setCsvLine(ligne);
 	}
 
 	/**
-	 * @return l'erreur de validation rencontrée.
+	 * @return l'error de validation rencontrée.
 	 */
-	public Erreur getErreur() {
-		return erreur;
+	public fr.ybo.moteurcsv.modele.Error getError() {
+		return error;
 	}
 
 }

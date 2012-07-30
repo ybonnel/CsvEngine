@@ -23,60 +23,58 @@ import java.util.Map;
 import fr.ybo.moteurcsv.annotation.CsvParam;
 
 /**
- * Classe permettant de repréter la clé contenant une classe et ses paramètres.
+ * Represents a key containing the class with its parameters (use for Adapters and Validators).<br/><br/>
+ * <u><i>French :</i></u> Classe permettant de repréter la clé contenant une classe et ses paramètres.
  * (utilisé pour les Adapter et la Validateur.
- * 
- * @param <T>
- *            Classe concernée.
+ *
+ * @param <T> the class.
  */
 public class ClassWithParamKey<T> {
-	/**
-	 * Paramètres de la classe.
-	 */
-	private Parametre[] params;
-	/**
-	 * Classe concernée.
-	 */
-	private Class<? extends T> clazz;
+    /**
+     * Parameters of the class.
+     */
+    private Parameter[] params;
+    /**
+     * The class.
+     */
+    private Class<? extends T> clazz;
 
-	/**
-	 * Constructeur.
-	 * 
-	 * @param params
-	 *            paramètres.
-	 * @param clazz
-	 *            classe concernée.
-	 */
-	public ClassWithParamKey(CsvParam[] params, Class<? extends T> clazz) {
-		this.params = Parametre.paramsToParametres(params);
-		this.clazz = clazz;
-	}
+    /**
+     * Constructor.
+     *
+     * @param params parameters.
+     * @param clazz  the class.
+     */
+    public ClassWithParamKey(CsvParam[] params, Class<? extends T> clazz) {
+        this.params = Parameter.paramsToParameters(params);
+        this.clazz = clazz;
+    }
 
-	/**
-	 * Permet de récupérer les paramètres sous forme de Map <Nom, Valeur>.
-	 * 
-	 * @return la map construite.
-	 */
-	public Map<String, String> getMapParams() {
-		Map<String, String> mapParams = new HashMap<String, String>();
-		for (Parametre parametre : params) {
-			mapParams.put(parametre.getName(), parametre.getValue());
-		}
-		return mapParams;
-	}
+    /**
+     * Get the parameters into a Map&lt;Name, Value&gt;.
+     *
+     * @return the resulting map.
+     */
+    public Map<String, String> getMapParams() {
+        Map<String, String> mapParams = new HashMap<String, String>();
+        for (Parameter parameter : params) {
+            mapParams.put(parameter.getName(), parameter.getValue());
+        }
+        return mapParams;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + clazz.hashCode();
-		result = prime * result + Arrays.hashCode(params);
-		return result;
-	}
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + clazz.hashCode();
+        result = prime * result + Arrays.hashCode(params);
+        return result;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		ClassWithParamKey<?> other = (ClassWithParamKey<?>) obj;
-		return (clazz.equals(other.clazz) && Arrays.equals(params, other.params));
-	}
+    @Override
+    public boolean equals(Object obj) {
+        ClassWithParamKey<?> other = (ClassWithParamKey<?>) obj;
+        return (clazz.equals(other.clazz) && Arrays.equals(params, other.params));
+    }
 }

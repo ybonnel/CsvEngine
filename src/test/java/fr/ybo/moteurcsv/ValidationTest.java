@@ -26,14 +26,13 @@ import java.io.InputStream;
 import fr.ybo.moteurcsv.annotation.CsvColumn;
 import fr.ybo.moteurcsv.annotation.CsvFile;
 import fr.ybo.moteurcsv.annotation.CsvValidation;
+import fr.ybo.moteurcsv.modele.*;
+import fr.ybo.moteurcsv.modele.Error;
 import org.junit.Before;
 import org.junit.Test;
 
 import fr.ybo.moteurcsv.exception.MoteurCsvException;
 import fr.ybo.moteurcsv.exception.CsvErrorsExceededException;
-import fr.ybo.moteurcsv.modele.Erreur;
-import fr.ybo.moteurcsv.modele.ParametresMoteur;
-import fr.ybo.moteurcsv.modele.Resultat;
 import fr.ybo.moteurcsv.validator.ValidateException;
 import fr.ybo.moteurcsv.validator.ValidatorCsv;
 
@@ -127,7 +126,7 @@ public class ValidationTest {
 	public void setup() {
 		streamRg1 = new StringStream("att1,att2\nval1,\n,val2\n,");
 		moteurRg1 =
-				new MoteurCsv(ParametresMoteur.createBuilder().setValidation(true).setNbLinesWithErrorsToStop(999).build(),
+				new MoteurCsv(MotorParameters.createBuilder().setValidation(true).setNbLinesWithErrorsToStop(999).build(),
 						ObjetRg1_1.class, ObjetRg1_2.class, ObjetRg1_3.class, ObjetRg1_4.class);
 
 	}
@@ -148,10 +147,10 @@ public class ValidationTest {
 	@Test
 	public void testRg1_1() throws CsvErrorsExceededException {
 		// Test avec les deux champs facultatif.
-		Resultat<ObjetRg1_1> resultat = moteurRg1.parseInputStream(streamRg1, ObjetRg1_1.class);
-		assertNotNull(resultat);
-		assertEquals(3, resultat.getObjets().size());
-		assertEquals(0, resultat.getErreurs().size());
+		Result<ObjetRg1_1> result = moteurRg1.parseInputStream(streamRg1, ObjetRg1_1.class);
+		assertNotNull(result);
+		assertEquals(3, result.getObjects().size());
+		assertEquals(0, result.getErrors().size());
 	}
 
 	/**
@@ -164,20 +163,20 @@ public class ValidationTest {
 	@Test
 	public void testRg1_2() throws CsvErrorsExceededException {
 		// Test avec le premier champ mandatory.
-		Resultat<ObjetRg1_2> resultat = moteurRg1.parseInputStream(streamRg1, ObjetRg1_2.class);
-		assertNotNull(resultat);
-		assertEquals(1, resultat.getObjets().size());
-		assertEquals(2, resultat.getErreurs().size());
-		Erreur erreur1 = resultat.getErreurs().get(0);
-		assertEquals(",val2", erreur1.getLigneCsv());
-		assertEquals(1, erreur1.getMessages().size());
-		assertTrue(erreur1.getMessages().get(0).contains("mandatory"));
-		assertTrue(erreur1.getMessages().get(0).contains("att1"));
-		Erreur erreur2 = resultat.getErreurs().get(1);
-		assertEquals(",", erreur2.getLigneCsv());
-		assertEquals(1, erreur2.getMessages().size());
-		assertTrue(erreur2.getMessages().get(0).contains("mandatory"));
-		assertTrue(erreur2.getMessages().get(0).contains("att1"));
+		Result<ObjetRg1_2> result = moteurRg1.parseInputStream(streamRg1, ObjetRg1_2.class);
+		assertNotNull(result);
+		assertEquals(1, result.getObjects().size());
+		assertEquals(2, result.getErrors().size());
+		fr.ybo.moteurcsv.modele.Error error1 = result.getErrors().get(0);
+		assertEquals(",val2", error1.getCsvLine());
+		assertEquals(1, error1.getMessages().size());
+		assertTrue(error1.getMessages().get(0).contains("mandatory"));
+		assertTrue(error1.getMessages().get(0).contains("att1"));
+		Error error2 = result.getErrors().get(1);
+		assertEquals(",", error2.getCsvLine());
+		assertEquals(1, error2.getMessages().size());
+		assertTrue(error2.getMessages().get(0).contains("mandatory"));
+		assertTrue(error2.getMessages().get(0).contains("att1"));
 	}
 
 	/**
@@ -190,20 +189,20 @@ public class ValidationTest {
 	@Test
 	public void testRg1_3() throws CsvErrorsExceededException {
 		// Test avec le deuxième champ mandatory.
-		Resultat<ObjetRg1_3> resultat = moteurRg1.parseInputStream(streamRg1, ObjetRg1_3.class);
-		assertNotNull(resultat);
-		assertEquals(1, resultat.getObjets().size());
-		assertEquals(2, resultat.getErreurs().size());
-		Erreur erreur1 = resultat.getErreurs().get(0);
-		assertEquals("val1,", erreur1.getLigneCsv());
-		assertEquals(1, erreur1.getMessages().size());
-		assertTrue(erreur1.getMessages().get(0).contains("mandatory"));
-		assertTrue(erreur1.getMessages().get(0).contains("att2"));
-		Erreur erreur2 = resultat.getErreurs().get(1);
-		assertEquals(",", erreur2.getLigneCsv());
-		assertEquals(1, erreur2.getMessages().size());
-		assertTrue(erreur2.getMessages().get(0).contains("mandatory"));
-		assertTrue(erreur2.getMessages().get(0).contains("att2"));
+		Result<ObjetRg1_3> result = moteurRg1.parseInputStream(streamRg1, ObjetRg1_3.class);
+		assertNotNull(result);
+		assertEquals(1, result.getObjects().size());
+		assertEquals(2, result.getErrors().size());
+		Error error1 = result.getErrors().get(0);
+		assertEquals("val1,", error1.getCsvLine());
+		assertEquals(1, error1.getMessages().size());
+		assertTrue(error1.getMessages().get(0).contains("mandatory"));
+		assertTrue(error1.getMessages().get(0).contains("att2"));
+		Error error2 = result.getErrors().get(1);
+		assertEquals(",", error2.getCsvLine());
+		assertEquals(1, error2.getMessages().size());
+		assertTrue(error2.getMessages().get(0).contains("mandatory"));
+		assertTrue(error2.getMessages().get(0).contains("att2"));
 	}
 
 	/**
@@ -215,27 +214,27 @@ public class ValidationTest {
 	@Test
 	public void testRg1_4() throws CsvErrorsExceededException {
 		// Test avec les deux champs obligatoires
-		Resultat<ObjetRg1_4> resultat = moteurRg1.parseInputStream(streamRg1, ObjetRg1_4.class);
-		assertNotNull(resultat);
-		assertEquals(0, resultat.getObjets().size());
-		assertEquals(3, resultat.getErreurs().size());
-		Erreur erreur1 = resultat.getErreurs().get(0);
-		assertEquals("val1,", erreur1.getLigneCsv());
-		assertEquals(1, erreur1.getMessages().size());
-		assertTrue(erreur1.getMessages().get(0).contains("mandatory"));
-		assertTrue(erreur1.getMessages().get(0).contains("att2"));
-		Erreur erreur2 = resultat.getErreurs().get(1);
-		assertEquals(",val2", erreur2.getLigneCsv());
-		assertEquals(1, erreur2.getMessages().size());
-		assertTrue(erreur2.getMessages().get(0).contains("mandatory"));
-		assertTrue(erreur2.getMessages().get(0).contains("att1"));
-		Erreur erreur3 = resultat.getErreurs().get(2);
-		assertEquals(",", erreur3.getLigneCsv());
-		assertEquals(2, erreur3.getMessages().size());
-		assertTrue(erreur3.getMessages().get(0).contains("mandatory"));
-		assertTrue(erreur3.getMessages().get(0).contains("att1"));
-		assertTrue(erreur3.getMessages().get(1).contains("mandatory"));
-		assertTrue(erreur3.getMessages().get(1).contains("att2"));
+		Result<ObjetRg1_4> result = moteurRg1.parseInputStream(streamRg1, ObjetRg1_4.class);
+		assertNotNull(result);
+		assertEquals(0, result.getObjects().size());
+		assertEquals(3, result.getErrors().size());
+		Error error1 = result.getErrors().get(0);
+		assertEquals("val1,", error1.getCsvLine());
+		assertEquals(1, error1.getMessages().size());
+		assertTrue(error1.getMessages().get(0).contains("mandatory"));
+		assertTrue(error1.getMessages().get(0).contains("att2"));
+		Error error2 = result.getErrors().get(1);
+		assertEquals(",val2", error2.getCsvLine());
+		assertEquals(1, error2.getMessages().size());
+		assertTrue(error2.getMessages().get(0).contains("mandatory"));
+		assertTrue(error2.getMessages().get(0).contains("att1"));
+		Error error3 = result.getErrors().get(2);
+		assertEquals(",", error3.getCsvLine());
+		assertEquals(2, error3.getMessages().size());
+		assertTrue(error3.getMessages().get(0).contains("mandatory"));
+		assertTrue(error3.getMessages().get(0).contains("att1"));
+		assertTrue(error3.getMessages().get(1).contains("mandatory"));
+		assertTrue(error3.getMessages().get(1).contains("att2"));
 	}
 
 	@CsvFile
@@ -273,31 +272,31 @@ public class ValidationTest {
 	@Test
 	public void testRg2() throws CsvErrorsExceededException {
 		MoteurCsv moteurRg2 =
-				new MoteurCsv(ParametresMoteur.createBuilder().setValidation(true).setNbLinesWithErrorsToStop(999).build(),
+				new MoteurCsv(MotorParameters.createBuilder().setValidation(true).setNbLinesWithErrorsToStop(999).build(),
 						ObjetRg2.class);
 		InputStream stream = new StringStream("att1,att2\nRG2,RG2\nRG2,RG1\nRG1,RG2\nRG1,RG3");
 
-		Resultat<ObjetRg2> resultat = moteurRg2.parseInputStream(stream, ObjetRg2.class);
-		assertNotNull(resultat);
-		assertEquals(1, resultat.getObjets().size());
-		assertEquals(3, resultat.getErreurs().size());
-		Erreur erreur1 = resultat.getErreurs().get(0);
-		assertEquals("RG2,RG1", erreur1.getLigneCsv());
-		assertEquals(1, erreur1.getMessages().size());
-		assertTrue(erreur1.getMessages().get(0).endsWith("Le champs doit être également à RG2"));
-		assertTrue(erreur1.getMessages().get(0).contains("att2"));
-		Erreur erreur2 = resultat.getErreurs().get(1);
-		assertEquals("RG1,RG2", erreur2.getLigneCsv());
-		assertEquals(1, erreur2.getMessages().size());
-		assertTrue(erreur2.getMessages().get(0).endsWith("Le champs doit être également à RG2"));
-		assertTrue(erreur2.getMessages().get(0).contains("att1"));
-		Erreur erreur3 = resultat.getErreurs().get(2);
-		assertEquals("RG1,RG3", erreur3.getLigneCsv());
-		assertEquals(2, erreur3.getMessages().size());
-		assertTrue(erreur3.getMessages().get(0).endsWith("Le champs doit être également à RG2"));
-		assertTrue(erreur3.getMessages().get(0).contains("att1"));
-		assertTrue(erreur3.getMessages().get(1).endsWith("Le champs doit être également à RG2"));
-		assertTrue(erreur3.getMessages().get(1).contains("att2"));
+		Result<ObjetRg2> result = moteurRg2.parseInputStream(stream, ObjetRg2.class);
+		assertNotNull(result);
+		assertEquals(1, result.getObjects().size());
+		assertEquals(3, result.getErrors().size());
+		Error error1 = result.getErrors().get(0);
+		assertEquals("RG2,RG1", error1.getCsvLine());
+		assertEquals(1, error1.getMessages().size());
+		assertTrue(error1.getMessages().get(0).endsWith("Le champs doit être également à RG2"));
+		assertTrue(error1.getMessages().get(0).contains("att2"));
+		Error error2 = result.getErrors().get(1);
+		assertEquals("RG1,RG2", error2.getCsvLine());
+		assertEquals(1, error2.getMessages().size());
+		assertTrue(error2.getMessages().get(0).endsWith("Le champs doit être également à RG2"));
+		assertTrue(error2.getMessages().get(0).contains("att1"));
+		Error error3 = result.getErrors().get(2);
+		assertEquals("RG1,RG3", error3.getCsvLine());
+		assertEquals(2, error3.getMessages().size());
+		assertTrue(error3.getMessages().get(0).endsWith("Le champs doit être également à RG2"));
+		assertTrue(error3.getMessages().get(0).contains("att1"));
+		assertTrue(error3.getMessages().get(1).endsWith("Le champs doit être également à RG2"));
+		assertTrue(error3.getMessages().get(1).contains("att2"));
 	}
 
 	/**
@@ -310,9 +309,9 @@ public class ValidationTest {
 	@Test
 	public void testRg3_1() throws CsvErrorsExceededException {
 		moteurRg1.getParametres().setValidation(false);
-		Resultat<ObjetRg1_4> resultat = moteurRg1.parseInputStream(streamRg1, ObjetRg1_4.class);
-		assertNotNull(resultat);
-		assertEquals(3, resultat.getObjets().size());
+		Result<ObjetRg1_4> result = moteurRg1.parseInputStream(streamRg1, ObjetRg1_4.class);
+		assertNotNull(result);
+		assertEquals(3, result.getObjects().size());
 	}
 
 	/**
@@ -325,13 +324,13 @@ public class ValidationTest {
 	@Test
 	public void testRg3_2() throws CsvErrorsExceededException {
 		MoteurCsv moteurRg2 =
-				new MoteurCsv(ParametresMoteur.createBuilder().setValidation(false).setNbLinesWithErrorsToStop(999).build(),
+				new MoteurCsv(MotorParameters.createBuilder().setValidation(false).setNbLinesWithErrorsToStop(999).build(),
 						ObjetRg2.class);
 		InputStream stream = new StringStream("att1,att2\nRG2,RG2\nRG2,RG1\nRG1,RG2\nRG1,RG3");
 
-		Resultat<ObjetRg2> resultat = moteurRg2.parseInputStream(stream, ObjetRg2.class);
-		assertNotNull(resultat);
-		assertEquals(4, resultat.getObjets().size());
+		Result<ObjetRg2> result = moteurRg2.parseInputStream(stream, ObjetRg2.class);
+		assertNotNull(result);
+		assertEquals(4, result.getObjects().size());
 	}
 
 	/**
@@ -340,7 +339,7 @@ public class ValidationTest {
 	@Test
 	public void testRg4_1() {
 		MoteurCsv moteurRg2 =
-				new MoteurCsv(ParametresMoteur.createBuilder().setValidation(true).setNbLinesWithErrorsToStop(1).build(),
+				new MoteurCsv(MotorParameters.createBuilder().setValidation(true).setNbLinesWithErrorsToStop(1).build(),
 						ObjetRg2.class);
 		InputStream stream = new StringStream("att1,att2\nRG2,RG2\nRG2,RG1\nRG1,RG2\nRG1,RG3");
 
@@ -359,7 +358,7 @@ public class ValidationTest {
 	@Test
 	public void testRg4_2() {
 		MoteurCsv moteurRg2 =
-				new MoteurCsv(ParametresMoteur.createBuilder().setValidation(true).setNbLinesWithErrorsToStop(0).build(),
+				new MoteurCsv(MotorParameters.createBuilder().setValidation(true).setNbLinesWithErrorsToStop(0).build(),
 						ObjetRg2.class);
 		InputStream stream = new StringStream("att1,att2\nRG2,RG2\nRG2,RG1\nRG1,RG2\nRG1,RG3");
 
@@ -381,14 +380,14 @@ public class ValidationTest {
 	@Test
 	public void testRg4_3() throws CsvErrorsExceededException {
 		MoteurCsv moteurRg2 =
-				new MoteurCsv(ParametresMoteur.createBuilder().setValidation(true).setNbLinesWithErrorsToStop(-1).build(),
+				new MoteurCsv(MotorParameters.createBuilder().setValidation(true).setNbLinesWithErrorsToStop(-1).build(),
 						ObjetRg2.class);
 		InputStream stream = new StringStream("att1,att2\nRG2,RG2\nRG2,RG1\nRG1,RG2\nRG1,RG3");
 
-		Resultat<ObjetRg2> resultat = moteurRg2.parseInputStream(stream, ObjetRg2.class);
-		assertNotNull(resultat);
-		assertEquals(1, resultat.getObjets().size());
-		assertEquals(3, resultat.getErreurs().size());
+		Result<ObjetRg2> result = moteurRg2.parseInputStream(stream, ObjetRg2.class);
+		assertNotNull(result);
+		assertEquals(1, result.getObjects().size());
+		assertEquals(3, result.getErrors().size());
 	}
 
 	/**
@@ -400,14 +399,14 @@ public class ValidationTest {
 	@Test
 	public void testRg4_4() throws CsvErrorsExceededException {
 		MoteurCsv moteurRg2 =
-				new MoteurCsv(ParametresMoteur.createBuilder().setValidation(true).setNbLinesWithErrorsToStop(3).build(),
+				new MoteurCsv(MotorParameters.createBuilder().setValidation(true).setNbLinesWithErrorsToStop(3).build(),
 						ObjetRg2.class);
 		InputStream stream = new StringStream("att1,att2\nRG2,RG2\nRG2,RG1\nRG1,RG2\nRG1,RG3");
 
-		Resultat<ObjetRg2> resultat = moteurRg2.parseInputStream(stream, ObjetRg2.class);
-		assertNotNull(resultat);
-		assertEquals(1, resultat.getObjets().size());
-		assertEquals(3, resultat.getErreurs().size());
+		Result<ObjetRg2> result = moteurRg2.parseInputStream(stream, ObjetRg2.class);
+		assertNotNull(result);
+		assertEquals(1, result.getObjects().size());
+		assertEquals(3, result.getErrors().size());
 	}
 
 	public static class ValidatorPbCreation extends ValidatorCsv {

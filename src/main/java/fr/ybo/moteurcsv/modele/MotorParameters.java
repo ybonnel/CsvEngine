@@ -17,35 +17,36 @@
 package fr.ybo.moteurcsv.modele;
 
 /**
- * Classe contenant tous les paramètres du moteur.
+ * Contains all parameters of the motor.<br/><br/>
+ * <u><i>French :</i></u> Classe contenant tous les paramètres du moteur.
  * 
  * @author ybonnel
  * 
  */
-public class ParametresMoteur {
+public class MotorParameters {
 
 	/**
-	 * Permet d'activer ou non la validation.
+     * Activate or not the validation.
 	 */
 	private boolean validation = true;
 
 	/**
-	 * Permet de régler le nombre de lignes en erreurs avant de s'arrêter.
+     * Number of lines in error before stop.
 	 */
 	private int nbLinesWithErrorsToStop = 0;
 
 	/**
-	 * Permet de désactiver l'ajout de guillemets pour encadrer les champs.
+     * Activate of not the add of quote for a field.
 	 */
 	private boolean addQuoteCar = true;
 
 	/**
-	 * Création d'un builder.
+     * Creation of builder.
 	 * 
-	 * @return le builder.
+	 * @return the builder.
 	 */
-	public static ParametresMoteurBuilder createBuilder() {
-		return new ParametresMoteurBuilder();
+	public static MotorParametersBuilder createBuilder() {
+		return new MotorParametersBuilder();
 	}
 
 	/**
@@ -56,47 +57,47 @@ public class ParametresMoteur {
 	}
 
 	/**
-	 * Permet d'activer ou non la validation.<br/>
-	 * Par défaut la validation est active.
+	 * Activate or not the validation.<br/>
+     * By default the validation is active.
 	 * 
 	 * @param validation
-	 *            true si la validation doit être activée.
+	 *            true if the validation is active.
 	 */
 	public void setValidation(boolean validation) {
 		this.validation = validation;
 	}
 
 	/**
-	 * @return nombre de lignes en erreurs avant de tout arrêter.
+	 * @return Number of lines in error before stop.
 	 */
 	public int getNbLinesWithErrorsToStop() {
 		return nbLinesWithErrorsToStop;
 	}
 
 	/**
-	 * Permet de régler le nombre de lignes en erreur avant d'arrêter le moteur.<br/>
-	 * 0 par défaut.
+	 * Number of lines in error before stop.<br/>
+	 * 0 by default.
 	 * 
 	 * @param nbLinesWithErrorsToStop
-	 *            nombre de lignes en erreur avant d'arrêter.
+	 *            Number of lines in error before stop.
 	 */
 	public void setNbLinesWithErrorsToStop(int nbLinesWithErrorsToStop) {
 		this.nbLinesWithErrorsToStop = nbLinesWithErrorsToStop;
 	}
 
 	/**
-	 * @return l'ajout de caractère de délimitation de champ activé?
+	 * @return Activate of not the add of quote for a field.
 	 */
 	public boolean hasAddQuoteCar() {
 		return addQuoteCar;
 	}
 
 	/**
-	 * Permet d'activer ou non l'ajout de délimiteur de champs (guillemet).<br/>
-	 * true par défaut.
+	 * Activate of not the add of quote for a field.<br/>
+	 * true by default.
 	 * 
 	 * @param addQuoteCar
-	 *            true pour activer l'ajout de délimiteurs.
+	 *            true to activate the add of quote for a field.
 	 */
 	public void setAddQuoteCar(boolean addQuoteCar) {
 		this.addQuoteCar = addQuoteCar;

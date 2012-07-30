@@ -18,7 +18,7 @@ package fr.ybo.moteurcsv.exception;
 
 import java.util.List;
 
-import fr.ybo.moteurcsv.modele.Erreur;
+import fr.ybo.moteurcsv.modele.Error;
 
 /**
  * This exception is thrown when the number of errors exceed the number authorised.<br/><br/>
@@ -39,7 +39,7 @@ public class CsvErrorsExceededException extends Exception {
 	/**
 	 * List of errors.
 	 */
-	private List<Erreur> errors;
+	private List<fr.ybo.moteurcsv.modele.Error> errors;
 
 	/**
 	 * Constructor.
@@ -47,7 +47,7 @@ public class CsvErrorsExceededException extends Exception {
 	 * @param errors
 	 *            the errors.
 	 */
-	public CsvErrorsExceededException(List<Erreur> errors) {
+	public CsvErrorsExceededException(List<Error> errors) {
 		super();
 		this.errors = errors;
 	}
@@ -55,7 +55,7 @@ public class CsvErrorsExceededException extends Exception {
 	/**
 	 * @return errors.
 	 */
-	public List<Erreur> getErrors() {
+	public List<Error> getErrors() {
 		return errors;
 	}
 
@@ -67,8 +67,8 @@ public class CsvErrorsExceededException extends Exception {
 	@Override
 	public String getMessage() {
 		StringBuilder builder = new StringBuilder();
-		for (Erreur erreur : getErrors()) {
-			for (String message : erreur.getMessages()) {
+		for (Error error : getErrors()) {
+			for (String message : error.getMessages()) {
 				builder.append(message);
 				builder.append('\n');
 			}

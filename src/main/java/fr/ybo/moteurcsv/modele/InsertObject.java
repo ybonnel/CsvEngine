@@ -17,19 +17,21 @@
 package fr.ybo.moteurcsv.modele;
 
 /**
- * Traitement à effectuer pendant la lecture d'un fichier CSV.
+ *
+ * Handler for each line on a CSV File.<br/<br/>
+ * <u><i>French :</i></u> Traitement à effectuer pendant la lecture d'un fichier CSV.
  * 
  * @author ybonnel
  * 
- * @param <Objet>
+ * @param <T>
  */
-public interface InsertObject<Objet> {
+public interface InsertObject<T> {
 
 	/**
-	 * Traitement à effectuer pour un enregistrement d'un fichier CSV.
+	 * Handler for each line on a CSV File.
 	 * 
-	 * @param objet
-	 *            objet à traiter représentant un enregistrement.
+	 * @param object
+	 *            object which represent the CSV line.
 	 */
-	void insertObject(Objet objet);
+	void insertObject(T object);
 }

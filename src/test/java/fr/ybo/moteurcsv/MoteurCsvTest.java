@@ -48,7 +48,7 @@ import fr.ybo.moteurcsv.exception.CsvErrorsExceededException;
 import fr.ybo.moteurcsv.factory.AbstractCsvReader;
 import fr.ybo.moteurcsv.factory.AbstractCsvWriter;
 import fr.ybo.moteurcsv.factory.CsvManagerFactory;
-import fr.ybo.moteurcsv.modele.ParametresMoteur;
+import fr.ybo.moteurcsv.modele.MotorParameters;
 import fr.ybo.moteurcsv.validator.ErreurValidation;
 
 /**
@@ -231,7 +231,7 @@ public class MoteurCsvTest {
 	@Test
 	public void testParseInputStream() throws IOException, CsvErrorsExceededException {
 
-		List<ObjetCsv> objets = moteur.parseInputStream(stream, ObjetCsv.class).getObjets();
+		List<ObjetCsv> objets = moteur.parseInputStream(stream, ObjetCsv.class).getObjects();
 		assertEquals(7, objets.size());
 		assertTrue(objets.get(0).equals("String2", true, 8.0, 5, "String1", 90));
 		assertTrue(objets.get(1).equals("String2", true, 8.0, 5, "String1", null));
@@ -245,7 +245,7 @@ public class MoteurCsvTest {
 
 		moteur.writeFile(new FileWriter(file), objets, ObjetCsv.class);
 
-		List<ObjetCsv> newObjets = moteur.parseInputStream(new FileInputStream(file), ObjetCsv.class).getObjets();
+		List<ObjetCsv> newObjets = moteur.parseInputStream(new FileInputStream(file), ObjetCsv.class).getObjects();
 		assertEquals(objets, newObjets);
 
 	}
@@ -294,7 +294,7 @@ public class MoteurCsvTest {
 			}
 		});
 
-		assertTrue(moteur.parseInputStream(stream, ObjetCsv.class).getObjets().isEmpty());
+		assertTrue(moteur.parseInputStream(stream, ObjetCsv.class).getObjects().isEmpty());
 
 	}
 
@@ -486,14 +486,14 @@ public class MoteurCsvTest {
 		objet.att = "valeur";
 
 		MoteurCsv moteur =
-				new MoteurCsv(ParametresMoteur.createBuilder().setAddQuoteCar(true).build(), ObjetSimple.class);
+				new MoteurCsv(MotorParameters.createBuilder().setAddQuoteCar(true).build(), ObjetSimple.class);
 		StringWriter writer = new StringWriter();
 
 		moteur.writeFile(writer, Arrays.asList(objet), ObjetSimple.class);
 
 		assertEquals("\"att\"\n\"valeur\"\n", writer.getBuffer().toString());
 
-		moteur = new MoteurCsv(ParametresMoteur.createBuilder().setAddQuoteCar(false).build(), ObjetSimple.class);
+		moteur = new MoteurCsv(MotorParameters.createBuilder().setAddQuoteCar(false).build(), ObjetSimple.class);
 		writer = new StringWriter();
 
 		moteur.writeFile(writer, Arrays.asList(objet), ObjetSimple.class);

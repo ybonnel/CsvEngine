@@ -19,58 +19,58 @@ package fr.ybo.moteurcsv.modele;
 import fr.ybo.moteurcsv.annotation.CsvParam;
 
 /**
- * Classe représentant un paramètre avec un nom et une valeur.
+ * Represents a parameter with a name and a value.<br/><br/>
+ * <u><i>French :</i></u> Classe représentant un paramètre avec un nom et une valeur.
  * 
  */
-public class Parametre {
+public class Parameter {
 	/**
-	 * Nom du paramètre.
+	 * Name of the parameter.
 	 */
 	private String name;
 	/**
-	 * Valeur du paramètre.
+	 * Value of the parameter.
 	 */
 	private String value;
 
 	/**
-	 * @return nom du paramètre.
+	 * @return name of the parameter.
 	 */
 	public String getName() {
 		return name;
 	}
 
 	/**
-	 * @return valeur du paramètre.
+	 * @return value of the parameter.
 	 */
 	public String getValue() {
 		return value;
 	}
 
 	/**
-	 * Construteur.
+	 * Constructor.
 	 * 
 	 * @param param
-	 *            paramètre sous la format de l'annotation.
+	 *            parameter in annotation format.
 	 */
-	public Parametre(CsvParam param) {
+	public Parameter(CsvParam param) {
 		name = param.name();
 		value = param.value();
 	}
 
 	/**
-	 * Permet de convertir une liste de {@link fr.ybo.moteurcsv.annotation.CsvParam} en liste de
-	 * {@link Parametre}.
+     * Convert a list of {@link fr.ybo.moteurcsv.annotation.CsvParam} into a list of {@link Parameter}.
 	 * 
 	 * @param params
-	 *            les CsvParam à convertir.
-	 * @return les Parametres convertis.
+	 *            the CsvParam to convert.
+	 * @return the Parameters converted.
 	 */
-	public static Parametre[] paramsToParametres(CsvParam[] params) {
-		Parametre[] parametres = new Parametre[params.length];
+	public static Parameter[] paramsToParameters(CsvParam[] params) {
+		Parameter[] parameters = new Parameter[params.length];
 		for (int count = 0; count < params.length; count++) {
-			parametres[count] = new Parametre(params[count]);
+			parameters[count] = new Parameter(params[count]);
 		}
-		return parametres;
+		return parameters;
 	}
 
 	@Override
@@ -84,7 +84,7 @@ public class Parametre {
 
 	@Override
 	public boolean equals(Object obj) {
-		Parametre other = (Parametre) obj;
+		Parameter other = (Parameter) obj;
 		return name.equals(other.name) && value.equals(other.value);
 	}
 }
