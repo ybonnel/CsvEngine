@@ -14,43 +14,24 @@
  * Contributors:
  *     ybonnel - initial API and implementation
  */
-package fr.ybo.moteurcsv.modele;
-
-import java.util.List;
+package fr.ybo.moteurcsv.model;
 
 /**
- * Implementation of InsertObject which insert the Object in a list.<br/><br/>
- * <u><i>French :</i></u> Implémentation de InsertObjet permettant d'insérer dans une liste.
+ *
+ * Handler for each line on a CSV File.<br/<br/>
+ * <u><i>French :</i></u> Traitement à effectuer pendant la lecture d'un fichier CSV.
  * 
  * @author ybonnel
  * 
  * @param <T>
- *            object to insert.
  */
-public class InsertInList<T> implements InsertObject<T> {
+public interface InsertObject<T> {
 
 	/**
-     * List in which we must insert objects.
-	 */
-	private List<T> objects;
-
-	/**
-	 * Constructor.
-	 * 
-	 * @param objects
-	 *            List in which we must insert objects.
-	 */
-	public InsertInList(List<T> objects) {
-		this.objects = objects;
-	}
-
-	/**
-	 * Insert of the object.
+	 * Handler for each line on a CSV File.
 	 * 
 	 * @param object
-	 *            to insert.
+	 *            object which represent the CSV line.
 	 */
-	public void insertObject(T object) {
-        objects.add(object);
-	}
+	void insertObject(T object);
 }

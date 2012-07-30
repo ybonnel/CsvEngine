@@ -16,7 +16,7 @@
  */
 package fr.ybo.moteurcsv.validator;
 
-import fr.ybo.moteurcsv.modele.Error;
+import fr.ybo.moteurcsv.model.Error;
 
 /**
  * Exception permettant de gérer les erreurs de validation.<br/>
@@ -51,7 +51,7 @@ public class ErreurValidation extends Exception {
 	/**
 	 * @return l'error de validation rencontrée.
 	 */
-	public fr.ybo.moteurcsv.modele.Error getError() {
+	public fr.ybo.moteurcsv.model.Error getError() {
 		return error;
 	}
 

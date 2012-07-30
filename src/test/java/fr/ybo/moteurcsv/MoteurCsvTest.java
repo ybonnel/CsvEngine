@@ -48,7 +48,7 @@ import fr.ybo.moteurcsv.exception.CsvErrorsExceededException;
 import fr.ybo.moteurcsv.factory.AbstractCsvReader;
 import fr.ybo.moteurcsv.factory.AbstractCsvWriter;
 import fr.ybo.moteurcsv.factory.CsvManagerFactory;
-import fr.ybo.moteurcsv.modele.MotorParameters;
+import fr.ybo.moteurcsv.model.MotorParameters;
 import fr.ybo.moteurcsv.validator.ErreurValidation;
 
 /**

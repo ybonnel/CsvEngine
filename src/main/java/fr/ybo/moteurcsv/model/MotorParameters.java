@@ -14,7 +14,7 @@
  * Contributors:
  *     ybonnel - initial API and implementation
  */
-package fr.ybo.moteurcsv.modele;
+package fr.ybo.moteurcsv.model;
 
 /**
  * Contains all parameters of the motor.<br/><br/>

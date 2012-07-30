@@ -43,8 +43,8 @@ import fr.ybo.moteurcsv.factory.AbstractCsvReader;
 import fr.ybo.moteurcsv.factory.AbstractCsvWriter;
 import fr.ybo.moteurcsv.factory.DefaultCsvManagerFactory;
 import fr.ybo.moteurcsv.factory.CsvManagerFactory;
-import fr.ybo.moteurcsv.modele.*;
-import fr.ybo.moteurcsv.modele.Error;
+import fr.ybo.moteurcsv.model.*;
+import fr.ybo.moteurcsv.model.Error;
 import fr.ybo.moteurcsv.validator.ErreurValidation;
 import fr.ybo.moteurcsv.validator.ValidateException;
 
@@ -132,7 +132,7 @@ public class MoteurCsv {
 	 * 
 	 * @param parametres
 	 *            parametres du moteur (vous pouvez utiliser:
-	 *            {@link fr.ybo.moteurcsv.modele.MotorParameters#createBuilder()} pour plus de facilité).<br/>
+	 *            {@link fr.ybo.moteurcsv.model.MotorParameters#createBuilder()} pour plus de facilité).<br/>
 	 *            Exemple : Parametres parametres =
 	 *            Parameters.createBuilder().setValidation(true).build();
 	 * 
@@ -417,7 +417,7 @@ public class MoteurCsv {
 	 *         CSV.
 	 * @throws fr.ybo.moteurcsv.exception.CsvErrorsExceededException
 	 *             si le nombre d'erreurs rencontrées et suppérieur au nombre
-	 *             accepté {@link fr.ybo.moteurcsv.modele.MotorParameters#getNbLinesWithErrorsToStop()}.
+	 *             accepté {@link fr.ybo.moteurcsv.model.MotorParameters#getNbLinesWithErrorsToStop()}.
 	 */
 	public <Objet> Result<Objet> parseInputStream(InputStream intputStream, Class<Objet> clazz)
 			throws CsvErrorsExceededException {
@@ -443,12 +443,12 @@ public class MoteurCsv {
 	 * @return les erreurs rencontrées.
 	 * @throws fr.ybo.moteurcsv.exception.CsvErrorsExceededException
 	 *             si le nombre d'erreurs rencontrées et suppérieur au nombre
-	 *             accepté {@link fr.ybo.moteurcsv.modele.MotorParameters#getNbLinesWithErrorsToStop()}.
+	 *             accepté {@link fr.ybo.moteurcsv.model.MotorParameters#getNbLinesWithErrorsToStop()}.
 	 */
 	@SuppressWarnings("unchecked")
 	public <Objet> List<Error> parseFileAndInsert(Reader reader, Class<Objet> clazz, InsertObject<Objet> insert)
 			throws CsvErrorsExceededException {
-		List<fr.ybo.moteurcsv.modele.Error> errors = new ArrayList<Error>();
+		List<fr.ybo.moteurcsv.model.Error> errors = new ArrayList<Error>();
 		try {
 			nouveauFichier(reader, clazz);
 			Objet objet = null;

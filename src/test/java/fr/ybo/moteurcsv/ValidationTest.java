@@ -26,8 +26,8 @@ import java.io.InputStream;
 import fr.ybo.moteurcsv.annotation.CsvColumn;
 import fr.ybo.moteurcsv.annotation.CsvFile;
 import fr.ybo.moteurcsv.annotation.CsvValidation;
-import fr.ybo.moteurcsv.modele.*;
-import fr.ybo.moteurcsv.modele.Error;
+import fr.ybo.moteurcsv.model.*;
+import fr.ybo.moteurcsv.model.Error;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -167,7 +167,7 @@ public class ValidationTest {
 		assertNotNull(result);
 		assertEquals(1, result.getObjects().size());
 		assertEquals(2, result.getErrors().size());
-		fr.ybo.moteurcsv.modele.Error error1 = result.getErrors().get(0);
+		fr.ybo.moteurcsv.model.Error error1 = result.getErrors().get(0);
 		assertEquals(",val2", error1.getCsvLine());
 		assertEquals(1, error1.getMessages().size());
 		assertTrue(error1.getMessages().get(0).contains("mandatory"));

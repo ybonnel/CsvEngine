@@ -21,8 +21,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import fr.ybo.moteurcsv.modele.*;
-import fr.ybo.moteurcsv.modele.Error;
+import fr.ybo.moteurcsv.model.*;
+import fr.ybo.moteurcsv.model.Error;
 import org.junit.Test;
 
 import fr.ybo.moteurcsv.annotation.CsvColumn;
@@ -60,7 +60,7 @@ public class ValidatorEmailTest {
 		assertEquals("valide@valide.fr", result.getObjects().get(1).email);
 
 		assertEquals(3, result.getErrors().size());
-		fr.ybo.moteurcsv.modele.Error error1 = result.getErrors().get(0);
+		fr.ybo.moteurcsv.model.Error error1 = result.getErrors().get(0);
 		assertEquals(",nonvalide@tutu", error1.getCsvLine());
 		assertEquals(1, error1.getMessages().size());
 		assertTrue(error1.getMessages().get(0).contains("nonvalide@tutu"));

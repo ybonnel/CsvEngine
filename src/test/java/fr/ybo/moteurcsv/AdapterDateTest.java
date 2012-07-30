@@ -35,8 +35,8 @@ import fr.ybo.moteurcsv.annotation.CsvColumn;
 import fr.ybo.moteurcsv.exception.InvalidParamException;
 import fr.ybo.moteurcsv.exception.MoteurCsvException;
 import fr.ybo.moteurcsv.exception.CsvErrorsExceededException;
-import fr.ybo.moteurcsv.modele.Error;
-import fr.ybo.moteurcsv.modele.Result;
+import fr.ybo.moteurcsv.model.Error;
+import fr.ybo.moteurcsv.model.Result;
 
 /**
  * Test de l'adapter de date.<br/>

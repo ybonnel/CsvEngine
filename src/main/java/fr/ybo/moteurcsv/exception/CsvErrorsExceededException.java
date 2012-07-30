@@ -18,7 +18,7 @@ package fr.ybo.moteurcsv.exception;
 
 import java.util.List;
 
-import fr.ybo.moteurcsv.modele.Error;
+import fr.ybo.moteurcsv.model.Error;
 
 /**
  * This exception is thrown when the number of errors exceed the number authorised.<br/><br/>
@@ -39,7 +39,7 @@ public class CsvErrorsExceededException extends Exception {
 	/**
 	 * List of errors.
 	 */
-	private List<fr.ybo.moteurcsv.modele.Error> errors;
+	private List<fr.ybo.moteurcsv.model.Error> errors;
 
 	/**
 	 * Constructor.

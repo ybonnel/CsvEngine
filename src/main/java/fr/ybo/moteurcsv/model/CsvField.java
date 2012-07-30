@@ -14,7 +14,7 @@
  * Contributors:
  *     ybonnel - initial API and implementation
  */
-package fr.ybo.moteurcsv.modele;
+package fr.ybo.moteurcsv.model;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
