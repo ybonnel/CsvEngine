@@ -209,23 +209,6 @@
         <url>https://github.com/ybonnel/CsvEngine</url>
     </scm>
 
-    <repositories>
-        <repository>
-            <id>ybonnel-release</id>
-            <url>https://repository-ybonnel.forge.cloudbees.com/release/</url>
-        </repository>
-    </repositories>
-    <distributionManagement>
-        <repository>
-            <id>ybonnel-release</id>
-            <url>https://repository-ybonnel.forge.cloudbees.com/release/</url>
-        </repository>
-        <snapshotRepository>
-            <id>ybonnel-snapshot</id>
-            <url>https://repository-ybonnel.forge.cloudbees.com/snapshot/</url>
-        </snapshotRepository>
-    </distributionManagement>
-
     <dependencyManagement>
     	<dependencies>
     		<dependency>
