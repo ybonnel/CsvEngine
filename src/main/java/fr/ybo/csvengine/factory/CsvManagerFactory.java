@@ -22,7 +22,7 @@ import java.io.Writer;
 /**
  * Factory which provide {@link AbstractCsvReader} and {@link AbstractCsvWriter}.<br/>
  * You must implement it if you want don't want to use open-csv<br/><br/>
- * <u><i>French :</i></u> Factory fournissant les Reader et Writer de CSV.<br/>
+ * <i><u>French :</i> Factory fournissant les Reader et Writer de CSV.<br/>
  * A implémenter si on souhaite utiliser autre chose qu'open-csv.
  * 
  * @author ybonnel

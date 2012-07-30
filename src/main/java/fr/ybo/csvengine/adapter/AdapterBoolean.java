@@ -23,7 +23,7 @@ package fr.ybo.csvengine.adapter;
  * <li>Boolean.FALSE = "0" in CSV.</li>
  * </ul><br/>
  *
- * <u><i>French :</i></u> <h1>Adapteur pour les Boolean.</h1>
+ * <u><i>French :</i><h1> Adapteur pour les Boolean.</h1>
  * <ul>
  * <li>Un Boolean.TRUE = "1" dans le CSV.</li>
  * <li>Un Boolean.FALSE = "0" dans le CSV.</li>

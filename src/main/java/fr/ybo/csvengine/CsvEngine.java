@@ -16,6 +16,26 @@
  */
 package fr.ybo.csvengine;
 
+import fr.ybo.csvengine.annotation.CsvColumn;
+import fr.ybo.csvengine.annotation.CsvFile;
+import fr.ybo.csvengine.annotation.CsvValidation;
+import fr.ybo.csvengine.annotation.CsvValidations;
+import fr.ybo.csvengine.exception.CsvEngineException;
+import fr.ybo.csvengine.exception.CsvErrorsExceededException;
+import fr.ybo.csvengine.factory.AbstractCsvReader;
+import fr.ybo.csvengine.factory.AbstractCsvWriter;
+import fr.ybo.csvengine.factory.CsvManagerFactory;
+import fr.ybo.csvengine.factory.DefaultCsvManagerFactory;
+import fr.ybo.csvengine.model.CsvClass;
+import fr.ybo.csvengine.model.CsvField;
+import fr.ybo.csvengine.model.EngineParameters;
+import fr.ybo.csvengine.model.Error;
+import fr.ybo.csvengine.model.InsertInList;
+import fr.ybo.csvengine.model.InsertObject;
+import fr.ybo.csvengine.model.Result;
+import fr.ybo.csvengine.validator.ValidateException;
+import fr.ybo.csvengine.validator.ValidationError;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,21 +53,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import fr.ybo.csvengine.annotation.CsvColumn;
-import fr.ybo.csvengine.annotation.CsvFile;
-import fr.ybo.csvengine.annotation.CsvValidation;
-import fr.ybo.csvengine.annotation.CsvValidations;
-import fr.ybo.csvengine.exception.CsvEngineException;
-import fr.ybo.csvengine.exception.CsvErrorsExceededException;
-import fr.ybo.csvengine.factory.AbstractCsvReader;
-import fr.ybo.csvengine.factory.AbstractCsvWriter;
-import fr.ybo.csvengine.factory.DefaultCsvManagerFactory;
-import fr.ybo.csvengine.factory.CsvManagerFactory;
-import fr.ybo.csvengine.model.*;
-import fr.ybo.csvengine.model.Error;
-import fr.ybo.csvengine.validator.ValidationError;
-import fr.ybo.csvengine.validator.ValidateException;
-
 /**
  * Engine to write and read CSV File.<br/>
  * Examples of use :
@@ -60,7 +65,7 @@ import fr.ybo.csvengine.validator.ValidateException;
  * {@code engine.writeFile(new FileWriter(file), objects, CsvObject.class);}</li>
  * </ul><br/><br/>
  * <p/>
- * <u><i>French :</i></u> Moteur de lecture et écriture de fichier CSV.<br/>
+ * <i><u>French :</i> Moteur de lecture et écriture de fichier CSV.<br/>
  * Voici des exemple d'utilisation :
  * <ul>
  * <li>Construction du moteur :<br/>
@@ -283,7 +288,8 @@ public class CsvEngine {
                 }
                 setValeur(csvField, csvObjects, value);
             } catch (ValidateException exception) {
-                validationError = addValidationMessage(fieldsValues, validationError, currentHeader[fieldNumber], exception);
+                validationError = addValidationMessage(
+                        fieldsValues, validationError, currentHeader[fieldNumber], exception);
             }
         }
         return validationError;
@@ -298,7 +304,8 @@ public class CsvEngine {
      * @param exception       exception corresponding to the validation error.
      * @return the validation error.
      */
-    private ValidationError addValidationMessage(String[] fieldsValues, ValidationError validationError, String fieldName,
+    private ValidationError addValidationMessage(String[] fieldsValues,
+                                                 ValidationError validationError, String fieldName,
                                                  ValidateException exception) {
         if (validationError == null) {
             validationError = new ValidationError(constructLine(fieldsValues));

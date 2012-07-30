@@ -22,7 +22,7 @@ import fr.ybo.csvengine.exception.InvalidParamException;
 
 /**
  * Class to extend for a new Validator of CSV Fields.<br/><br/>
- * <u><i>French :</i></u> Classe à étendre pour ajouter un nouveau Validateur de champs CSV.
+ * <i><u>French :</i> Classe à étendre pour ajouter un nouveau Validateur de champs CSV.
  * 
  * @author ybonnel
  * 

@@ -20,7 +20,7 @@ import fr.ybo.csvengine.annotation.CsvParam;
 
 /**
  * Represents a parameter with a name and a value.<br/><br/>
- * <u><i>French :</i></u> Classe représentant un paramètre avec un nom et une valeur.
+ * <i><u>French :</i> Classe représentant un paramètre avec un nom et une valeur.
  * 
  */
 public class Parameter {

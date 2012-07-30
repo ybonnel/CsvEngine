@@ -21,7 +21,7 @@ import java.io.IOException;
 
 /**
  * Reader of CSV File.<br/><br/>
- * <u><i>French :</i></u> Lecteur de fichier CSV.
+ * <i><u>French :</i> Lecteur de fichier CSV.
  * 
  * @author ybonnel
  * 

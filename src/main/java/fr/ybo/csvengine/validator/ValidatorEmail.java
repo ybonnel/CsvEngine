@@ -23,7 +23,7 @@ import fr.ybo.csvengine.exception.InvalidParamException;
 /**
  * Email validator.<br/>
  * Pattern used : "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}$".<br/><br/>
- * <u><i>French :</i></u> Validateur d'email.<br/>
+ * <i><u>French :</i> Validateur d'email.<br/>
  * Pattern utilisé : "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}$".
  */
 public class ValidatorEmail extends ValidatorRegExp {

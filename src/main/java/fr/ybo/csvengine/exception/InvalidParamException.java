@@ -18,7 +18,7 @@ package fr.ybo.csvengine.exception;
 
 /**
  * Exception throw if parameters of Adapter of Validater are wrong.
- * <u><i>French :</i></u> Exception envoyée si les paramètres des adapteurs ou des validateur sont
+ * <i><u>French :</i> Exception envoyée si les paramètres des adapteurs ou des validateur sont
  * mauvais.
  */
 @SuppressWarnings("serial")

@@ -23,7 +23,7 @@ import au.com.bytecode.opencsv.CSVReader;
 
 /**
  * CsvReader based on OpenCsv.<br/><br/>
- * <u><i>French :</i></u> Reader de CSV à base d'OpenCSV.
+ * <i><u>French :</i> Reader de CSV à base d'OpenCSV.
  * 
  * @author ybonnel
  * 

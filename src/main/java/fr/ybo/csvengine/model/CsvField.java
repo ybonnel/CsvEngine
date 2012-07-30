@@ -33,7 +33,7 @@ import fr.ybo.csvengine.validator.ValidatorCsv;
 
 /**
  * Represents a column of the CSV File.<br/><br/>
- * <u><i>French :</i></u> Réprésente une colonne du fichier CSV.
+ * <i><u>French :</i> Réprésente une colonne du fichier CSV.
  *
  * @author ybonnel
  */
@@ -135,7 +135,8 @@ public class CsvField {
                 new ClassWithParamKey<ValidatorCsv>(csvValidation.params(), csvValidation.value());
         if (!MAP_VALIDATOR.containsKey(key)) {
             try {
-                Constructor<? extends ValidatorCsv> construteur = csvValidation.value().getConstructor((Class<?>[]) null);
+                Constructor<? extends ValidatorCsv> construteur =
+                        csvValidation.value().getConstructor((Class<?>[]) null);
                 ValidatorCsv validator = construteur.newInstance((Object[]) null);
                 validator.addParams(key.getMapParams());
                 MAP_VALIDATOR.put(key, validator);

@@ -28,7 +28,7 @@ import fr.ybo.csvengine.exception.InvalidParamException;
  * The parameter must be passed with
  * {@link fr.ybo.csvengine.annotation.CsvValidation#params()}.<br/><br/>
  *
- * <u><i>French :</i></u> Validateur permettant de valider un champ à partir d'une expression
+ * <i><u>French :</i> Validateur permettant de valider un champ à partir d'une expression
  * régulière. <br/>
  * Paramètre : {@link ValidatorRegExp#PARAM_PATTERN} contient l'expression
  * régulière ({@link Pattern}).<br/>
@@ -56,12 +56,14 @@ public class ValidatorRegExp extends ValidatorCsv {
 	public void addParams(Map<String, String> params) throws InvalidParamException {
 		super.addParams(params);
 		if (!params.containsKey(PARAM_PATTERN)) {
-			throw new InvalidParamException("The parameter \"" + PARAM_PATTERN + "\" is mandatory");
+			throw new InvalidParamException("The parameter \""
+                    + PARAM_PATTERN + "\" is mandatory");
 		}
 		try {
 			pattern = Pattern.compile(params.get(PARAM_PATTERN));
 		} catch (PatternSyntaxException exception) {
-			throw new InvalidParamException("The parameter \"" + PARAM_PATTERN + "\" hasn't the good format", exception);
+			throw new InvalidParamException("The parameter \""
+                    + PARAM_PATTERN + "\" hasn't the good format", exception);
 		}
 	}
 
@@ -71,7 +73,8 @@ public class ValidatorRegExp extends ValidatorCsv {
 	@Override
 	public void validate(String field) throws ValidateException {
 		if (!pattern.matcher(field).matches()) {
-			throw new ValidateException("The value " + field + " doesn't correspond to the pattern " + pattern.pattern());
+			throw new ValidateException("The value " + field
+                    + " doesn't correspond to the pattern " + pattern.pattern());
 		}
 	}
 

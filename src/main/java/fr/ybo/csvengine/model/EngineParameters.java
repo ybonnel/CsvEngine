@@ -18,7 +18,7 @@ package fr.ybo.csvengine.model;
 
 /**
  * Contains all parameters of the Engine.<br/><br/>
- * <u><i>French :</i></u> Classe contenant tous les paramètres du moteur.
+ * <i><u>French :</i> Classe contenant tous les paramètres du moteur.
  * 
  * @author ybonnel
  * 

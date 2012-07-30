@@ -21,7 +21,7 @@ import java.io.Writer;
 
 /**
  * Default factory. Provied implementations based on opencsv.<br/><br/>
- * <u><i>French :</i></u> Factory par défaut. Fournit des implémentations à base d'opencsv.
+ * <i><u>French :</i> Factory par défaut. Fournit des implémentations à base d'opencsv.
  * 
  * @author ybonnel
  * 

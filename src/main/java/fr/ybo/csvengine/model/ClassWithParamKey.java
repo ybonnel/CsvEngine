@@ -24,7 +24,7 @@ import fr.ybo.csvengine.annotation.CsvParam;
 
 /**
  * Represents a key containing the class with its parameters (use for Adapters and Validators).<br/><br/>
- * <u><i>French :</i></u> Classe permettant de repréter la clé contenant une classe et ses paramètres.
+ * <i><u>French :</i> Classe permettant de repréter la clé contenant une classe et ses paramètres.
  * (utilisé pour les Adapter et la Validateur.
  *
  * @param <T> the class.

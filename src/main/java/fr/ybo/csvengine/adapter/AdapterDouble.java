@@ -18,28 +18,29 @@ package fr.ybo.csvengine.adapter;
 
 /**
  * Adapter for Double<br/><br/>
- * <u><i>French :</i></u> Adapteur pour les Double.
+ * <i><u>French :</i> Adapteur pour les Double.
  *
  * @author ybonnel
  */
 public class AdapterDouble extends AdapterCsv<Double> {
 
 
-    /*
-      * (non-Javadoc)
-      *
-      * @see fr.ybo.csvengine.adapter.AdapterCsv#parse(java.lang.String)
-      */
+    /**
+     * Transform a String into Double.
+     *
+     * @param string the string to transform.
+     * @return the Double transformed.
+     */
     public Double parse(String string) {
         return Double.valueOf(string);
     }
 
-
-    /*
-      * (non-Javadoc)
-      *
-      * @see fr.ybo.csvengine.adapter.AdapterCsv#toString(java.lang.Object)
-      */
+    /**
+     * Transform a Double into String.
+     *
+     * @param object Double to transform.
+     * @return the resulting string.
+     */
     public String toString(Double object) {
         return object.toString();
     }

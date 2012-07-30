@@ -20,7 +20,7 @@ import java.util.List;
 
 /**
  * Implementation of InsertObject which insert the Object in a list.<br/><br/>
- * <u><i>French :</i></u> Implémentation de InsertObjet permettant d'insérer dans une liste.
+ * <i><u>French :</i> Implémentation de InsertObjet permettant d'insérer dans une liste.
  * 
  * @author ybonnel
  * 

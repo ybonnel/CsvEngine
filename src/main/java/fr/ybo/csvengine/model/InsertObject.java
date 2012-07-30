@@ -19,7 +19,7 @@ package fr.ybo.csvengine.model;
 /**
  *
  * Handler for each line on a CSV File.<br/<br/>
- * <u><i>French :</i></u> Traitement à effectuer pendant la lecture d'un fichier CSV.
+ * <i><u>French :</i> Traitement à effectuer pendant la lecture d'un fichier CSV.
  * 
  * @author ybonnel
  * 

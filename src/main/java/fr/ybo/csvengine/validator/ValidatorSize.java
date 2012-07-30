@@ -31,7 +31,7 @@ import fr.ybo.csvengine.exception.InvalidParamException;
  * The parameters must be passed with
  * {@link fr.ybo.csvengine.annotation.CsvValidation#params()}.<br/><br/>
  * <p/>
- * <u><i>French :</i></u>Validateur permettant de valider un champ sur sa taille (min et max). <br/>
+ * <i><u>French :</i>Validateur permettant de valider un champ sur sa taille (min et max). <br/>
  * Paramètre :
  * <ul>
  * <li>{@link ValidatorSize#PARAM_MIN_SIZE} contient la taille minimum du

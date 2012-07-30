@@ -18,27 +18,29 @@ package fr.ybo.csvengine.adapter;
 
 /**
  * Adapter for Integer<br/><br/>
- * <u><i>French :</i></u> Adapteur pour les Integer.
+ * <i><u>French :</i> Adapteur pour les Integer.
  * 
  * @author ybonnel
  * 
  */
 public class AdapterInteger extends AdapterCsv<Integer> {
 
-    /*
-      * (non-Javadoc)
-      *
-      * @see fr.ybo.csvengine.adapter.AdapterCsv#parse(java.lang.String)
-      */
+    /**
+     * Transform a String into Integer.
+     *
+     * @param string the string to transform.
+     * @return the Integer transformed.
+     */
 	public Integer parse(String string) {
 		return Integer.valueOf(string);
 	}
 
-    /*
-      * (non-Javadoc)
-      *
-      * @see fr.ybo.csvengine.adapter.AdapterCsv#toString(java.lang.Object)
-      */
+    /**
+     * Transform an Integer into String.
+     *
+     * @param object Integer to transform.
+     * @return the resulting string.
+     */
 	public String toString(Integer object) {
 		return object.toString();
 	}

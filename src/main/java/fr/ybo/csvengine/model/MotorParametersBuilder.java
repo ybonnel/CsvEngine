@@ -18,7 +18,7 @@ package fr.ybo.csvengine.model;
 
 /**
  * Builder for the class {@link EngineParameters}.<br/><br/>
- * <u><i>French :</i></u> Builder pour la classe {@link EngineParameters}.
+ * <i><u>French :</i> Builder pour la classe {@link EngineParameters}.
  *
  * @author ybonnel
  */

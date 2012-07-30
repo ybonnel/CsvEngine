@@ -21,7 +21,7 @@ import fr.ybo.csvengine.model.Error;
 /**
  * Exception for validation errors<br/>
  * This exception is internal<br/><br/>
- * <u><i>French :</i></u> Exception permettant de gérer les erreurs de validation.<br/>
+ * <i><u>French :</i> Exception permettant de gérer les erreurs de validation.<br/>
  * Exception interne au moteur.
  * 
  * @author ybonnel

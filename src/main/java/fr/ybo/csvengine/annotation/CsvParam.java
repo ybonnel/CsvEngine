@@ -23,7 +23,7 @@ import java.lang.annotation.Target;
 
 /**
  * Annotation used to contain a parameter for Adapter and Validator.<br/><br/>
- * <u><i>French :</i></u> Annotation utilisée pour contenir un paramètre des Adapter et des Validator.
+ * <i><u>French :</i> Annotation utilisée pour contenir un paramètre des Adapter et des Validator.
  * 
  * @author ybonnel
  * 

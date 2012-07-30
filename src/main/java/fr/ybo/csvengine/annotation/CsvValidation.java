@@ -25,7 +25,7 @@ import fr.ybo.csvengine.validator.ValidatorCsv;
 
 /**
  * Annotation used to add a Validator on a CSV Column.<br/><br/>
- * <u><i></i></u>Annotation utilisée pour ajouter un validateur à un champ CSV.
+ * <i><u>French :</i> Annotation utilisée pour ajouter un validateur à un champ CSV.
  * 
  * @author ybonnel
  * 

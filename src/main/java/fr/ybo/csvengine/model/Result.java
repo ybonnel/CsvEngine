@@ -26,7 +26,7 @@ import java.util.List;
  * <li>The list of transformed objects.</li>
  * <li>The list of errors occurred.</li>
  * </ul><br/><br/>
- * <u><i>French :</i></u> Classe représentant le résultat du moteur.<br/>
+ * <i><u>French :</i> Classe représentant le résultat du moteur.<br/>
  * Contient :
  * <ul>
  * <li>La liste de objects transormés.</li>

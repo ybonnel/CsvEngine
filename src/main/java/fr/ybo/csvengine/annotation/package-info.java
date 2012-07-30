@@ -25,7 +25,7 @@
  * </pre>
  * <br/><br/>
  *
- * <u><i>French :</i></u>
+ * <i><u>French :</i>
  * Ce package contient les annotations à utiliser pour mapper une classe avec un fichier CSV.<br/>
  * Déclaration d'une classe :<br/>
  * <pre>

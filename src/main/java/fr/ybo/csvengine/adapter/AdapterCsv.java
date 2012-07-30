@@ -23,10 +23,10 @@ import fr.ybo.csvengine.validator.ValidateException;
 
 /**
  * Class to extend for all Adapter for CSV.<br/>
- * <u><i>French :</i></u> Class à étendre pour tout les adapteur CSV.
+ * <i><u>French :</i> Class à étendre pour tout les adapteur CSV.
  *
  * @param <T> Class to transform in CSV (associate with a column in CSV).<br/>
- *            <u><i>French :</i></u> Class à adapter en CSV (associé à une colonne).
+ *            <i><u>French :</i> Class à adapter en CSV (associé à une colonne).
  * @author ybonnel
  */
 public abstract class AdapterCsv<T> {

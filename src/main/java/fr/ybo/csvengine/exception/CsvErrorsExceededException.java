@@ -22,7 +22,7 @@ import fr.ybo.csvengine.model.Error;
 
 /**
  * This exception is thrown when the number of errors exceed the number authorised.<br/><br/>
- * <u><i>French :</i></u> Cette exception est déclenchée quand le nombre d'errors atteint dépasse le
+ * <i><u>French :</i> Cette exception est déclenchée quand le nombre d'errors atteint dépasse le
  * nombre autorisé.
  * 
  */

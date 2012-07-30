@@ -23,7 +23,7 @@ import java.lang.annotation.Target;
 
 /**
  * Annotation used to contain multiple {@link CsvValidation}.<br/><br/>
- * <u><i>French :</i></u> Annotation utilisée pour contenir plusieurs {@link CsvValidation}.
+ * <i><u>French :</i> Annotation utilisée pour contenir plusieurs {@link CsvValidation}.
  * 
  * @author ybonnel
  * 

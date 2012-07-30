@@ -18,26 +18,28 @@ package fr.ybo.csvengine.adapter;
 
 /**
  * Adapter for String, default adapter which do nothing.<br/><br/>
- * <u><i>French :</i></u> Adapteur de String, adapteur par défaut qui ne fait rien.
+ * <i><u>French :</i> Adapteur de String, adapteur par défaut qui ne fait rien.
  *
  * @author ybonnel
  */
 public class AdapterString extends AdapterCsv<String> {
 
-    /*
-      * (non-Javadoc)
-      *
-      * @see fr.ybo.csvengine.adapter.AdapterCsv#parse(java.lang.String)
-      */
+    /**
+     * Transform a String into String.
+     *
+     * @param string the string to transform.
+     * @return the String transformed.
+     */
     public String parse(String string) {
         return string;
     }
 
-    /*
-      * (non-Javadoc)
-      *
-      * @see fr.ybo.csvengine.adapter.AdapterCsv#toString(java.lang.Object)
-      */
+    /**
+     * Transform a String into String.
+     *
+     * @param object String to transform.
+     * @return the resulting string.
+     */
     public String toString(String object) {
         return object;
     }

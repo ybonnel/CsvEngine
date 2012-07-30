@@ -26,7 +26,7 @@ import fr.ybo.csvengine.adapter.AdapterString;
 
 /**
  * Annotation used on attribute of class which is a column of CSV file<br/><br/>
- * <u><i>French :</i></u> Annotation utilisée pour représenté une colonne csv.
+ * <i><u>French :</i> Annotation utilisée pour représenté une colonne csv.
  * 
  * @author ybonnel
  * 

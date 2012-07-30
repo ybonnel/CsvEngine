@@ -23,7 +23,7 @@ import java.lang.annotation.Target;
 
 /**
  * Annotation used to declare a class must mapped with a CSV File.<br/><br/>
- * <u><i>French :</i></u> Annotation utilisée pour déclarer qu'une classe est à mapper en fichier CSV.
+ * <i><u>French :</i> Annotation utilisée pour déclarer qu'une classe est à mapper en fichier CSV.
  * 
  * @author ybonnel
  * 

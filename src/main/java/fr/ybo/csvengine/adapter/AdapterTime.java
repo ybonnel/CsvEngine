@@ -17,8 +17,9 @@
 package fr.ybo.csvengine.adapter;
 
 /**
- * Adapter for Time in format "HH:MI". Return an Integer represents number of minutes after midnight (very specific adapter).<br/><br/>
- * <u><i>French :</i></u> Adapteur pour les heures au format HH:MI. Retourne un integrer représentant
+ * Adapter for Time in format "HH:MI". Return an Integer represents number of minutes after midnight
+ * (very specific adapter).<br/><br/>
+ * <i><u>French :</i> Adapteur pour les heures au format HH:MI. Retourne un integrer représentant
  * le nombre de minutes passées de minuit.
  *
  * @author ybonnel
@@ -37,6 +38,8 @@ public class AdapterTime extends AdapterCsv<Integer> {
     /**
      * Transform a string in format HH:MI into an Integer represents number of minutes after midnight.
      *
+     * @param string string to transform.
+     * @return Integer of time resulting.
      * @see fr.ybo.csvengine.adapter.AdapterCsv#parse(java.lang.String)
      */
     public Integer parse(String string) {
@@ -48,7 +51,9 @@ public class AdapterTime extends AdapterCsv<Integer> {
     }
 
     /**
-     * Transform un integer an Integer represents number of minutes after midnight info a String in format HH:MI.
+     * Transform an Integer represents number of minutes after midnight info a String in format HH:MI.
+     * @param object Integer of time to transform.
+     * @return string resulting.
      *
      * @see fr.ybo.csvengine.adapter.AdapterCsv#toString(Object)
      */

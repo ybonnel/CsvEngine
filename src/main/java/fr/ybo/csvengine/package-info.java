@@ -5,7 +5,7 @@
  *     <li>Declaration of a class to map with a CSV File : {@linkplain fr.ybo.csvengine.annotation}</li>
  *     <li>Use of the Engine : {@linkplain CsvEngine}.</li>
  * </ul><br/><br/>
- * <u><i>French :</i></u> Librairie permettant de lire et d'écrire des fichiers CSV à base d'annotation.<br/>
+ * <i><u>French :</i> Librairie permettant de lire et d'écrire des fichiers CSV à base d'annotation.<br/>
  * Utilisation de la librairie :
  * <ul>
  *     <li>Déclaration d'une classe à mapper avec un CSV : {@linkplain fr.ybo.csvengine.annotation}</li>

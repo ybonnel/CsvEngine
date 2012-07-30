@@ -24,7 +24,7 @@ import au.com.bytecode.opencsv.CSVWriter;
 
 /**
  * CsvWriter based on open-csv.<br/><br/>
- * <u><i>French :</i></u> Writer de CSV à base d'open-csv.
+ * <i><u>French :</i> Writer de CSV à base d'open-csv.
  * 
  * @author ybonnel
  * 

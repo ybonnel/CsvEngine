@@ -18,7 +18,7 @@ package fr.ybo.csvengine.validator;
 
 /**
  * Exception to throw for a validation error. {@link ValidatorCsv}<br/><br/>
- * <u><i>French :</i></u> Exception à renvoyer en cas de problème de validation. {@link ValidatorCsv}
+ * <i><u>French :</i> Exception à renvoyer en cas de problème de validation. {@link ValidatorCsv}
  * 
  * @author ybonnel
  * 

@@ -21,7 +21,7 @@ import java.util.List;
 
 /**
  * Represent an error.<br/><br/>
- * <u><i>French :</i></u> Classe représentant une erreur.
+ * <i><u>French :</i> Classe représentant une erreur.
  * 
  * @author ybonnel
  * 
