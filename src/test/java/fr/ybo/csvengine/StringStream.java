@@ -4,26 +4,26 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * InputStream permettant de simuler.
+ * InputStream used tu simulate a file.
  * 
  * @author ybonnel
  * 
  */
 public class StringStream extends InputStream {
-	private String chaine;
+	private String string;
 	private int count = 0;
 
 	@Override
 	public int read() throws IOException {
-		if (count >= chaine.length()) {
+		if (count >= string.length()) {
 			return -1;
 		}
-		return chaine.charAt(count++);
+		return string.charAt(count++);
 	}
 
-	public StringStream(String chaine) {
+	public StringStream(String string) {
 		super();
-		this.chaine = chaine;
+		this.string = string;
 	}
 
 }

@@ -52,7 +52,7 @@ import fr.ybo.csvengine.model.EngineParameters;
 import fr.ybo.csvengine.validator.ValidationError;
 
 /**
- * Classe de test pour le CsvEngine.
+ * Test class for CsvEngine.
  * 
  * @author ybonnel
  * 
@@ -60,49 +60,49 @@ import fr.ybo.csvengine.validator.ValidationError;
 public class CsvEngineTest {
 
 	/**
-	 * Objet permettant de tester le engine.
+	 * Object use for the tests.
 	 * 
 	 * @author ybonnel
 	 * 
 	 */
 	@CsvFile(separator = "\\|")
-	public static class ObjetCsv {
+	public static class CsvObject {
 
 		/**
-		 * Attribut simple.
+		 * Simple attribute.
 		 */
 		@CsvColumn(value = "att_1", order = 0)
-		private String attribut1;
+		private String attribute1;
 
 		/**
-		 * Attribut de type Boolean.
+		 * Boolean attribute.
 		 */
 		@CsvColumn(value = "att_2", order = 1, adapter = AdapterBoolean.class)
-		private Boolean attribut2;
+		private Boolean attribute2;
 
 		/**
-		 * Attribut de type Double.
+		 * Double attribute.
 		 */
 		@CsvColumn(value = "att_3", order = 2, adapter = AdapterDouble.class)
-		private Double attribut3;
+		private Double attribute3;
 
 		/**
-		 * Attribut de type Integer.
+		 * Integer attribute.
 		 */
 		@CsvColumn(value = "att_4", order = 5, adapter = AdapterInteger.class)
-		private Integer attribut4;
+		private Integer attribute4;
 
 		/**
-		 * Attribut simple avec un adapter.
+         * Simple attribute with adapter.
 		 */
 		@CsvColumn(value = "att_5", order = 3, adapter = AdapterString.class)
-		private String attribut5;
+		private String attribute5;
 
 		/**
-		 * Attribut de type Time.
+		 * Time attribute.
 		 */
 		@CsvColumn(value = "att_6", order = 6, adapter = AdapterTime.class)
-		private Integer attribut6;
+		private Integer attribute6;
 
 		/**
 		 * Equals.
@@ -119,31 +119,31 @@ public class CsvEngineTest {
 		 *            att5.
 		 * @param att6
 		 *            att6.
-		 * @return true si equals.
+		 * @return true if equals.
 		 */
 		protected boolean equals(String att1, Boolean att2, Double att3, Integer att4, String att5, Integer att6) {
-			return ((att1 == null && attribut1 == null || att1 != null && attribut1 != null && att1.equals(attribut1))
-					&& (att2 == null && attribut2 == null || att2 != null && attribut2 != null
-							&& att2.equals(attribut2))
-					&& (att3 == null && attribut3 == null || att3 != null && attribut3 != null
-							&& att3.equals(attribut3))
-					&& (att4 == null && attribut4 == null || att4 != null && attribut4 != null
-							&& att4.equals(attribut4))
-					&& (att5 == null && attribut5 == null || att5 != null && attribut5 != null
-							&& att5.equals(attribut5)) && (att6 == null && attribut6 == null || att6 != null
-					&& attribut6 != null && att6.equals(attribut6)));
+			return ((att1 == null && attribute1 == null || att1 != null && attribute1 != null && att1.equals(attribute1))
+					&& (att2 == null && attribute2 == null || att2 != null && attribute2 != null
+							&& att2.equals(attribute2))
+					&& (att3 == null && attribute3 == null || att3 != null && attribute3 != null
+							&& att3.equals(attribute3))
+					&& (att4 == null && attribute4 == null || att4 != null && attribute4 != null
+							&& att4.equals(attribute4))
+					&& (att5 == null && attribute5 == null || att5 != null && attribute5 != null
+							&& att5.equals(attribute5)) && (att6 == null && attribute6 == null || att6 != null
+					&& attribute6 != null && att6.equals(attribute6)));
 		}
 
 		@Override
 		public int hashCode() {
 			final int prime = 31;
 			int result = 1;
-			result = prime * result + ((attribut1 == null) ? 0 : attribut1.hashCode());
-			result = prime * result + ((attribut2 == null) ? 0 : attribut2.hashCode());
-			result = prime * result + ((attribut3 == null) ? 0 : attribut3.hashCode());
-			result = prime * result + ((attribut4 == null) ? 0 : attribut4.hashCode());
-			result = prime * result + ((attribut5 == null) ? 0 : attribut5.hashCode());
-			result = prime * result + ((attribut6 == null) ? 0 : attribut6.hashCode());
+			result = prime * result + ((attribute1 == null) ? 0 : attribute1.hashCode());
+			result = prime * result + ((attribute2 == null) ? 0 : attribute2.hashCode());
+			result = prime * result + ((attribute3 == null) ? 0 : attribute3.hashCode());
+			result = prime * result + ((attribute4 == null) ? 0 : attribute4.hashCode());
+			result = prime * result + ((attribute5 == null) ? 0 : attribute5.hashCode());
+			result = prime * result + ((attribute6 == null) ? 0 : attribute6.hashCode());
 			return result;
 		}
 
@@ -155,36 +155,36 @@ public class CsvEngineTest {
 				return false;
 			if (getClass() != obj.getClass())
 				return false;
-			ObjetCsv other = (ObjetCsv) obj;
-			if (attribut1 == null) {
-				if (other.attribut1 != null)
+			CsvObject other = (CsvObject) obj;
+			if (attribute1 == null) {
+				if (other.attribute1 != null)
 					return false;
-			} else if (!attribut1.equals(other.attribut1))
+			} else if (!attribute1.equals(other.attribute1))
 				return false;
-			if (attribut2 == null) {
-				if (other.attribut2 != null)
+			if (attribute2 == null) {
+				if (other.attribute2 != null)
 					return false;
-			} else if (!attribut2.equals(other.attribut2))
+			} else if (!attribute2.equals(other.attribute2))
 				return false;
-			if (attribut3 == null) {
-				if (other.attribut3 != null)
+			if (attribute3 == null) {
+				if (other.attribute3 != null)
 					return false;
-			} else if (!attribut3.equals(other.attribut3))
+			} else if (!attribute3.equals(other.attribute3))
 				return false;
-			if (attribut4 == null) {
-				if (other.attribut4 != null)
+			if (attribute4 == null) {
+				if (other.attribute4 != null)
 					return false;
-			} else if (!attribut4.equals(other.attribut4))
+			} else if (!attribute4.equals(other.attribute4))
 				return false;
-			if (attribut5 == null) {
-				if (other.attribut5 != null)
+			if (attribute5 == null) {
+				if (other.attribute5 != null)
 					return false;
-			} else if (!attribut5.equals(other.attribut5))
+			} else if (!attribute5.equals(other.attribute5))
 				return false;
-			if (attribut6 == null) {
-				if (other.attribut6 != null)
+			if (attribute6 == null) {
+				if (other.attribute6 != null)
 					return false;
-			} else if (!attribut6.equals(other.attribut6))
+			} else if (!attribute6.equals(other.attribute6))
 				return false;
 			return true;
 		}
@@ -202,28 +202,28 @@ public class CsvEngineTest {
 	private InputStream stream = null;
 
 	/**
-	 * Entete.
+	 * Header.
 	 */
-	private static final String ENTETE_654321 = "att_6|att_5|att_4|att_3|att_2|att_1";
+	private static final String HEADER_654321 = "att_6|att_5|att_4|att_3|att_2|att_1";
 
 	/**
 	 * Setup.
 	 */
 	@Before
 	public void setup() {
-		engine = new CsvEngine(ObjetCsv.class, ObjetCsv.class);
+		engine = new CsvEngine(CsvObject.class, CsvObject.class);
 		stream = new InputStream() {
-			String chaine = ENTETE_654321 + "\n01:30|String1|5|8.0|1|String2\n" + "|String1|5|8.0|1|String2\n"
+			String string = HEADER_654321 + "\n01:30|String1|5|8.0|1|String2\n" + "|String1|5|8.0|1|String2\n"
 					+ "\n01:30||5|8.0|1|String2\n" + "01:30|String1||8.0|1|String2\n" + "01:30|String1|5||1|String2\n"
 					+ "01:30|String1|5|8.0||String2\n" + "01:30|String1|5|8.0|1|\n";
 			private int count = 0;
 
 			@Override
 			public int read() throws IOException {
-				if (count >= chaine.length()) {
+				if (count >= string.length()) {
 					return -1;
 				}
-				return chaine.charAt(count++);
+				return string.charAt(count++);
 			}
 		};
 	}
@@ -231,22 +231,22 @@ public class CsvEngineTest {
 	@Test
 	public void testParseInputStream() throws IOException, CsvErrorsExceededException {
 
-		List<ObjetCsv> objets = engine.parseInputStream(stream, ObjetCsv.class).getObjects();
-		assertEquals(7, objets.size());
-		assertTrue(objets.get(0).equals("String2", true, 8.0, 5, "String1", 90));
-		assertTrue(objets.get(1).equals("String2", true, 8.0, 5, "String1", null));
-		assertTrue(objets.get(2).equals("String2", true, 8.0, 5, null, 90));
-		assertTrue(objets.get(3).equals("String2", true, 8.0, null, "String1", 90));
-		assertTrue(objets.get(4).equals("String2", true, null, 5, "String1", 90));
-		assertTrue(objets.get(5).equals("String2", null, 8.0, 5, "String1", 90));
-		assertTrue(objets.get(6).equals(null, true, 8.0, 5, "String1", 90));
+		List<CsvObject> objects = engine.parseInputStream(stream, CsvObject.class).getObjects();
+		assertEquals(7, objects.size());
+		assertTrue(objects.get(0).equals("String2", true, 8.0, 5, "String1", 90));
+		assertTrue(objects.get(1).equals("String2", true, 8.0, 5, "String1", null));
+		assertTrue(objects.get(2).equals("String2", true, 8.0, 5, null, 90));
+		assertTrue(objects.get(3).equals("String2", true, 8.0, null, "String1", 90));
+		assertTrue(objects.get(4).equals("String2", true, null, 5, "String1", 90));
+		assertTrue(objects.get(5).equals("String2", null, 8.0, 5, "String1", 90));
+		assertTrue(objects.get(6).equals(null, true, 8.0, 5, "String1", 90));
 
-		File file = File.createTempFile("objet_csv", "txt");
+		File file = File.createTempFile("csv_object", "txt");
 
-		engine.writeFile(new FileWriter(file), objets, ObjetCsv.class);
+		engine.writeFile(new FileWriter(file), objects, CsvObject.class);
 
-		List<ObjetCsv> newObjets = engine.parseInputStream(new FileInputStream(file), ObjetCsv.class).getObjects();
-		assertEquals(objets, newObjets);
+		List<CsvObject> newObjects = engine.parseInputStream(new FileInputStream(file), CsvObject.class).getObjects();
+		assertEquals(objects, newObjects);
 
 	}
 
@@ -265,7 +265,7 @@ public class CsvEngineTest {
 					@Override
 					public void writeLine(List<String> fields) {
 						try {
-							writer.append("coucou\n");
+							writer.append("hello\n");
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
@@ -286,7 +286,7 @@ public class CsvEngineTest {
 					public String[] readLine() throws IOException {
 						if (first) {
 							first = false;
-							return ENTETE_654321.split("\\|");
+							return HEADER_654321.split("\\|");
 						}
 						return null;
 					}
@@ -294,21 +294,20 @@ public class CsvEngineTest {
 			}
 		});
 
-		assertTrue(engine.parseInputStream(stream, ObjetCsv.class).getObjects().isEmpty());
+		assertTrue(engine.parseInputStream(stream, CsvObject.class).getObjects().isEmpty());
 
 	}
 
 	/**
-	 * Tests techniques
+	 * Technical tests
 	 * 
 	 * @throws fr.ybo.csvengine.validator.ValidationError
 	 */
-
 	@Test
-	public void testCreerObjet() throws ValidationError {
+	public void testCreateObject() throws ValidationError {
 		try {
 			engine.createObject();
-			fail("Une exception aurait du être levée");
+            fail("An exception must be throw");
 		} catch (CsvEngineException exception) {
 			assertTrue(exception.getMessage().contains("newCsvFile"));
 		}
@@ -328,7 +327,7 @@ public class CsvEngineTest {
 					public String[] readLine() throws IOException {
 						if (first) {
 							first = false;
-							return ENTETE_654321.split("\\|");
+							return HEADER_654321.split("\\|");
 						}
 						throw new IOException();
 					}
@@ -336,21 +335,21 @@ public class CsvEngineTest {
 			}
 		});
 
-		engine.newCsvFile(new InputStreamReader(stream), ObjetCsv.class);
+		engine.newCsvFile(new InputStreamReader(stream), CsvObject.class);
 
 		try {
 			engine.createObject();
-			fail("Une exception aurait du être levée");
+            fail("An exception must be throw");
 		} catch (CsvEngineException exception) {
 			assertEquals(IOException.class, exception.getCause().getClass());
 		}
 	}
 
 	@Test
-	public void testNouveauFichier() {
+	public void testNewCsvFile() {
 		try {
 			engine.newCsvFile(null, String.class);
-			fail("Une exception aurait du être levée");
+            fail("An exception must be throw");
 		} catch (CsvEngineException exception) {
 			assertTrue(exception.getMessage().contains("String"));
 		}
@@ -373,18 +372,18 @@ public class CsvEngineTest {
 		});
 
 		try {
-			engine.newCsvFile(null, ObjetCsv.class);
-			fail("Une exception aurait du être levée");
+			engine.newCsvFile(null, CsvObject.class);
+            fail("An exception must be throw");
 		} catch (CsvEngineException exception) {
 			assertEquals(IOException.class, exception.getCause().getClass());
 		}
 	}
 
 	@Test
-	public void testScannerClass() {
+	public void testScanClass() {
 		try {
-			engine.scannerClass(String.class);
-			fail("Une exception aurait du être levée");
+			engine.scanClass(String.class);
+            fail("An exception must be throw");
 		} catch (CsvEngineException exception) {
 			assertTrue(exception.getMessage().contains("String"));
 		}
@@ -411,17 +410,17 @@ public class CsvEngineTest {
 		});
 
 		try {
-			engine.writeFile(null, new ArrayList<ObjetCsv>(), ObjetCsv.class);
-			fail("Une exception aurait du être levée");
+			engine.writeFile(null, new ArrayList<CsvObject>(), CsvObject.class);
+            fail("An exception must be throw");
 		} catch (CsvEngineException exception) {
 			assertEquals(NullPointerException.class, exception.getCause().getClass());
 		}
 	}
 
 	@CsvFile
-	public static class ObjetExceptionDansConstructeur {
+	public static class ObjectWithExceptionInConstructor {
 
-		public ObjetExceptionDansConstructeur() {
+		public ObjectWithExceptionInConstructor() {
 			throw new NullPointerException();
 		}
 
@@ -430,75 +429,75 @@ public class CsvEngineTest {
 	}
 
 	@Test
-	public void testExceptionDansConstructeur() throws CsvErrorsExceededException {
-		CsvEngine engine = new CsvEngine(ObjetExceptionDansConstructeur.class);
-		StringStream stream = new StringStream("att\nvaleur");
+	public void testExceptionInConstructor() throws CsvErrorsExceededException {
+		CsvEngine engine = new CsvEngine(ObjectWithExceptionInConstructor.class);
+		StringStream stream = new StringStream("att\nvalue");
 		try {
-			engine.parseInputStream(stream, ObjetExceptionDansConstructeur.class);
-			fail("Une exception aurait du être levée.");
+			engine.parseInputStream(stream, ObjectWithExceptionInConstructor.class);
+            fail("An exception must be throw");
 		} catch (CsvEngineException exception) {
 			assertEquals(NullPointerException.class, exception.getCause().getClass());
 		}
 	}
 
 	@CsvFile(separator = ",,,")
-	public static class ObjetSeparateurTropGrand {
+	public static class ObjectWithTooBigSeparator {
 
 	}
 
 	@Test
-	public void testSeparateurTropGrand() throws CsvErrorsExceededException {
-		CsvEngine engine = new CsvEngine(ObjetSeparateurTropGrand.class);
-		StringStream stream = new StringStream("att\nvaleur");
+	public void testTooBigSeparator() throws CsvErrorsExceededException {
+		CsvEngine engine = new CsvEngine(ObjectWithTooBigSeparator.class);
+		StringStream stream = new StringStream("att\nvalue");
 		try {
-			engine.parseInputStream(stream, ObjetSeparateurTropGrand.class);
-			fail("Une exception aurait du être levée.");
+			engine.parseInputStream(stream, ObjectWithTooBigSeparator.class);
+            fail("An exception must be throw");
 		} catch (CsvEngineException exception) {
 			assertTrue(exception.getMessage().contains(",,,"));
 		}
 	}
 
 	@CsvFile
-	public static class ObjetSansConstructeur {
-		public ObjetSansConstructeur(String unTruc) {
+	public static class ObjectWithoutConstructor {
+		public ObjectWithoutConstructor(String something) {
 		}
 	}
 
 	@Test
-	public void testSansConstructeur() {
+	public void testWithoutConstructor() {
 		try {
-			new CsvEngine(ObjetSansConstructeur.class);
-			fail("Une exception aurait du être levée");
+			new CsvEngine(ObjectWithoutConstructor.class);
+            fail("An exception must be throw");
 		} catch (CsvEngineException exception) {
-			assertTrue(exception.getMessage().contains("il doit manquer le constructeur sans paramètre"));
+			assertTrue(exception.getMessage().contains("this class miss a constructor without parameters"));
 		}
 	}
 
 	@CsvFile
-	public static class ObjetSimple {
+	public static class SimpleObject {
 		@CsvColumn("att")
 		public String att;
 	}
 
 	@Test
 	public void testAddQuoteCar() {
-		ObjetSimple objet = new ObjetSimple();
-		objet.att = "valeur";
+		SimpleObject object = new SimpleObject();
+		object.att = "value";
 
 		CsvEngine engine =
-				new CsvEngine(EngineParameters.createBuilder().setAddQuoteCar(true).build(), ObjetSimple.class);
+				new CsvEngine(EngineParameters.createBuilder().setAddQuoteCar(true).build(), SimpleObject.class);
 		StringWriter writer = new StringWriter();
 
-		engine.writeFile(writer, Arrays.asList(objet), ObjetSimple.class);
+		engine.writeFile(writer, Arrays.asList(object), SimpleObject.class);
 
-		assertEquals("\"att\"\n\"valeur\"\n", writer.getBuffer().toString());
+        assertEquals("\"att\"\n\"value\"\n", writer.getBuffer().toString());
 
-		engine = new CsvEngine(EngineParameters.createBuilder().setAddQuoteCar(false).build(), ObjetSimple.class);
+		engine = new CsvEngine(EngineParameters.createBuilder().setAddQuoteCar(false).build(), SimpleObject.class);
 		writer = new StringWriter();
 
-		engine.writeFile(writer, Arrays.asList(objet), ObjetSimple.class);
+		engine.writeFile(writer, Arrays.asList(object), SimpleObject.class);
 
-		assertEquals("att\nvaleur\n", writer.getBuffer().toString());
+		assertEquals("att\nvalue\n", writer.getBuffer().toString());
 
 	}
 

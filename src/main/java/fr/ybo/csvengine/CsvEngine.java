@@ -64,12 +64,12 @@ import fr.ybo.csvengine.validator.ValidateException;
  * Voici des exemple d'utilisation :
  * <ul>
  * <li>Construction du moteur :<br/>
- * {@code CsvEngine moteur = new CsvEngine(ObjetCsv.class);}</li>
+ * {@code CsvEngine moteur = new CsvEngine(CsvObject.class);}</li>
  * <li>Lecture d'un fichier CSV :<br/>
- * {@code List<ObjetCsv> objets = moteur.parseInputStream(stream, ObjetCsv.class);}
+ * {@code List<CsvObject> objets = moteur.parseInputStream(stream, CsvObject.class);}
  * </li>
  * <li>Ecriture d'un fichier CSV :<br/>
- * {@code moteur.writeFile(new FileWriter(file), objets, ObjetCsv.class);}</li>
+ * {@code moteur.writeFile(new FileWriter(file), objets, CsvObject.class);}</li>
  * </ul>
  *
  * @author ybonnel
@@ -131,7 +131,7 @@ public class CsvEngine {
         parameters = new EngineParameters();
         factory = new DefaultCsvManagerFactory();
         for (Class<?> clazz : classes) {
-            scannerClass(clazz);
+            scanClass(clazz);
         }
     }
 
@@ -148,7 +148,7 @@ public class CsvEngine {
         this.parameters = parameters;
         factory = new DefaultCsvManagerFactory();
         for (Class<?> clazz : classes) {
-            scannerClass(clazz);
+            scanClass(clazz);
         }
     }
 
@@ -452,7 +452,7 @@ public class CsvEngine {
      *
      * @param clazz class to scan.
      */
-    protected void scannerClass(Class<?> clazz) {
+    protected void scanClass(Class<?> clazz) {
         CsvFile csvFile = clazz.getAnnotation(CsvFile.class);
         if (csvFile == null) {
             throw new CsvEngineException("Annotation CsvFile non present for class " + clazz.getSimpleName());

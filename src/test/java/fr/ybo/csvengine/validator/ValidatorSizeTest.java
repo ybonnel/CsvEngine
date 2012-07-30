@@ -42,45 +42,45 @@ public class ValidatorSizeTest {
 	}
 
 	@Test(expected = InvalidParamException.class)
-	public void testSsParametre() throws InvalidParamException {
+	public void testWithoutParameters() throws InvalidParamException {
 		validator.addParams(params);
 	}
 
 	@Test(expected = InvalidParamException.class)
-	public void testTailleMinKo() throws InvalidParamException {
+	public void testMinSizeKo() throws InvalidParamException {
 		params.put(ValidatorSize.PARAM_MIN_SIZE, "tutu");
 		validator.addParams(params);
 	}
 
 	@Test(expected = InvalidParamException.class)
-	public void testTailleMaxKo() throws InvalidParamException {
+	public void testMaxSizeKo() throws InvalidParamException {
 		params.put(ValidatorSize.PARAM_MAX_SIZE, "tutu");
 		validator.addParams(params);
 	}
 
 	@Test
-	public void testTailleMin() throws InvalidParamException, ValidateException {
+	public void testMinSize() throws InvalidParamException, ValidateException {
 		params.put(ValidatorSize.PARAM_MIN_SIZE, "2");
 		validator.addParams(params);
 
 		// OK
-		validator.validate("doitEtreOk");
+		validator.validate("mustBeOk");
 		validator.validate("Ok");
 
 		// KO
 		try {
 			validator.validate("1");
-			fail("Une exception aurait du être levée");
+            fail("An exception must be throw");
 		} catch (ValidateException exception) {
-			// TailleMin
+			// MinSize
 			assertTrue(exception.getMessage().contains("2"));
-			// Valeur.
+			// Current value.
 			assertTrue(exception.getMessage().contains("1"));
 		}
 	}
 
 	@Test
-	public void testTailleMax() throws ValidateException, InvalidParamException {
+	public void testMaxSize() throws ValidateException, InvalidParamException {
 		params.put(ValidatorSize.PARAM_MAX_SIZE, "5");
 		validator.addParams(params);
 
@@ -90,18 +90,18 @@ public class ValidatorSizeTest {
 
 		// KO
 		try {
-			validator.validate("DoitKo");
-			fail("Une exception aurait du être levée");
+			validator.validate("MustKo");
+            fail("An exception must be throw");
 		} catch (ValidateException exception) {
-			// TailleMax
+			// MaxSize
 			assertTrue(exception.getMessage().contains("5"));
-			// Valeur
-			assertTrue(exception.getMessage().contains("DoitKo"));
+			// Current value
+			assertTrue(exception.getMessage().contains("MustKo"));
 		}
 	}
 
 	@Test
-	public void testTailleMinEtTailleMax() throws ValidateException, InvalidParamException {
+	public void testMinSizeAndMaxSize() throws ValidateException, InvalidParamException {
 		params.put(ValidatorSize.PARAM_MIN_SIZE, "2");
 		params.put(ValidatorSize.PARAM_MAX_SIZE, "5");
 		validator.addParams(params);
@@ -113,7 +113,7 @@ public class ValidatorSizeTest {
 		// KO
 		try {
 			validator.validate("1");
-			fail("Une exception aurait du être levée");
+            fail("An exception must be throw");
 		} catch (ValidateException exception) {
 			// TailleMin
 			assertTrue(exception.getMessage().contains("2"));
@@ -121,13 +121,13 @@ public class ValidatorSizeTest {
 			assertTrue(exception.getMessage().contains("1"));
 		}
 		try {
-			validator.validate("DoitKo");
-			fail("Une exception aurait du être levée");
+			validator.validate("MustKo");
+            fail("An exception must be throw");
 		} catch (ValidateException exception) {
 			// TailleMax
 			assertTrue(exception.getMessage().contains("5"));
 			// Valeur
-			assertTrue(exception.getMessage().contains("DoitKo"));
+			assertTrue(exception.getMessage().contains("MustKo"));
 		}
 	}
 

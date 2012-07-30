@@ -37,13 +37,12 @@ import fr.ybo.csvengine.validator.ValidateException;
 import fr.ybo.csvengine.validator.ValidatorCsv;
 
 /**
- * Tester la validation.
+ * Validation test.
  * <ul>
- * <li>REGLE RG1 : permettre de valider un champ sur son côté mandatory.</li>
- * <li>REGLE RG2 : permettre de réaliser n'importe qu'elle validation via des
- * classes spécifiques.</li>
- * <li>REGLE RG3 : permettre de désactiver la validation.</li>
- * <li>REGLE RG4 : permettre d'accepter un nombre acceptable d'erreur.</li>
+ * <li>RULE1 : validate a field on mandatory side.</li>
+ * <li>RULE2 : validate a field with a specific class.</li>
+ * <li>RULE3 : can desactivate validation.</li>
+ * <li>RULE4 : can specify the max number of errors.</li>
  * </ul>
  * 
  * @author ybonnel
@@ -52,122 +51,122 @@ import fr.ybo.csvengine.validator.ValidatorCsv;
 public class ValidationTest {
 
 	/**
-	 * Classe pour la RG1.
+	 * Class for Rule1.
 	 */
 	@CsvFile()
-	public static class ObjetRg1_1 {
+	public static class ObjectRule1_1 {
 		/**
-		 * Facultatif.
+		 * Optional.
 		 */
 		@CsvColumn(value = "att1")
 		public String att1;
 		/**
-		 * Facultatif.
+		 * Optional.
 		 */
 		@CsvColumn(value = "att2")
 		public String att2;
 	}
 
 	/**
-	 * Classe pour la RG1.
+	 * Class for Rule1.
 	 */
 	@CsvFile()
-	public static class ObjetRg1_2 {
+	public static class ObjectRule1_2 {
 		/**
-		 * Obligatoire.
+		 * Mandatory.
 		 */
 		@CsvColumn(value = "att1", mandatory = true)
 		public String att1;
 		/**
-		 * Facultatif.
+		 * Optional.
 		 */
 		@CsvColumn(value = "att2")
 		public String att2;
 	}
 
 	/**
-	 * Classe pour la RG1.
+	 * Class for Rule1.
 	 */
 	@CsvFile()
-	public static class ObjetRg1_3 {
+	public static class ObjectRule1_3 {
 		/**
-		 * Facultatif.
+		 * Optional.
 		 */
 		@CsvColumn(value = "att1")
 		public String att1;
 		/**
-		 * Obligatoire.
+		 * Mandatory.
 		 */
 		@CsvColumn(value = "att2", mandatory = true)
 		public String att2;
 	}
 
 	/**
-	 * Classe pour la RG1.
+	 * Class for Rule1.
 	 */
 	@CsvFile()
-	public static class ObjetRg1_4 {
+	public static class ObjectRule1_4 {
 		/**
-		 * Obligatoire.
+		 * Mandatory.
 		 */
 		@CsvColumn(value = "att1", mandatory = true)
 		public String att1;
 		/**
-		 * Obligatoire.
+		 * Mandatory.
 		 */
 		@CsvColumn(value = "att2", mandatory = true)
 		public String att2;
 	}
 
 	/**
-	 * Construction des streams et des moteurs nécessaires aux tests.
+	 * Construction of streams and engine useful for tests.
 	 */
 	@Before
 	public void setup() {
-		streamRg1 = new StringStream("att1,att2\nval1,\n,val2\n,");
-		rg1Engine =
+		streamRule1 = new StringStream("att1,att2\nval1,\n,val2\n,");
+		rule1Engine =
 				new CsvEngine(EngineParameters.createBuilder().setValidation(true).setNbLinesWithErrorsToStop(999).build(),
-						ObjetRg1_1.class, ObjetRg1_2.class, ObjetRg1_3.class, ObjetRg1_4.class);
+						ObjectRule1_1.class, ObjectRule1_2.class, ObjectRule1_3.class, ObjectRule1_4.class);
 
 	}
 
 	/**
-	 * Stream pour tester la RG1.
+	 * Stream to test Rule1.
 	 */
-	private InputStream streamRg1;
+	private InputStream streamRule1;
 	/**
-	 * Moteur pour tester la RG1.
+	 * Engine to test Rule1.
 	 */
-	private CsvEngine rg1Engine;
+	private CsvEngine rule1Engine;
 
 	/**
-	 * Test de la RG1 avec les deux champs facultatifs.
+	 * Test of Rule1 with two optional fields.
 	 * @throws fr.ybo.csvengine.exception.CsvErrorsExceededException exception.
 	 */
 	@Test
-	public void testRg1_1() throws CsvErrorsExceededException {
-		// Test avec les deux champs facultatif.
-		Result<ObjetRg1_1> result = rg1Engine.parseInputStream(streamRg1, ObjetRg1_1.class);
+	public void testRule1_1() throws CsvErrorsExceededException {
+		// Test with two optional fields.
+		Result<ObjectRule1_1> result = rule1Engine.parseInputStream(streamRule1, ObjectRule1_1.class);
 		assertNotNull(result);
 		assertEquals(3, result.getObjects().size());
 		assertEquals(0, result.getErrors().size());
 	}
 
 	/**
-	 * Test de la RG1 avec le premiers champ mandatory et le second
-	 * facultatif.
+	 * Test of Rule1 with first field mandatory and second
+	 * optional.
 	 * 
 	 * @throws fr.ybo.csvengine.exception.CsvErrorsExceededException
 	 *             exception.
 	 */
 	@Test
-	public void testRg1_2() throws CsvErrorsExceededException {
-		// Test avec le premier champ mandatory.
-		Result<ObjetRg1_2> result = rg1Engine.parseInputStream(streamRg1, ObjetRg1_2.class);
+	public void testRule1_2() throws CsvErrorsExceededException {
+		// Test with first field mandatory.
+		Result<ObjectRule1_2> result = rule1Engine.parseInputStream(streamRule1, ObjectRule1_2.class);
 		assertNotNull(result);
 		assertEquals(1, result.getObjects().size());
 		assertEquals(2, result.getErrors().size());
-		fr.ybo.csvengine.model.Error error1 = result.getErrors().get(0);
+		Error error1 = result.getErrors().get(0);
 		assertEquals(",val2", error1.getCsvLine());
 		assertEquals(1, error1.getMessages().size());
 		assertTrue(error1.getMessages().get(0).contains("mandatory"));
@@ -180,16 +179,16 @@ public class ValidationTest {
 	}
 
 	/**
-	 * Test de la RG1 avec le premiers champ facultatif et le second
+	 * Test of Rule1 with first field optional and second
 	 * mandatory.
 	 * 
 	 * @throws fr.ybo.csvengine.exception.CsvErrorsExceededException
 	 *             exception.
 	 */
 	@Test
-	public void testRg1_3() throws CsvErrorsExceededException {
-		// Test avec le deuxième champ mandatory.
-		Result<ObjetRg1_3> result = rg1Engine.parseInputStream(streamRg1, ObjetRg1_3.class);
+	public void testRule1_3() throws CsvErrorsExceededException {
+		// Test with second field mandatory.
+		Result<ObjectRule1_3> result = rule1Engine.parseInputStream(streamRule1, ObjectRule1_3.class);
 		assertNotNull(result);
 		assertEquals(1, result.getObjects().size());
 		assertEquals(2, result.getErrors().size());
@@ -206,15 +205,15 @@ public class ValidationTest {
 	}
 
 	/**
-	 * Test de la RG1 avec les deux champs mandatory.
+	 * Test of Rule1 with two fields mandatory.
 	 * 
 	 * @throws fr.ybo.csvengine.exception.CsvErrorsExceededException
 	 *             exception.
 	 */
 	@Test
-	public void testRg1_4() throws CsvErrorsExceededException {
-		// Test avec les deux champs obligatoires
-		Result<ObjetRg1_4> result = rg1Engine.parseInputStream(streamRg1, ObjetRg1_4.class);
+	public void testRule1_4() throws CsvErrorsExceededException {
+		// Test with two fields mandatory.
+		Result<ObjectRule1_4> result = rule1Engine.parseInputStream(streamRule1, ObjectRule1_4.class);
 		assertNotNull(result);
 		assertEquals(0, result.getObjects().size());
 		assertEquals(3, result.getErrors().size());
@@ -238,16 +237,16 @@ public class ValidationTest {
 	}
 
 	@CsvFile
-	public static class ObjetRg2 {
-		@CsvValidation(ValidationRg2.class)
+	public static class ObjectRule2 {
+		@CsvValidation(ValidationRule2.class)
 		@CsvColumn("att1")
 		public String att1;
-		@CsvValidation(ValidationRg2.class)
+		@CsvValidation(ValidationRule2.class)
 		@CsvColumn("att2")
 		public String att2;
 	}
 
-	public static class ValidationRg2 extends ValidatorCsv {
+	public static class ValidationRule2 extends ValidatorCsv {
 
 		/*
 		 * (non-Javadoc)
@@ -256,96 +255,96 @@ public class ValidationTest {
 		 * fr.ybo.csvengine.validator.ValidatorCsv#validate(java.lang.String)
 		 */
 		public void validate(String field) throws ValidateException {
-			if (!"RG2".equals(field)) {
-				throw new ValidateException("Le champs doit être également à RG2");
+			if (!"Rule2".equals(field)) {
+				throw new ValidateException("The field must be equals to Rule2");
 			}
 		}
 
 	}
 
 	/**
-	 * Test de la RG2.
+	 * Test de la Rule2.
 	 * 
 	 * @throws fr.ybo.csvengine.exception.CsvErrorsExceededException
 	 *             exception.
 	 */
 	@Test
-	public void testRg2() throws CsvErrorsExceededException {
-		CsvEngine rg2Engine =
+	public void testRule2() throws CsvErrorsExceededException {
+		CsvEngine Rule2Engine =
 				new CsvEngine(EngineParameters.createBuilder().setValidation(true).setNbLinesWithErrorsToStop(999).build(),
-						ObjetRg2.class);
-		InputStream stream = new StringStream("att1,att2\nRG2,RG2\nRG2,RG1\nRG1,RG2\nRG1,RG3");
+						ObjectRule2.class);
+		InputStream stream = new StringStream("att1,att2\nRule2,Rule2\nRule2,Rule1\nRule1,Rule2\nRule1,Rule3");
 
-		Result<ObjetRg2> result = rg2Engine.parseInputStream(stream, ObjetRg2.class);
+		Result<ObjectRule2> result = Rule2Engine.parseInputStream(stream, ObjectRule2.class);
 		assertNotNull(result);
 		assertEquals(1, result.getObjects().size());
 		assertEquals(3, result.getErrors().size());
 		Error error1 = result.getErrors().get(0);
-		assertEquals("RG2,RG1", error1.getCsvLine());
+		assertEquals("Rule2,Rule1", error1.getCsvLine());
 		assertEquals(1, error1.getMessages().size());
-		assertTrue(error1.getMessages().get(0).endsWith("Le champs doit être également à RG2"));
+		assertTrue(error1.getMessages().get(0).endsWith("The field must be equals to Rule2"));
 		assertTrue(error1.getMessages().get(0).contains("att2"));
 		Error error2 = result.getErrors().get(1);
-		assertEquals("RG1,RG2", error2.getCsvLine());
+		assertEquals("Rule1,Rule2", error2.getCsvLine());
 		assertEquals(1, error2.getMessages().size());
-		assertTrue(error2.getMessages().get(0).endsWith("Le champs doit être également à RG2"));
+		assertTrue(error2.getMessages().get(0).endsWith("The field must be equals to Rule2"));
 		assertTrue(error2.getMessages().get(0).contains("att1"));
 		Error error3 = result.getErrors().get(2);
-		assertEquals("RG1,RG3", error3.getCsvLine());
+		assertEquals("Rule1,Rule3", error3.getCsvLine());
 		assertEquals(2, error3.getMessages().size());
-		assertTrue(error3.getMessages().get(0).endsWith("Le champs doit être également à RG2"));
+		assertTrue(error3.getMessages().get(0).endsWith("The field must be equals to Rule2"));
 		assertTrue(error3.getMessages().get(0).contains("att1"));
-		assertTrue(error3.getMessages().get(1).endsWith("Le champs doit être également à RG2"));
+		assertTrue(error3.getMessages().get(1).endsWith("The field must be equals to Rule2"));
 		assertTrue(error3.getMessages().get(1).contains("att2"));
 	}
 
 	/**
-	 * Test de la RG3.<br/>
-	 * Test avec le jeu de données de RG1_4 (attributs obligatoires).
+	 * Test of Rule3.<br/>
+	 * Test with data of Rule1_4 (mandatory fields).
 	 * 
 	 * @throws fr.ybo.csvengine.exception.CsvErrorsExceededException
 	 *             exception.
 	 */
 	@Test
-	public void testRg3_1() throws CsvErrorsExceededException {
-		rg1Engine.getParameters().setValidation(false);
-		Result<ObjetRg1_4> result = rg1Engine.parseInputStream(streamRg1, ObjetRg1_4.class);
+	public void testRule3_1() throws CsvErrorsExceededException {
+		rule1Engine.getParameters().setValidation(false);
+		Result<ObjectRule1_4> result = rule1Engine.parseInputStream(streamRule1, ObjectRule1_4.class);
 		assertNotNull(result);
 		assertEquals(3, result.getObjects().size());
 	}
 
 	/**
-	 * Test de la RG3.<br/>
-	 * Test avec le jeu de données de RG2 (avec validateur).
+	 * Test of Rule3.<br/>
+	 * Test with data of Rule2 (with validator).
 	 * 
 	 * @throws fr.ybo.csvengine.exception.CsvErrorsExceededException
 	 *             exception.
 	 */
 	@Test
-	public void testRg3_2() throws CsvErrorsExceededException {
-		CsvEngine rg2Engine =
+	public void testRule3_2() throws CsvErrorsExceededException {
+		CsvEngine Rule2Engine =
 				new CsvEngine(EngineParameters.createBuilder().setValidation(false).setNbLinesWithErrorsToStop(999).build(),
-						ObjetRg2.class);
-		InputStream stream = new StringStream("att1,att2\nRG2,RG2\nRG2,RG1\nRG1,RG2\nRG1,RG3");
+						ObjectRule2.class);
+		InputStream stream = new StringStream("att1,att2\nRule2,Rule2\nRule2,Rule1\nRule1,Rule2\nRule1,Rule3");
 
-		Result<ObjetRg2> result = rg2Engine.parseInputStream(stream, ObjetRg2.class);
+		Result<ObjectRule2> result = Rule2Engine.parseInputStream(stream, ObjectRule2.class);
 		assertNotNull(result);
 		assertEquals(4, result.getObjects().size());
 	}
 
 	/**
-	 * Test de la RG4. Test en mettant le nombre d'erreurs acceptées à 1.
+	 * Test of Rule4. Test with max errors at 1.
 	 */
 	@Test
-	public void testRg4_1() {
-		CsvEngine rg2Engine =
+	public void testRule4_1() {
+		CsvEngine Rule2Engine =
 				new CsvEngine(EngineParameters.createBuilder().setValidation(true).setNbLinesWithErrorsToStop(1).build(),
-						ObjetRg2.class);
-		InputStream stream = new StringStream("att1,att2\nRG2,RG2\nRG2,RG1\nRG1,RG2\nRG1,RG3");
+						ObjectRule2.class);
+		InputStream stream = new StringStream("att1,att2\nRule2,Rule2\nRule2,Rule1\nRule1,Rule2\nRule1,Rule3");
 
 		try {
-			rg2Engine.parseInputStream(stream, ObjetRg2.class);
-			fail("Une exception devrait être levée.");
+			Rule2Engine.parseInputStream(stream, ObjectRule2.class);
+            fail("An exception must be throw");
 		} catch (CsvErrorsExceededException exception) {
 			assertEquals(2, exception.getErrors().size());
 			assertNotNull(exception.getMessage());
@@ -353,65 +352,65 @@ public class ValidationTest {
 	}
 
 	/**
-	 * Test de la RG4. Test en mettant le nombre d'erreurs acceptées à 0.
+	 * Test de la Rule4. Test with max errors at 0.
 	 */
 	@Test
-	public void testRg4_2() {
-		CsvEngine rg2Engine =
+	public void testRule4_2() {
+		CsvEngine Rule2Engine =
 				new CsvEngine(EngineParameters.createBuilder().setValidation(true).setNbLinesWithErrorsToStop(0).build(),
-						ObjetRg2.class);
-		InputStream stream = new StringStream("att1,att2\nRG2,RG2\nRG2,RG1\nRG1,RG2\nRG1,RG3");
+						ObjectRule2.class);
+		InputStream stream = new StringStream("att1,att2\nRule2,Rule2\nRule2,Rule1\nRule1,Rule2\nRule1,Rule3");
 
 		try {
-			rg2Engine.parseInputStream(stream, ObjetRg2.class);
-			fail("Une exception devrait être levée.");
+			Rule2Engine.parseInputStream(stream, ObjectRule2.class);
+            fail("An exception must be throw");
 		} catch (CsvErrorsExceededException exception) {
 			assertEquals(1, exception.getErrors().size());
 		}
 	}
 
 	/**
-	 * Test de la RG4. Test en mettant le nombre d'erreurs acceptées à -1
-	 * (infinie).
+	 * Test de la Rule4. Test with max errors at -1
+	 * (infinite).
 	 * 
 	 * @throws fr.ybo.csvengine.exception.CsvErrorsExceededException
 	 *             exception.
 	 */
 	@Test
-	public void testRg4_3() throws CsvErrorsExceededException {
-		CsvEngine rg2Engine =
+	public void testRule4_3() throws CsvErrorsExceededException {
+		CsvEngine Rule2Engine =
 				new CsvEngine(EngineParameters.createBuilder().setValidation(true).setNbLinesWithErrorsToStop(-1).build(),
-						ObjetRg2.class);
-		InputStream stream = new StringStream("att1,att2\nRG2,RG2\nRG2,RG1\nRG1,RG2\nRG1,RG3");
+						ObjectRule2.class);
+		InputStream stream = new StringStream("att1,att2\nRule2,Rule2\nRule2,Rule1\nRule1,Rule2\nRule1,Rule3");
 
-		Result<ObjetRg2> result = rg2Engine.parseInputStream(stream, ObjetRg2.class);
+		Result<ObjectRule2> result = Rule2Engine.parseInputStream(stream, ObjectRule2.class);
 		assertNotNull(result);
 		assertEquals(1, result.getObjects().size());
 		assertEquals(3, result.getErrors().size());
 	}
 
 	/**
-	 * Test de la RG4. Test en mettant le nombre d'erreurs acceptées à 3.
+	 * Test de la Rule4. Test with max errors at 3.
 	 * 
 	 * @throws fr.ybo.csvengine.exception.CsvErrorsExceededException
 	 *             exception.
 	 */
 	@Test
-	public void testRg4_4() throws CsvErrorsExceededException {
-		CsvEngine rg2Engine =
+	public void testRule4_4() throws CsvErrorsExceededException {
+		CsvEngine Rule2Engine =
 				new CsvEngine(EngineParameters.createBuilder().setValidation(true).setNbLinesWithErrorsToStop(3).build(),
-						ObjetRg2.class);
-		InputStream stream = new StringStream("att1,att2\nRG2,RG2\nRG2,RG1\nRG1,RG2\nRG1,RG3");
+						ObjectRule2.class);
+		InputStream stream = new StringStream("att1,att2\nRule2,Rule2\nRule2,Rule1\nRule1,Rule2\nRule1,Rule3");
 
-		Result<ObjetRg2> result = rg2Engine.parseInputStream(stream, ObjetRg2.class);
+		Result<ObjectRule2> result = Rule2Engine.parseInputStream(stream, ObjectRule2.class);
 		assertNotNull(result);
 		assertEquals(1, result.getObjects().size());
 		assertEquals(3, result.getErrors().size());
 	}
 
-	public static class ValidatorPbCreation extends ValidatorCsv {
+	public static class ValidatorWithErrorDuringCreation extends ValidatorCsv {
 
-		public ValidatorPbCreation(String unTruc) {
+		public ValidatorWithErrorDuringCreation(String something) {
 		}
 
 		/*
@@ -427,18 +426,18 @@ public class ValidationTest {
 	}
 
 	@CsvFile
-	public static class ObjetPbCreationValidator {
-		@CsvValidation(ValidatorPbCreation.class)
+	public static class ObjectWithErrorDuringValidatorCreation {
+		@CsvValidation(ValidatorWithErrorDuringCreation.class)
 		@CsvColumn("att")
 		public String att;
 	}
 
 	@Test
-	public void testPbCreationValidator() {
+	public void testErrorDuringValidatorCreation() {
 		try {
-			new CsvEngine(ObjetPbCreationValidator.class);
+			new CsvEngine(ObjectWithErrorDuringValidatorCreation.class);
 		} catch (CsvEngineException exception) {
-			assertTrue(exception.getMessage().contains(ValidatorPbCreation.class.getSimpleName()));
+			assertTrue(exception.getMessage().contains(ValidatorWithErrorDuringCreation.class.getSimpleName()));
 		}
 	}
 

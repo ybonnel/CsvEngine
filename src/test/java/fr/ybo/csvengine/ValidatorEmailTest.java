@@ -32,7 +32,7 @@ import fr.ybo.csvengine.exception.CsvErrorsExceededException;
 import fr.ybo.csvengine.validator.ValidatorEmail;
 
 /**
- * Test de {@link ValidatorEmail}.
+ * Test of {@link ValidatorEmail}.
  */
 public class ValidatorEmailTest {
 

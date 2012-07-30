@@ -39,27 +39,27 @@ import fr.ybo.csvengine.model.Error;
 import fr.ybo.csvengine.model.Result;
 
 /**
- * Test de l'adapter de date.<br/>
- * Règles de gestion :
+ * Test of date Adapter.<br/>
+ * Rule :
  * <ul>
- * <li>RG1 : pattern non fourni.</li>
- * <li>RG2 : pattern invalide.</li>
- * <li>RG3 : format de date invalide</li>
- * <li>RG4 : date null</li>
- * <li>RG5 : date valide</li>
+ * <li>Rule1 : no pattern.</li>
+ * <li>Rule2 : invalid pattern.</li>
+ * <li>Rule3 : invalid date format</li>
+ * <li>Rule4 : null date</li>
+ * <li>Rule5 : valid date</li>
  * </ul>
  */
 public class AdapterDateTest {
 
 	@CsvFile
-	public static class ObjetRg1 {
+	public static class ObjetRule1 {
 
 		@CsvColumn(value = "date", adapter = AdapterDate.class)
 		public Date date;
 	}
 
 	@CsvFile
-	public static class ObjetRg2 {
+	public static class ObjetRule2 {
 
 		@CsvColumn(value = "date", adapter = AdapterDate.class,
 				params = { @CsvParam(name = AdapterDate.PARAM_FORMAT, value = "tutu") })
@@ -67,7 +67,7 @@ public class AdapterDateTest {
 	}
 
 	@CsvFile
-	public static class ObjetRg345 {
+	public static class ObjetRule345 {
 
 		@CsvColumn("att")
 		public String att;
@@ -78,10 +78,10 @@ public class AdapterDateTest {
 	}
 
 	@Test
-	public void testRg1() {
+	public void testRule1() {
 		try {
-			new CsvEngine(ObjetRg1.class);
-			fail("Une excepion aurait du être levée");
+			new CsvEngine(ObjetRule1.class);
+            fail("An exception must be throw");
 		} catch (CsvEngineException exception) {
 			assertEquals(InvalidParamException.class, exception.getCause().getClass());
 			assertTrue(exception.getCause().getMessage().contains("mandatory"));
@@ -90,10 +90,10 @@ public class AdapterDateTest {
 	}
 
 	@Test
-	public void testRg2() {
+	public void testRule2() {
 		try {
-			new CsvEngine(ObjetRg2.class);
-			fail("Une excepion aurait du être levée");
+			new CsvEngine(ObjetRule2.class);
+            fail("An exception must be throw");
 		} catch (CsvEngineException exception) {
 			assertEquals(InvalidParamException.class, exception.getCause().getClass());
 			assertTrue(exception.getCause().getMessage(), exception.getCause().getMessage().contains("tutu"));
@@ -101,14 +101,14 @@ public class AdapterDateTest {
 		}
 	}
 
-	private CsvEngine rg345Engine = new CsvEngine(ObjetRg345.class);
+	private CsvEngine rule345Engine = new CsvEngine(ObjetRule345.class);
 
 	@Test
-	public void testRg3() {
+	public void testRule3() {
 		InputStream stream = new StringStream("att,date\natt,tutu");
 		try {
-			rg345Engine.parseInputStream(stream, ObjetRg345.class);
-			fail("Une exception aurait du être levée");
+			rule345Engine.parseInputStream(stream, ObjetRule345.class);
+            fail("An exception must be throw");
 		} catch (CsvErrorsExceededException exception) {
 			assertEquals(1, exception.getErrors().size());
 			Error error = exception.getErrors().get(0);
@@ -120,27 +120,27 @@ public class AdapterDateTest {
 	}
 
 	@Test
-	public void testRg4() throws CsvErrorsExceededException {
+	public void testRule4() throws CsvErrorsExceededException {
 		InputStream stream = new StringStream("att,date\natt,");
-		Result<ObjetRg345> objets = rg345Engine.parseInputStream(stream, ObjetRg345.class);
+		Result<ObjetRule345> objets = rule345Engine.parseInputStream(stream, ObjetRule345.class);
 		assertTrue(objets.getErrors().isEmpty());
 		assertEquals(1, objets.getObjects().size());
-		ObjetRg345 objet = objets.getObjects().get(0);
+		ObjetRule345 objet = objets.getObjects().get(0);
 		assertEquals("att", objet.att);
 		assertNull(objet.date);
 	}
 
 	@Test
-	public void testRg5() throws CsvErrorsExceededException {
+	public void testRule5() throws CsvErrorsExceededException {
 		InputStream stream = new StringStream("att,date\natt,21/12/2012");
-		Result<ObjetRg345> objets = rg345Engine.parseInputStream(stream, ObjetRg345.class);
+		Result<ObjetRule345> objets = rule345Engine.parseInputStream(stream, ObjetRule345.class);
 		assertTrue(objets.getErrors().isEmpty());
 		assertEquals(1, objets.getObjects().size());
-		ObjetRg345 objet = objets.getObjects().get(0);
+		ObjetRule345 objet = objets.getObjects().get(0);
 		assertEquals("att", objet.att);
 		assertEquals("21/12/2012", new SimpleDateFormat("dd/MM/yyyy").format(objet.date));
 		StringWriter writer = new StringWriter();
-		rg345Engine.writeFile(writer, objets.getObjects(), ObjetRg345.class);
+        rule345Engine.writeFile(writer, objets.getObjects(), ObjetRule345.class);
 		assertEquals("\"att\",\"date\"\n\"att\",\"21/12/2012\"\n", writer.getBuffer().toString());
 	}
 

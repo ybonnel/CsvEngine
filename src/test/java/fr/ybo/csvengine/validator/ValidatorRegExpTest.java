@@ -33,11 +33,11 @@ import fr.ybo.csvengine.exception.InvalidParamException;
 public class ValidatorRegExpTest {
 
 	@Test
-	public void testParametreAbsent() {
+	public void testAbsentParameter() {
 		ValidatorRegExp validator = new ValidatorRegExp();
 		try {
 			validator.addParams(new HashMap<String, String>());
-			fail("Une exception aurait du être levée");
+			fail("An exception must be throw");
 		} catch (InvalidParamException exception) {
 			assertTrue(exception.getMessage().contains(ValidatorRegExp.PARAM_PATTERN));
 			assertTrue(exception.getMessage().contains("mandatory"));
@@ -45,13 +45,13 @@ public class ValidatorRegExpTest {
 	}
 
 	@Test
-	public void testParametreIncorrect() {
+	public void testIncorrectParameter() {
 		Map<String, String> params = new HashMap<String, String>();
 		params.put(ValidatorRegExp.PARAM_PATTERN, "{[(");
 		ValidatorRegExp validator = new ValidatorRegExp();
 		try {
 			validator.addParams(params);
-			fail("Une exception aurait du être levée");
+            fail("An exception must be throw");
 		} catch (InvalidParamException exception) {
 			assertTrue(exception.getMessage().contains(ValidatorRegExp.PARAM_PATTERN));
 			assertTrue(exception.getMessage().contains("format"));
