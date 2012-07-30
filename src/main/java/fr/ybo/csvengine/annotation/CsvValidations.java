@@ -35,5 +35,5 @@ public @interface CsvValidations {
 	/**
 	 * CsvValidation list to use.
 	 */
-	CsvValidation[] value() default {};
+	CsvValidation[] value() default { };
 }
