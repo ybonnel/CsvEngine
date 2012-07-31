@@ -211,7 +211,7 @@
 
     <scm>
         <connection>scm:git://github.com/ybonnel/CsvEngine.git</connection>
-        <developerConnection>scm:git@github.com:ybonnel/CsvEngine.git</developerConnection>
+        <developerConnection>scm:git:git@github.com:ybonnel/CsvEngine.git</developerConnection>
         <url>https://github.com/ybonnel/CsvEngine</url>
     </scm>
 
