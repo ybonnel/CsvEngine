@@ -16,20 +16,20 @@
  */
 package fr.ybonnel.csvengine;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
-import fr.ybo.csvengine.model.*;
-import fr.ybonnel.csvengine.model.Error;
 import fr.ybonnel.csvengine.annotation.CsvColumn;
 import fr.ybonnel.csvengine.annotation.CsvFile;
 import fr.ybonnel.csvengine.annotation.CsvValidation;
 import fr.ybonnel.csvengine.exception.CsvErrorsExceededException;
-import fr.ybonnel.csvengine.model.*;
+import fr.ybonnel.csvengine.model.EngineParameters;
+import fr.ybonnel.csvengine.model.Error;
+import fr.ybonnel.csvengine.model.Result;
 import fr.ybonnel.csvengine.validator.ValidatorEmail;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test of {@link fr.ybonnel.csvengine.validator.ValidatorEmail}.

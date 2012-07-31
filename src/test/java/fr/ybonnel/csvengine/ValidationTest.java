@@ -16,25 +16,25 @@
  */
 package fr.ybonnel.csvengine;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.io.InputStream;
-
 import fr.ybonnel.csvengine.annotation.CsvColumn;
 import fr.ybonnel.csvengine.annotation.CsvFile;
 import fr.ybonnel.csvengine.annotation.CsvValidation;
-import fr.ybo.csvengine.model.*;
-import fr.ybonnel.csvengine.model.Error;
 import fr.ybonnel.csvengine.exception.CsvEngineException;
 import fr.ybonnel.csvengine.exception.CsvErrorsExceededException;
-import fr.ybonnel.csvengine.model.*;
+import fr.ybonnel.csvengine.model.EngineParameters;
+import fr.ybonnel.csvengine.model.Error;
+import fr.ybonnel.csvengine.model.Result;
 import fr.ybonnel.csvengine.validator.ValidateException;
 import fr.ybonnel.csvengine.validator.ValidatorCsv;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.InputStream;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * Validation test.
