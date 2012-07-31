@@ -25,6 +25,12 @@
     <url>https://github.com/ybonnel/CsvEngine</url>
     <description>Framework base on annotations to read an write CSV Files.</description>
 
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
