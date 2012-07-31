@@ -15,7 +15,7 @@
 -docencoding
 'UTF-8'
 -doctitle
-'CsvEngine 1.3.1-SNAPSHOT API'
+'CsvEngine 1.3.2-SNAPSHOT API'
 -link
 'http://java.sun.com/j2se/1.5.0/docs/api'
 -link
@@ -23,4 +23,4 @@
 -use
 -version
 -windowtitle
-'CsvEngine 1.3.1-SNAPSHOT API'
+'CsvEngine 1.3.2-SNAPSHOT API'
