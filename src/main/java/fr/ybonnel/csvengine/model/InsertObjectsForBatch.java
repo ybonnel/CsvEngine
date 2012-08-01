@@ -20,8 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Internal class of the CsvEngine.
- * This class is use for the method {@link fr.ybonnel.csvengine.CsvEngine#parseFileAndHandleBatch(java.io.Reader, Class, InsertBatch, int)}.
+ * <b>Internal class of the CsvEngine.</b><br/>
+ * This class is use for the method
+ * {@link fr.ybonnel.csvengine.CsvEngine#parseFileAndHandleBatch(java.io.Reader, Class, InsertBatch, int)}.
  *
  * @param <T> class of objects.
  *
