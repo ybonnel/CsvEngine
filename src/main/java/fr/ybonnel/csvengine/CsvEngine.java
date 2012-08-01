@@ -22,6 +22,7 @@ import fr.ybonnel.csvengine.annotation.CsvValidation;
 import fr.ybonnel.csvengine.annotation.CsvValidations;
 import fr.ybonnel.csvengine.exception.CsvEngineException;
 import fr.ybonnel.csvengine.exception.CsvErrorsExceededException;
+import fr.ybonnel.csvengine.exception.StopParseException;
 import fr.ybonnel.csvengine.factory.AbstractCsvReader;
 import fr.ybonnel.csvengine.factory.AbstractCsvWriter;
 import fr.ybonnel.csvengine.factory.CsvManagerFactory;
@@ -400,7 +401,7 @@ public class CsvEngine {
      * @param <T>         Class associated to the CSV.
      * @param inputStream inputStream representing the CSV File.
      * @param clazz       class associated to the CSV File.
-     * @return the list of <T> representing all rows of the CSV File.
+     * @return a result which contains errors end the list of <T> representing all rows of the CSV File.
      * @throws fr.ybonnel.csvengine.exception.CsvErrorsExceededException
      *          if the number of errors occurred exceed the accepted number
      *          {@link fr.ybonnel.csvengine.model.EngineParameters#getNbLinesWithErrorsToStop()}.
@@ -411,6 +412,37 @@ public class CsvEngine {
         result.getErrors().addAll(
                 parseFileAndInsert(new BufferedReader(new InputStreamReader(inputStream)), clazz,
                         new InsertInList<T>(result.getObjects())));
+        return result;
+    }
+
+    /**
+     * Parse an InputStream representing a CSV File to transform it in a list of <T><br/>.
+     * Stop the parsing when nbLinesToParse is reached.
+     *
+     * @param <T>         Class associated to the CSV.
+     * @param inputStream inputStream representing the CSV File.
+     * @param clazz       class associated to the CSV File.
+     * @param nbLinesToParse the maximum number of lines to parse.
+     * @return a result which contains errors end the list of <T> representing all rows of the CSV File.
+     * @throws fr.ybonnel.csvengine.exception.CsvErrorsExceededException
+     *          if the number of errors occurred exceed the accepted number
+     *          {@link fr.ybonnel.csvengine.model.EngineParameters#getNbLinesWithErrorsToStop()}.
+     */
+    public <T> Result<T> parseFirstLinesOfInputStream(InputStream inputStream, Class<T> clazz,
+                                                      final int nbLinesToParse)
+            throws CsvErrorsExceededException {
+        final Result<T> result = new Result<T>();
+        result.getErrors().addAll(parseFileAndInsert(new BufferedReader(new InputStreamReader(inputStream)), clazz,
+                new InsertInList<T>(result.getObjects()) {
+                    @Override
+                    public void insertObject(T object) {
+                        super.insertObject(object);
+                        if (result.getObjects().size() >= nbLinesToParse) {
+                            throw new StopParseException();
+                        }
+                    }
+                }));
+
         return result;
     }
 
@@ -448,6 +480,8 @@ public class CsvEngine {
                             && errors.size() > parameters.getNbLinesWithErrorsToStop()) {
                         throw new CsvErrorsExceededException(errors);
                     }
+                } catch (StopParseException stopParseException) {
+                    return errors;
                 }
             } while (object != null || hasValidationError);
         } finally {

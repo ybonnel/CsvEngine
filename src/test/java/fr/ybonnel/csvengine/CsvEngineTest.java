@@ -47,6 +47,7 @@ import fr.ybonnel.csvengine.exception.CsvErrorsExceededException;
 import fr.ybonnel.csvengine.factory.AbstractCsvReader;
 import fr.ybonnel.csvengine.model.EngineParameters;
 import fr.ybonnel.csvengine.model.InsertBatch;
+import fr.ybonnel.csvengine.model.Result;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -573,5 +574,25 @@ public class CsvEngineTest {
         assertEquals("line2", resultObjects.get(1).att);
         assertEquals("line3", resultObjects.get(2).att);
         assertEquals("line4", resultObjects.get(3).att);
+    }
+
+    @Test
+    public void testParseFirstLinesOfInputStream() throws CsvErrorsExceededException {
+        CsvEngine engine = new CsvEngine(SimpleObject.class);
+        String csvContent = "att\nline1\nline2\nline3\nline4\n";
+
+        // Stop before end.
+        Result<SimpleObject> result = engine.parseFirstLinesOfInputStream(new StringStream(csvContent), SimpleObject.class, 2);
+        assertEquals(2, result.getObjects().size());
+        assertEquals("line1", result.getObjects().get(0).att);
+        assertEquals("line2", result.getObjects().get(1).att);
+
+        // nbLinesToParse > nbLines of file.
+        result = engine.parseFirstLinesOfInputStream(new StringStream(csvContent), SimpleObject.class, 10);
+        assertEquals(4, result.getObjects().size());
+        assertEquals("line1", result.getObjects().get(0).att);
+        assertEquals("line2", result.getObjects().get(1).att);
+        assertEquals("line3", result.getObjects().get(2).att);
+        assertEquals("line4", result.getObjects().get(3).att);
     }
 }
