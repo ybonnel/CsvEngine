@@ -27,11 +27,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import fr.ybonnel.csvengine.annotation.CsvColumn;
 import fr.ybonnel.csvengine.annotation.CsvFile;
@@ -44,6 +46,7 @@ import fr.ybonnel.csvengine.exception.CsvEngineException;
 import fr.ybonnel.csvengine.exception.CsvErrorsExceededException;
 import fr.ybonnel.csvengine.factory.AbstractCsvReader;
 import fr.ybonnel.csvengine.model.EngineParameters;
+import fr.ybonnel.csvengine.model.InsertBatch;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -501,4 +504,74 @@ public class CsvEngineTest {
 
 	}
 
+    public static class Counter {
+        int count = 0;
+        public void increament() {
+            count++;
+        }
+        public void reset() {
+            count = 0;
+        }
+        public int get() {
+            return count;
+        }
+    }
+
+    @Test
+    public void testParseFileAndBatch() throws CsvErrorsExceededException {
+        CsvEngine engine = new CsvEngine(SimpleObject.class);
+        String csvContent = "att\nline1\nline2\nline3\nline4\n";
+
+        // First test, batchSize=1
+        final List<SimpleObject> resultObjects = new ArrayList<SimpleObject>();
+        final Counter count = new Counter();
+        engine.parseFileAndHandleBatch(new InputStreamReader(new StringStream(csvContent)), SimpleObject.class, new InsertBatch<SimpleObject>() {
+            public void handleBatch(List<SimpleObject> objects) {
+                assertEquals(1, objects.size());
+                resultObjects.addAll(objects);
+                count.increament();
+            }
+        }, 1);
+        assertEquals(4, count.get());
+        assertEquals("line1", resultObjects.get(0).att);
+        assertEquals("line2", resultObjects.get(1).att);
+        assertEquals("line3", resultObjects.get(2).att);
+        assertEquals("line4", resultObjects.get(3).att);
+
+        // batchSize = 2
+        resultObjects.clear();
+        count.reset();
+        engine.parseFileAndHandleBatch(new InputStreamReader(new StringStream(csvContent)), SimpleObject.class, new InsertBatch<SimpleObject>() {
+            public void handleBatch(List<SimpleObject> objects) {
+                assertEquals(2, objects.size());
+                resultObjects.addAll(objects);
+                count.increament();
+            }
+        }, 2);
+        assertEquals(2, count.get());
+        assertEquals("line1", resultObjects.get(0).att);
+        assertEquals("line2", resultObjects.get(1).att);
+        assertEquals("line3", resultObjects.get(2).att);
+        assertEquals("line4", resultObjects.get(3).att);
+
+        // batchSize = 3
+        resultObjects.clear();
+        count.reset();
+        engine.parseFileAndHandleBatch(new InputStreamReader(new StringStream(csvContent)), SimpleObject.class, new InsertBatch<SimpleObject>() {
+            public void handleBatch(List<SimpleObject> objects) {
+                if (count.get() == 0) {
+                    assertEquals(3, objects.size());
+                } else {
+                    assertEquals(1, objects.size());
+                }
+                resultObjects.addAll(objects);
+                count.increament();
+            }
+        }, 3);
+        assertEquals(2, count.get());
+        assertEquals("line1", resultObjects.get(0).att);
+        assertEquals("line2", resultObjects.get(1).att);
+        assertEquals("line3", resultObjects.get(2).att);
+        assertEquals("line4", resultObjects.get(3).att);
+    }
 }

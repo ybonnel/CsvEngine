@@ -30,8 +30,10 @@ import fr.ybonnel.csvengine.model.CsvClass;
 import fr.ybonnel.csvengine.model.CsvField;
 import fr.ybonnel.csvengine.model.EngineParameters;
 import fr.ybonnel.csvengine.model.Error;
+import fr.ybonnel.csvengine.model.InsertBatch;
 import fr.ybonnel.csvengine.model.InsertInList;
 import fr.ybonnel.csvengine.model.InsertObject;
+import fr.ybonnel.csvengine.model.InsertObjectsForBatch;
 import fr.ybonnel.csvengine.model.Result;
 import fr.ybonnel.csvengine.validator.ValidateException;
 import fr.ybonnel.csvengine.validator.ValidationError;
@@ -425,7 +427,7 @@ public class CsvEngine {
      *          {@link fr.ybonnel.csvengine.model.EngineParameters#getNbLinesWithErrorsToStop()}.
      */
     @SuppressWarnings("unchecked")
-    public <T> List<fr.ybonnel.csvengine.model.Error> parseFileAndInsert(Reader reader, Class<T> clazz, InsertObject<T> handler)
+    public <T> List<Error> parseFileAndInsert(Reader reader, Class<T> clazz, InsertObject<T> handler)
             throws CsvErrorsExceededException {
         List<Error> errors = new ArrayList<Error>();
         try {
@@ -450,6 +452,29 @@ public class CsvEngine {
             } while (object != null || hasValidationError);
         } finally {
             closeCurrentReader();
+        }
+        return errors;
+    }
+
+    /**
+     * Parse a CSV file with an handler for batch of objects.
+     * @param <T>     The class associated to the CSV File.
+     * @param reader  a Reader which represent the CSV File.
+     * @param clazz   class associated to the CSV File.
+     * @param handler the handler call on batch of objects.
+     * @param batchSize size of a batch.
+     * @return the errors occurred.
+     * @throws fr.ybonnel.csvengine.exception.CsvErrorsExceededException
+     *          if the number of errors occurred exceed the accepted number
+     *          {@link fr.ybonnel.csvengine.model.EngineParameters#getNbLinesWithErrorsToStop()}.
+     */
+    public <T> List<Error> parseFileAndHandleBatch(Reader reader, Class<T> clazz,
+                                                   InsertBatch<T> handler, int batchSize)
+            throws CsvErrorsExceededException {
+        InsertObjectsForBatch<T> handlerBatch = new InsertObjectsForBatch<T>(handler, batchSize);
+        List<Error> errors = parseFileAndInsert(reader, clazz, handlerBatch);
+        if (!handlerBatch.getCurrentListOfObjects().isEmpty()) {
+            handler.handleBatch(handlerBatch.getCurrentListOfObjects());
         }
         return errors;
     }
