@@ -1,7 +1,7 @@
 fr.ybonnel.csvengine.adapter
-fr.ybonnel.csvengine
 fr.ybonnel.csvengine.annotation
-fr.ybonnel.csvengine.factory
 fr.ybonnel.csvengine.validator
+fr.ybonnel.csvengine.factory
+fr.ybonnel.csvengine
 fr.ybonnel.csvengine.exception
 fr.ybonnel.csvengine.model
