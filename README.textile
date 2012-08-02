@@ -1,6 +1,16 @@
-h1. CsvEngine
+h1. Sumary
 
-This is a small framework based on annotations used to parse and write CSV Files.
+This is a small Java framework based on annotations used to parse and write CSV Files.
+
+h1. Documentation
+
+You can find lot of informations like javadoc, source, source of test on the site generated from source go : "ybonnel.github.com/CsvEngine":http://ybonnel.github.com/CsvEngine
+
+You can find few documentation of the "wiki":https://github.com/ybonnel/CsvEngine/wiki
+
+h1. Features of bugs
+
+If you want a new Feature, or if you find a bug, feel free to report it in "Gitub Issue":https://github.com/ybonnel/CsvEngine/issues
 
 h1. License
 
