@@ -18,7 +18,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>fr.ybonnel</groupId>
 	<artifactId>csvengine</artifactId>
-	<version>1.3.4-SNAPSHOT</version>
+	<version>1.3.4</version>
 	<name>CsvEngine</name>
 	<packaging>jar</packaging>
     <url>https://github.com/ybonnel/CsvEngine</url>
