@@ -1,4 +1,4 @@
-h1. Sumary
+h1. Summary
 
 This is a small Java framework based on annotations used to parse and write CSV Files.
 
