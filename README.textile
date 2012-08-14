@@ -8,7 +8,7 @@ You can find lot of informations like javadoc, source, source of test on the sit
 
 You can find few documentation of the "wiki":https://github.com/ybonnel/CsvEngine/wiki
 
-h1. Features of bugs
+h1. Features or bugs
 
 If you want a new Feature, or if you find a bug, feel free to report it in "Gitub Issue":https://github.com/ybonnel/CsvEngine/issues
 
