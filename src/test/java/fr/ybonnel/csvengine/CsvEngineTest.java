@@ -16,44 +16,27 @@
  */
 package fr.ybonnel.csvengine;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-
+import fr.ybonnel.csvengine.adapter.*;
 import fr.ybonnel.csvengine.annotation.CsvColumn;
 import fr.ybonnel.csvengine.annotation.CsvFile;
-import fr.ybonnel.csvengine.adapter.AdapterBoolean;
-import fr.ybonnel.csvengine.adapter.AdapterDouble;
-import fr.ybonnel.csvengine.adapter.AdapterInteger;
-import fr.ybonnel.csvengine.adapter.AdapterString;
-import fr.ybonnel.csvengine.adapter.AdapterTime;
 import fr.ybonnel.csvengine.exception.CsvEngineException;
 import fr.ybonnel.csvengine.exception.CsvErrorsExceededException;
 import fr.ybonnel.csvengine.factory.AbstractCsvReader;
+import fr.ybonnel.csvengine.factory.AbstractCsvWriter;
+import fr.ybonnel.csvengine.factory.CsvManagerFactory;
 import fr.ybonnel.csvengine.model.EngineParameters;
 import fr.ybonnel.csvengine.model.InsertBatch;
 import fr.ybonnel.csvengine.model.Result;
+import fr.ybonnel.csvengine.validator.ValidationError;
 import org.junit.Before;
 import org.junit.Test;
 
-import fr.ybonnel.csvengine.factory.AbstractCsvWriter;
-import fr.ybonnel.csvengine.factory.CsvManagerFactory;
-import fr.ybonnel.csvengine.validator.ValidationError;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * Test class for CsvEngine.
@@ -594,5 +577,19 @@ public class CsvEngineTest {
         assertEquals("line2", result.getObjects().get(1).att);
         assertEquals("line3", result.getObjects().get(2).att);
         assertEquals("line4", result.getObjects().get(3).att);
+    }
+
+    @Test
+    public void testGetColumnNames() {
+
+        CsvEngine engine = new CsvEngine(CsvObject.class);
+        List<String> columnNames = engine.getColumnNames(CsvObject.class);
+        assertEquals(6, columnNames.size());
+        assertEquals("att_1", columnNames.get(0));
+        assertEquals("att_2", columnNames.get(1));
+        assertEquals("att_3", columnNames.get(2));
+        assertEquals("att_5", columnNames.get(3));
+        assertEquals("att_4", columnNames.get(4));
+        assertEquals("att_6", columnNames.get(5));
     }
 }

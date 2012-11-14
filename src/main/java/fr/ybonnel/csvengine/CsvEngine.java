@@ -602,4 +602,28 @@ public class CsvEngine {
             throw new CsvEngineException(exception);
         }
     }
+
+    /**
+     * Get the CSV column names of a class.
+     * @param clazz the class managed by CsvEngine.
+     * @return list of column names of the class ordered if the class use {@link fr.ybonnel.csvengine.annotation.CsvColumn#order()}.
+     */
+    public List<String> getColumnNames(Class clazz) {
+        final CsvClass csvClass = mapClasses.get(clazz);
+        if (csvClass == null) {
+            throw new CsvEngineException("The class " + clazz.getSimpleName() + " isn't managed");
+        }
+        List<String> columnsNames = new ArrayList<String>();
+        for (String columnName : csvClass.getColumnNames()) {
+            columnsNames.add(columnName);
+        }
+        Collections.sort(columnsNames, new Comparator<String>() {
+            public int compare(String o1, String o2) {
+                int thisVal = csvClass.getOrder(o1);
+                int anotherVal = csvClass.getOrder(o2);
+                return (thisVal < anotherVal ? -1 : (thisVal == anotherVal ? 0 : 1));
+            }
+        });
+        return columnsNames;
+    }
 }
