@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
 
-<coverage line-rate="0.9776422764227642" branch-rate="0.8719512195121951" lines-covered="481" lines-valid="492" branches-covered="143" branches-valid="164" complexity="2.032" version="1.9.4.1" timestamp="1352914002179">
+<coverage line-rate="0.9776422764227642" branch-rate="0.8719512195121951" lines-covered="481" lines-valid="492" branches-covered="143" branches-valid="164" complexity="2.032" version="1.9.4.1" timestamp="1357413890796">
 	<sources>
 		<source>/scratch/jenkins/workspace/CsvEngine-release/src/main/java</source>
 		<source>--source</source>
