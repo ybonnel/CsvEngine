@@ -44,7 +44,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -400,7 +399,8 @@ public class CsvEngine {
     /**
      * Parse an InputStream representing a CSV File to transform it in a list of <T>.<br/>
      *
-     * Default encoding is "UTF-8", you can use your by using {@link CsvEngine#parseInputStream(java.io.InputStream, java.nio.charset.Charset, Class)}
+     * Default encoding is "UTF-8", you can use yours by using
+     * {@link CsvEngine#parseInputStream(java.io.InputStream, java.nio.charset.Charset, Class)}
      *
      * @param <T>         Class associated to the CSV.
      * @param inputStream inputStream representing the CSV File.
@@ -627,7 +627,8 @@ public class CsvEngine {
     /**
      * Get the CSV column names of a class.
      * @param clazz the class managed by CsvEngine.
-     * @return list of column names of the class ordered if the class use {@link fr.ybonnel.csvengine.annotation.CsvColumn#order()}.
+     * @return list of column names of the class ordered
+     * if the class use {@link fr.ybonnel.csvengine.annotation.CsvColumn#order()}.
      */
     public List<String> getColumnNames(Class clazz) {
         final CsvClass csvClass = mapClasses.get(clazz);
