@@ -410,11 +410,7 @@ public class CsvEngine {
      */
     public <T> Result<T> parseInputStream(InputStream inputStream, Class<T> clazz)
             throws CsvErrorsExceededException {
-        Result<T> result = new Result<T>();
-        result.getErrors().addAll(
-                parseFileAndInsert(new BufferedReader(new InputStreamReader(inputStream)), clazz,
-                        new InsertInList<T>(result.getObjects())));
-        return result;
+        return parseInputStream(inputStream, null, clazz);
     }
 
     /**
@@ -422,20 +418,24 @@ public class CsvEngine {
      *
      * @param <T>         Class associated to the CSV.
      * @param inputStream inputStream representing the CSV File.
-     * @param charset     class associated to the CSV File.
+     * @param charset     Charset used to read the inputStream. When <code>null</code>, use default plateforme encoding.
      * @param clazz       class associated to the CSV File.
      * @return a result which contains errors end the list of <T> representing all rows of the CSV File.
      * @throws fr.ybonnel.csvengine.exception.CsvErrorsExceededException
      *          if the number of errors occurred exceed the accepted number
      *          {@link fr.ybonnel.csvengine.model.EngineParameters#getNbLinesWithErrorsToStop()}.
-     * @throws UnsupportedEncodingException
-     *          if the charset is not recognised.
      */
     public <T> Result<T> parseInputStream(InputStream inputStream, Charset charset, Class<T> clazz)
-            throws CsvErrorsExceededException, UnsupportedEncodingException {
+            throws CsvErrorsExceededException {
         Result<T> result = new Result<T>();
+        InputStreamReader isr;
+        if (charset == null) {
+            isr = new InputStreamReader(inputStream);
+        } else {
+            isr = new InputStreamReader(inputStream, charset);
+        }
         result.getErrors().addAll(
-                parseFileAndInsert(new BufferedReader(new InputStreamReader(inputStream, charset)), clazz,
+                parseFileAndInsert(new BufferedReader(isr), clazz,
                         new InsertInList<T>(result.getObjects())));
         return result;
     }
