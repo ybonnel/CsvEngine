@@ -32,6 +32,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -591,5 +592,18 @@ public class CsvEngineTest {
         assertEquals("att_5", columnNames.get(3));
         assertEquals("att_4", columnNames.get(4));
         assertEquals("att_6", columnNames.get(5));
+    }
+
+    @Test
+    public void testUtf16() throws CsvErrorsExceededException {
+        CsvEngine engine = new CsvEngine(CsvObject.class);
+
+        List<CsvObject> results = engine.parseInputStream(CsvEngine.class.getResourceAsStream("/testutf16.csv"), Charset.forName("UTF-16"), CsvObject.class).getObjects();
+
+        assertEquals(2, results.size());
+        assertEquals("é", results.get(0).attribute1);
+        assertTrue(results.get(0).attribute2);
+        assertEquals("à", results.get(1).attribute1);
+        assertFalse(results.get(1).attribute2);
     }
 }

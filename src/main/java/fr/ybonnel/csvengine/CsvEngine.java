@@ -398,7 +398,9 @@ public class CsvEngine {
     }
 
     /**
-     * Parse an InputStream representing a CSV File to transform it in a list of <T>.
+     * Parse an InputStream representing a CSV File to transform it in a list of <T>.<br/>
+     *
+     * Default encoding is "UTF-8", you can use your by using {@link CsvEngine#parseInputStream(java.io.InputStream, java.nio.charset.Charset, Class)}
      *
      * @param <T>         Class associated to the CSV.
      * @param inputStream inputStream representing the CSV File.
@@ -410,11 +412,7 @@ public class CsvEngine {
      */
     public <T> Result<T> parseInputStream(InputStream inputStream, Class<T> clazz)
             throws CsvErrorsExceededException {
-        Result<T> result = new Result<T>();
-        result.getErrors().addAll(
-                parseFileAndInsert(new BufferedReader(new InputStreamReader(inputStream)), clazz,
-                        new InsertInList<T>(result.getObjects())));
-        return result;
+        return parseInputStream(inputStream, Charset.forName("UTF-8"), clazz);
     }
 
     /**
@@ -428,11 +426,9 @@ public class CsvEngine {
      * @throws fr.ybonnel.csvengine.exception.CsvErrorsExceededException
      *          if the number of errors occurred exceed the accepted number
      *          {@link fr.ybonnel.csvengine.model.EngineParameters#getNbLinesWithErrorsToStop()}.
-     * @throws UnsupportedEncodingException
-     *          if the charset is not recognised.
      */
     public <T> Result<T> parseInputStream(InputStream inputStream, Charset charset, Class<T> clazz)
-            throws CsvErrorsExceededException, UnsupportedEncodingException {
+            throws CsvErrorsExceededException {
         Result<T> result = new Result<T>();
         result.getErrors().addAll(
                 parseFileAndInsert(new BufferedReader(new InputStreamReader(inputStream, charset)), clazz,
