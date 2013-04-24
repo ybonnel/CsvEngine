@@ -44,9 +44,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -408,9 +410,32 @@ public class CsvEngine {
      */
     public <T> Result<T> parseInputStream(InputStream inputStream, Class<T> clazz)
             throws CsvErrorsExceededException {
+        return parseInputStream(inputStream, null, clazz);
+    }
+
+    /**
+     * Parse an InputStream representing a CSV File to transform it in a list of <T>.
+     *
+     * @param <T>         Class associated to the CSV.
+     * @param inputStream inputStream representing the CSV File.
+     * @param charset     Charset used to read the inputStream. When <code>null</code>, use default plateforme encoding.
+     * @param clazz       class associated to the CSV File.
+     * @return a result which contains errors end the list of <T> representing all rows of the CSV File.
+     * @throws fr.ybonnel.csvengine.exception.CsvErrorsExceededException
+     *          if the number of errors occurred exceed the accepted number
+     *          {@link fr.ybonnel.csvengine.model.EngineParameters#getNbLinesWithErrorsToStop()}.
+     */
+    public <T> Result<T> parseInputStream(InputStream inputStream, Charset charset, Class<T> clazz)
+            throws CsvErrorsExceededException {
         Result<T> result = new Result<T>();
+        InputStreamReader isr;
+        if (charset == null) {
+            isr = new InputStreamReader(inputStream);
+        } else {
+            isr = new InputStreamReader(inputStream, charset);
+        }
         result.getErrors().addAll(
-                parseFileAndInsert(new BufferedReader(new InputStreamReader(inputStream)), clazz,
+                parseFileAndInsert(new BufferedReader(isr), clazz,
                         new InsertInList<T>(result.getObjects())));
         return result;
     }
