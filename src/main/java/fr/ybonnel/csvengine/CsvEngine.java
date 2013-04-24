@@ -44,9 +44,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -411,6 +413,29 @@ public class CsvEngine {
         Result<T> result = new Result<T>();
         result.getErrors().addAll(
                 parseFileAndInsert(new BufferedReader(new InputStreamReader(inputStream)), clazz,
+                        new InsertInList<T>(result.getObjects())));
+        return result;
+    }
+
+    /**
+     * Parse an InputStream representing a CSV File to transform it in a list of <T>.
+     *
+     * @param <T>         Class associated to the CSV.
+     * @param inputStream inputStream representing the CSV File.
+     * @param charset     class associated to the CSV File.
+     * @param clazz       class associated to the CSV File.
+     * @return a result which contains errors end the list of <T> representing all rows of the CSV File.
+     * @throws fr.ybonnel.csvengine.exception.CsvErrorsExceededException
+     *          if the number of errors occurred exceed the accepted number
+     *          {@link fr.ybonnel.csvengine.model.EngineParameters#getNbLinesWithErrorsToStop()}.
+     * @throws UnsupportedEncodingException
+     *          if the charset is not recognised.
+     */
+    public <T> Result<T> parseInputStream(InputStream inputStream, Charset charset, Class<T> clazz)
+            throws CsvErrorsExceededException, UnsupportedEncodingException {
+        Result<T> result = new Result<T>();
+        result.getErrors().addAll(
+                parseFileAndInsert(new BufferedReader(new InputStreamReader(inputStream, charset)), clazz,
                         new InsertInList<T>(result.getObjects())));
         return result;
     }
