@@ -49,6 +49,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -222,15 +223,19 @@ public class CsvEngine {
         if (fields == null) {
             return null;
         }
-        ValidationError validationError = null;
-        Object csvObject = constructObject();
-        for (int numChamp = 0; numChamp < fields.length; numChamp++) {
-            validationError = processField(fields, validationError, csvObject, numChamp);
+        try {
+            ValidationError validationError = null;
+            Object csvObject = constructObject();
+            for (int numChamp = 0; numChamp < fields.length; numChamp++) {
+                validationError = processField(fields, validationError, csvObject, numChamp);
+            }
+            if (validationError != null) {
+                throw validationError;
+            }
+            return csvObject;
+        } catch (RuntimeException unexpectedException) {
+            throw new CsvEngineException("Error on line " + Arrays.toString(fields), unexpectedException);
         }
-        if (validationError != null) {
-            throw validationError;
-        }
-        return csvObject;
     }
 
     /**
