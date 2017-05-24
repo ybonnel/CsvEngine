@@ -617,7 +617,9 @@ public class CsvEngine {
                         return (thisVal < anotherVal ? -1 : (thisVal == anotherVal ? 0 : 1));
                     }
                 });
-                csvWriter.writeLine(columnsNames);
+                if (!parameters.getSkipHeader()) {
+                    csvWriter.writeLine(columnsNames);
+                }
                 for (T object : objects) {
                     writeLine(csvWriter, columnsNames, csvClass, object);
                 }

@@ -70,6 +70,18 @@ public class MotorParametersBuilder {
     }
 
     /**
+     * Write or not the header.
+     *
+     * @param skipHeader
+     *          true to avoid writing the header
+     * @return the builder
+     */
+    public MotorParametersBuilder setSkipHeader(boolean skipHeader) {
+        parameters.setSkipHeader(skipHeader);
+        return this;
+    }
+
+    /**
      * Construct the instance of {@link EngineParameters}.
      *
      * @return the constructed instance.

@@ -489,7 +489,18 @@ public class CsvEngineTest {
 
 	}
 
-    public static class Counter {
+	@Test
+	public void testSkipHeader() {
+		SimpleObject object = new SimpleObject();
+		object.att = "value";
+		CsvEngine engine =
+				new CsvEngine(EngineParameters.createBuilder().setAddQuoteCar(false).setSkipHeader(true).build(), SimpleObject.class);
+		StringWriter writer = new StringWriter();
+		engine.writeFile(writer, Arrays.asList(object), SimpleObject.class);
+		assertEquals("value\n", writer.getBuffer().toString());
+	}
+
+	public static class Counter {
         int count = 0;
         public void increament() {
             count++;

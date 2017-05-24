@@ -41,6 +41,11 @@ public class EngineParameters {
 	private boolean addQuoteCar = true;
 
 	/**
+	 * Write or not the header
+	 */
+	private boolean skipHeader = false;
+
+	/**
      * Creation of builder.
 	 * 
 	 * @return the builder.
@@ -102,5 +107,19 @@ public class EngineParameters {
 	public void setAddQuoteCar(boolean addQuoteCar) {
 		this.addQuoteCar = addQuoteCar;
 	}
+
+	/**
+	 * Write or not header.<br/>
+	 * By default skipHeader is set to false.
+	 *
+	 * @param skipHeader
+	 * 			true if have to skip when writing csv file
+	 */
+	public void setSkipHeader(boolean skipHeader) { this.skipHeader = skipHeader; }
+
+	/**
+	 * @return skip the header during writing or not
+	 */
+	public boolean getSkipHeader() { return this.skipHeader; }
 
 }
