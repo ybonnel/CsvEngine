@@ -424,7 +424,7 @@ public class CsvEngineTest {
 			engine.parseInputStream(stream, ObjectWithExceptionInConstructor.class);
             fail("An exception must be throw");
 		} catch (CsvEngineException exception) {
-			assertEquals(NullPointerException.class, exception.getCause().getClass());
+			assertEquals(NullPointerException.class, exception.getCause().getCause().getClass());
 		}
 	}
 
